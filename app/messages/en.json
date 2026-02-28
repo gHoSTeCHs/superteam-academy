@@ -1,0 +1,73 @@
+{
+  "Navigation": {
+    "home": "Home",
+    "courses": "Courses",
+    "dashboard": "Dashboard",
+    "leaderboard": "Leaderboard",
+    "settings": "Settings",
+    "profile": "Profile",
+    "showcase": "Component Showcase"
+  },
+  "Auth": {
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "connectWallet": "Connect Wallet",
+    "walletConnected": "Wallet Connected",
+    "signingMessage": "Sign message in wallet...",
+    "verifyingSignature": "Verifying signature...",
+    "orContinueWith": "or continue with",
+    "signInWithGoogle": "Sign in with Google",
+    "signInWithGitHub": "Sign in with GitHub",
+    "welcomeTitle": "Welcome to Superteam Academy",
+    "welcomeSubtitle": "Sign in to start learning and earning on-chain credentials",
+    "linkSocialPrompt": "Link a social account for profile features and email notifications",
+    "termsNotice": "By signing in, you agree to our Terms of Service and Privacy Policy",
+    "siwsNotice": "Sign-In with Solana (SIWS) — no transaction fees"
+  },
+  "Landing": {
+    "title": "Superteam Academy",
+    "subtitle": "Learn Solana development with interactive courses, coding challenges, and on-chain credentials.",
+    "viewShowcase": "View Component Showcase"
+  },
+  "Courses": {
+    "allCourses": "All Courses",
+    "myCourses": "My Courses",
+    "explore": "Explore",
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "lessons": "lessons",
+    "minutes": "min",
+    "xp": "XP",
+    "enrolled": "Enrolled",
+    "completed": "Completed",
+    "startCourse": "Start Course",
+    "continueCourse": "Continue"
+  },
+  "Dashboard": {
+    "title": "Dashboard",
+    "totalXp": "Total XP",
+    "coursesCompleted": "Courses Completed",
+    "lessonsCompleted": "Lessons Completed",
+    "credentials": "Credentials",
+    "recentActivity": "Recent Activity"
+  },
+  "Leaderboard": {
+    "title": "Leaderboard",
+    "rank": "Rank",
+    "learner": "Learner",
+    "xpEarned": "XP Earned",
+    "coursesCompleted": "Courses Completed"
+  },
+  "Common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Retry",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back",
+    "next": "Next",
+    "search": "Search...",
+    "noResults": "No results found"
+  }
+}

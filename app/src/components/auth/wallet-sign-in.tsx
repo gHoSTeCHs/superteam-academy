@@ -1,6 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import {
   WalletIcon,
   Loader2Icon,
@@ -10,14 +12,12 @@ import {
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-type WalletStep = 'idle' | 'connecting' | 'connected' | 'signing' | 'verifying' | 'authenticated';
+type WalletStep = 'idle' | 'connecting' | 'signing' | 'verifying' | 'authenticated';
 
 interface WalletSignInProps {
   onAuthenticated?: (wallet: string) => void;
   className?: string;
 }
-
-const MOCK_WALLET = 'Fg6PQzSh3kNm8xK9rAbCdEfGhIjKlMnOpQrStUv';
 
 function truncateWallet(wallet: string): string {
   return `${wallet.slice(0, 4)}...${wallet.slice(-4)}`;
@@ -25,22 +25,47 @@ function truncateWallet(wallet: string): string {
 
 export function WalletSignIn({ onAuthenticated, className }: WalletSignInProps) {
   const [step, setStep] = useState<WalletStep>('idle');
+  const { publicKey, signMessage, connected } = useWallet();
+  const { setVisible } = useWalletModal();
 
-  async function handleConnect() {
-    setStep('connecting');
-    await new Promise((r) => setTimeout(r, 1200));
-    setStep('connected');
+  const handleConnect = useCallback(async () => {
+    if (!connected) {
+      setStep('connecting');
+      setVisible(true);
+      return;
+    }
 
-    await new Promise((r) => setTimeout(r, 600));
-    setStep('signing');
-    await new Promise((r) => setTimeout(r, 1500));
-    setStep('verifying');
-    await new Promise((r) => setTimeout(r, 1000));
-    setStep('authenticated');
-    onAuthenticated?.(MOCK_WALLET);
-  }
+    if (!publicKey || !signMessage) return;
 
-  if (step === 'authenticated') {
+    try {
+      setStep('signing');
+      const message = `Sign in to Superteam Academy\nTimestamp: ${Date.now()}`;
+      const encoded = new TextEncoder().encode(message);
+      const signature = await signMessage(encoded);
+
+      setStep('verifying');
+      const response = await fetch('/api/auth/sign-in/solana', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          publicKey: publicKey.toBase58(),
+          signature: Buffer.from(signature).toString('base64'),
+          message,
+        }),
+      });
+
+      if (response.ok) {
+        setStep('authenticated');
+        onAuthenticated?.(publicKey.toBase58());
+      } else {
+        setStep('idle');
+      }
+    } catch {
+      setStep('idle');
+    }
+  }, [connected, publicKey, signMessage, setVisible, onAuthenticated]);
+
+  if (step === 'authenticated' && publicKey) {
     return (
       <div className={cn('flex flex-col items-center gap-3 rounded-xl border-2 border-primary/30 bg-primary/5 px-6 py-5', className)}>
         <div className="flex size-12 items-center justify-center rounded-full bg-primary/10">
@@ -52,10 +77,8 @@ export function WalletSignIn({ onAuthenticated, className }: WalletSignInProps) 
         >
           Wallet Connected
         </p>
-        <p
-          className="font-mono text-[12px] text-muted-foreground"
-        >
-          {truncateWallet(MOCK_WALLET)}
+        <p className="font-mono text-[12px] text-muted-foreground">
+          {truncateWallet(publicKey.toBase58())}
         </p>
       </div>
     );
@@ -64,9 +87,8 @@ export function WalletSignIn({ onAuthenticated, className }: WalletSignInProps) 
   const isLoading = step !== 'idle';
 
   const stepLabels: Record<WalletStep, string> = {
-    idle: 'Connect Wallet',
+    idle: connected ? 'Sign In with Wallet' : 'Connect Wallet',
     connecting: 'Connecting...',
-    connected: 'Wallet connected',
     signing: 'Sign message in wallet...',
     verifying: 'Verifying signature...',
     authenticated: 'Authenticated',
@@ -96,8 +118,8 @@ export function WalletSignIn({ onAuthenticated, className }: WalletSignInProps) 
           <div className="flex gap-1">
             {(['connecting', 'signing', 'verifying'] as WalletStep[]).map((s) => {
               const active = s === step;
-              const done = ['connecting', 'connected', 'signing', 'verifying', 'authenticated']
-                .indexOf(step) > ['connecting', 'connected', 'signing', 'verifying', 'authenticated'].indexOf(s);
+              const done = (['connecting', 'signing', 'verifying', 'authenticated'] as WalletStep[])
+                .indexOf(step) > (['connecting', 'signing', 'verifying', 'authenticated'] as WalletStep[]).indexOf(s);
               return (
                 <div
                   key={s}

@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import { WalletIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -9,20 +10,24 @@ interface WalletButtonProps {
   className?: string;
 }
 
-export function WalletButton({ className }: WalletButtonProps) {
-  const [connected, setConnected] = useState(false);
-  const mockAddress = 'Fg6P...xK9r';
+function truncateAddress(address: string): string {
+  return `${address.slice(0, 4)}...${address.slice(-4)}`;
+}
 
-  if (connected) {
+export function WalletButton({ className }: WalletButtonProps) {
+  const { publicKey, disconnect } = useWallet();
+  const { setVisible } = useWalletModal();
+
+  if (publicKey) {
     return (
       <Button
         variant="outline"
         size="sm"
         className={cn('gap-2 font-mono text-[12px]', className)}
-        onClick={() => setConnected(false)}
+        onClick={() => disconnect()}
       >
         <span className="size-2 rounded-full bg-emerald-500" />
-        {mockAddress}
+        {truncateAddress(publicKey.toBase58())}
       </Button>
     );
   }
@@ -32,7 +37,7 @@ export function WalletButton({ className }: WalletButtonProps) {
       variant="primary"
       size="sm"
       className={cn('gap-2', className)}
-      onClick={() => setConnected(true)}
+      onClick={() => setVisible(true)}
     >
       <WalletIcon className="size-4" />
       <span style={{ fontFamily: 'var(--font-body)' }}>Connect Wallet</span>

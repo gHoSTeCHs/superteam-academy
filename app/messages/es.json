@@ -1,0 +1,73 @@
+{
+  "Navigation": {
+    "home": "Inicio",
+    "courses": "Cursos",
+    "dashboard": "Panel",
+    "leaderboard": "Clasificacion",
+    "settings": "Configuracion",
+    "profile": "Perfil",
+    "showcase": "Galeria de Componentes"
+  },
+  "Auth": {
+    "signIn": "Iniciar sesion",
+    "signOut": "Cerrar sesion",
+    "connectWallet": "Conectar Billetera",
+    "walletConnected": "Billetera Conectada",
+    "signingMessage": "Firma el mensaje en la billetera...",
+    "verifyingSignature": "Verificando firma...",
+    "orContinueWith": "o continuar con",
+    "signInWithGoogle": "Iniciar sesion con Google",
+    "signInWithGitHub": "Iniciar sesion con GitHub",
+    "welcomeTitle": "Bienvenido a Superteam Academy",
+    "welcomeSubtitle": "Inicia sesion para empezar a aprender y ganar credenciales on-chain",
+    "linkSocialPrompt": "Vincula una cuenta social para funciones de perfil y notificaciones por email",
+    "termsNotice": "Al iniciar sesion, aceptas nuestros Terminos de Servicio y Politica de Privacidad",
+    "siwsNotice": "Sign-In with Solana (SIWS) — sin comisiones de transaccion"
+  },
+  "Landing": {
+    "title": "Superteam Academy",
+    "subtitle": "Aprende desarrollo Solana con cursos interactivos, desafios de codigo y credenciales on-chain.",
+    "viewShowcase": "Ver Galeria de Componentes"
+  },
+  "Courses": {
+    "allCourses": "Todos los Cursos",
+    "myCourses": "Mis Cursos",
+    "explore": "Explorar",
+    "beginner": "Principiante",
+    "intermediate": "Intermedio",
+    "advanced": "Avanzado",
+    "lessons": "lecciones",
+    "minutes": "min",
+    "xp": "XP",
+    "enrolled": "Inscrito",
+    "completed": "Completado",
+    "startCourse": "Iniciar Curso",
+    "continueCourse": "Continuar"
+  },
+  "Dashboard": {
+    "title": "Panel",
+    "totalXp": "XP Total",
+    "coursesCompleted": "Cursos Completados",
+    "lessonsCompleted": "Lecciones Completadas",
+    "credentials": "Credenciales",
+    "recentActivity": "Actividad Reciente"
+  },
+  "Leaderboard": {
+    "title": "Clasificacion",
+    "rank": "Posicion",
+    "learner": "Alumno",
+    "xpEarned": "XP Ganado",
+    "coursesCompleted": "Cursos Completados"
+  },
+  "Common": {
+    "loading": "Cargando...",
+    "error": "Algo salio mal",
+    "retry": "Reintentar",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "back": "Atras",
+    "next": "Siguiente",
+    "search": "Buscar...",
+    "noResults": "No se encontraron resultados"
+  }
+}

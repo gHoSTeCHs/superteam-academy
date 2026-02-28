@@ -1,0 +1,73 @@
+{
+  "Navigation": {
+    "home": "Inicio",
+    "courses": "Cursos",
+    "dashboard": "Painel",
+    "leaderboard": "Ranking",
+    "settings": "Configuracoes",
+    "profile": "Perfil",
+    "showcase": "Vitrine de Componentes"
+  },
+  "Auth": {
+    "signIn": "Entrar",
+    "signOut": "Sair",
+    "connectWallet": "Conectar Carteira",
+    "walletConnected": "Carteira Conectada",
+    "signingMessage": "Assine a mensagem na carteira...",
+    "verifyingSignature": "Verificando assinatura...",
+    "orContinueWith": "ou continue com",
+    "signInWithGoogle": "Entrar com Google",
+    "signInWithGitHub": "Entrar com GitHub",
+    "welcomeTitle": "Bem-vindo a Superteam Academy",
+    "welcomeSubtitle": "Entre para comecar a aprender e ganhar credenciais on-chain",
+    "linkSocialPrompt": "Vincule uma conta social para recursos de perfil e notificacoes por email",
+    "termsNotice": "Ao entrar, voce concorda com nossos Termos de Servico e Politica de Privacidade",
+    "siwsNotice": "Sign-In with Solana (SIWS) — sem taxas de transacao"
+  },
+  "Landing": {
+    "title": "Superteam Academy",
+    "subtitle": "Aprenda desenvolvimento Solana com cursos interativos, desafios de codigo e credenciais on-chain.",
+    "viewShowcase": "Ver Vitrine de Componentes"
+  },
+  "Courses": {
+    "allCourses": "Todos os Cursos",
+    "myCourses": "Meus Cursos",
+    "explore": "Explorar",
+    "beginner": "Iniciante",
+    "intermediate": "Intermediario",
+    "advanced": "Avancado",
+    "lessons": "aulas",
+    "minutes": "min",
+    "xp": "XP",
+    "enrolled": "Matriculado",
+    "completed": "Concluido",
+    "startCourse": "Iniciar Curso",
+    "continueCourse": "Continuar"
+  },
+  "Dashboard": {
+    "title": "Painel",
+    "totalXp": "XP Total",
+    "coursesCompleted": "Cursos Concluidos",
+    "lessonsCompleted": "Aulas Concluidas",
+    "credentials": "Credenciais",
+    "recentActivity": "Atividade Recente"
+  },
+  "Leaderboard": {
+    "title": "Ranking",
+    "rank": "Posicao",
+    "learner": "Aluno",
+    "xpEarned": "XP Ganho",
+    "coursesCompleted": "Cursos Concluidos"
+  },
+  "Common": {
+    "loading": "Carregando...",
+    "error": "Algo deu errado",
+    "retry": "Tentar novamente",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "back": "Voltar",
+    "next": "Proximo",
+    "search": "Buscar...",
+    "noResults": "Nenhum resultado encontrado"
+  }
+}
