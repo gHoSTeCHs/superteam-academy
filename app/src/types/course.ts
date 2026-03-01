@@ -4,7 +4,7 @@ export interface Course {
   id: string;
   title: string;
   description: string;
-  language: 'pt' | 'es' | 'en';
+  language: 'pt-BR' | 'es' | 'en';
   thumbnail?: string;
   tags: string[];
   modules: Module[];
