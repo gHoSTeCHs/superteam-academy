@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import nacl from 'tweetnacl';
 import bs58 from 'bs58';
 
+
 interface SiwsPayload {
   publicKey: string;
   signature: string;
@@ -15,7 +16,7 @@ interface SiwsPayload {
 export function verifySolanaSignature(payload: SiwsPayload): string | null {
   try {
     const messageBytes = new TextEncoder().encode(payload.message);
-    const signatureBytes = bs58.decode(payload.signature);
+    const signatureBytes = Buffer.from(payload.signature, 'base64');
     const publicKeyBytes = bs58.decode(payload.publicKey);
 
     const valid = nacl.sign.detached.verify(messageBytes, signatureBytes, publicKeyBytes);
