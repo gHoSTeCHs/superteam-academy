@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { TiptapEditor } from '@/components/tiptap-editor';
-import type { TextBlockData } from '@/types/content';
-import type { TiptapJSON } from '@/types/tiptap';
+import { TiptapEditor } from "@/components/tiptap-editor";
+import type { TextBlockData } from "@/types/content";
+import type { TiptapJSON } from "@/types/tiptap";
 
 interface TextBlockEditorProps {
   data: TextBlockData;
@@ -17,7 +17,7 @@ export function TextBlockEditor({ data, onChange }: TextBlockEditorProps) {
   return (
     <div className="space-y-2">
       <TiptapEditor
-        value={data.content}
+        value={Array.isArray(data.content) ? null : data.content}
         onChange={handleChange}
         placeholder="Start writing content..."
       />

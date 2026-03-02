@@ -379,7 +379,13 @@ const SAMPLE_VIDEO_CHECKPOINTS: VideoCheckpoint[] = [
   },
 ];
 
-const CATALOG_COURSES: { course: Course; slug: string; difficulty: 'beginner' | 'intermediate' | 'advanced'; enrollmentCount: number; progress?: number }[] = [
+const CATALOG_COURSES: {
+  course: Course;
+  slug: string;
+  difficulty: "beginner" | "intermediate" | "advanced";
+  enrollmentCount: number;
+  progress?: number;
+}[] = [
   {
     slug: "intro-to-solana",
     difficulty: "beginner",
@@ -388,19 +394,69 @@ const CATALOG_COURSES: { course: Course; slug: string; difficulty: 'beginner' | 
     course: {
       id: "course-1",
       title: "Introduction to Solana Development",
-      description: "Learn the fundamentals of building on Solana, from account models to program deployment.",
+      description:
+        "Learn the fundamentals of building on Solana, from account models to program deployment.",
       language: "en",
       tags: ["solana", "rust"],
       modules: [
-        { id: "m1", title: "Solana Basics", description: "", type: "text", sortOrder: 0, lessons: [
-          { id: "l1", title: "What is Solana?", xpReward: 10, estimatedMinutes: 15, difficulty: "beginner", sortOrder: 0 },
-          { id: "l2", title: "Account Model", xpReward: 15, estimatedMinutes: 20, difficulty: "beginner", sortOrder: 1 },
-          { id: "l3", title: "Transactions", xpReward: 15, estimatedMinutes: 20, difficulty: "beginner", sortOrder: 2 },
-        ]},
-        { id: "m2", title: "First Program", description: "", type: "assessment", sortOrder: 1, lessons: [
-          { id: "l4", title: "Hello World", xpReward: 25, estimatedMinutes: 30, difficulty: "intermediate", sortOrder: 0 },
-          { id: "l5", title: "Testing", xpReward: 20, estimatedMinutes: 25, difficulty: "intermediate", sortOrder: 1 },
-        ]},
+        {
+          id: "m1",
+          title: "Solana Basics",
+          description: "",
+          type: "text",
+          sortOrder: 0,
+          lessons: [
+            {
+              id: "l1",
+              title: "What is Solana?",
+              xpReward: 10,
+              estimatedMinutes: 15,
+              difficulty: "beginner",
+              sortOrder: 0,
+            },
+            {
+              id: "l2",
+              title: "Account Model",
+              xpReward: 15,
+              estimatedMinutes: 20,
+              difficulty: "beginner",
+              sortOrder: 1,
+            },
+            {
+              id: "l3",
+              title: "Transactions",
+              xpReward: 15,
+              estimatedMinutes: 20,
+              difficulty: "beginner",
+              sortOrder: 2,
+            },
+          ],
+        },
+        {
+          id: "m2",
+          title: "First Program",
+          description: "",
+          type: "assessment",
+          sortOrder: 1,
+          lessons: [
+            {
+              id: "l4",
+              title: "Hello World",
+              xpReward: 25,
+              estimatedMinutes: 30,
+              difficulty: "intermediate",
+              sortOrder: 0,
+            },
+            {
+              id: "l5",
+              title: "Testing",
+              xpReward: 20,
+              estimatedMinutes: 25,
+              difficulty: "intermediate",
+              sortOrder: 1,
+            },
+          ],
+        },
       ],
     },
   },
@@ -411,18 +467,61 @@ const CATALOG_COURSES: { course: Course; slug: string; difficulty: 'beginner' | 
     course: {
       id: "course-2",
       title: "Anchor Framework Fundamentals",
-      description: "Master the Anchor framework for building secure and efficient Solana programs with Rust.",
+      description:
+        "Master the Anchor framework for building secure and efficient Solana programs with Rust.",
       language: "en",
       tags: ["anchor", "rust"],
       modules: [
-        { id: "m3", title: "Anchor Setup", description: "", type: "text", sortOrder: 0, lessons: [
-          { id: "l6", title: "Project Structure", xpReward: 15, estimatedMinutes: 20, difficulty: "intermediate", sortOrder: 0 },
-          { id: "l7", title: "Accounts & Context", xpReward: 20, estimatedMinutes: 25, difficulty: "intermediate", sortOrder: 1 },
-        ]},
-        { id: "m4", title: "Advanced Patterns", description: "", type: "assessment", sortOrder: 1, lessons: [
-          { id: "l8", title: "PDAs", xpReward: 30, estimatedMinutes: 35, difficulty: "advanced", sortOrder: 0 },
-          { id: "l9", title: "CPIs", xpReward: 30, estimatedMinutes: 35, difficulty: "advanced", sortOrder: 1 },
-        ]},
+        {
+          id: "m3",
+          title: "Anchor Setup",
+          description: "",
+          type: "text",
+          sortOrder: 0,
+          lessons: [
+            {
+              id: "l6",
+              title: "Project Structure",
+              xpReward: 15,
+              estimatedMinutes: 20,
+              difficulty: "intermediate",
+              sortOrder: 0,
+            },
+            {
+              id: "l7",
+              title: "Accounts & Context",
+              xpReward: 20,
+              estimatedMinutes: 25,
+              difficulty: "intermediate",
+              sortOrder: 1,
+            },
+          ],
+        },
+        {
+          id: "m4",
+          title: "Advanced Patterns",
+          description: "",
+          type: "assessment",
+          sortOrder: 1,
+          lessons: [
+            {
+              id: "l8",
+              title: "PDAs",
+              xpReward: 30,
+              estimatedMinutes: 35,
+              difficulty: "advanced",
+              sortOrder: 0,
+            },
+            {
+              id: "l9",
+              title: "CPIs",
+              xpReward: 30,
+              estimatedMinutes: 35,
+              difficulty: "advanced",
+              sortOrder: 1,
+            },
+          ],
+        },
       ],
     },
   },
@@ -433,17 +532,53 @@ const CATALOG_COURSES: { course: Course; slug: string; difficulty: 'beginner' | 
     course: {
       id: "course-3",
       title: "DeFi Protocol Design on Solana",
-      description: "Design and implement AMMs, lending protocols, and yield strategies on Solana.",
+      description:
+        "Design and implement AMMs, lending protocols, and yield strategies on Solana.",
       language: "en",
       tags: ["defi", "solana"],
       modules: [
-        { id: "m5", title: "AMM Design", description: "", type: "text", sortOrder: 0, lessons: [
-          { id: "l10", title: "Constant Product AMM", xpReward: 35, estimatedMinutes: 40, difficulty: "advanced", sortOrder: 0 },
-          { id: "l11", title: "Liquidity Pools", xpReward: 35, estimatedMinutes: 40, difficulty: "advanced", sortOrder: 1 },
-        ]},
-        { id: "m6", title: "Lending", description: "", type: "assessment", sortOrder: 1, lessons: [
-          { id: "l12", title: "Interest Rate Models", xpReward: 40, estimatedMinutes: 45, difficulty: "advanced", sortOrder: 0 },
-        ]},
+        {
+          id: "m5",
+          title: "AMM Design",
+          description: "",
+          type: "text",
+          sortOrder: 0,
+          lessons: [
+            {
+              id: "l10",
+              title: "Constant Product AMM",
+              xpReward: 35,
+              estimatedMinutes: 40,
+              difficulty: "advanced",
+              sortOrder: 0,
+            },
+            {
+              id: "l11",
+              title: "Liquidity Pools",
+              xpReward: 35,
+              estimatedMinutes: 40,
+              difficulty: "advanced",
+              sortOrder: 1,
+            },
+          ],
+        },
+        {
+          id: "m6",
+          title: "Lending",
+          description: "",
+          type: "assessment",
+          sortOrder: 1,
+          lessons: [
+            {
+              id: "l12",
+              title: "Interest Rate Models",
+              xpReward: 40,
+              estimatedMinutes: 45,
+              difficulty: "advanced",
+              sortOrder: 0,
+            },
+          ],
+        },
       ],
     },
   },
@@ -456,30 +591,37 @@ const SAMPLE_LESSON_BLOCKS: ContentBlock[] = [
     sortOrder: 0,
     data: {
       type: "text",
-      content: {
-        type: "doc",
-        content: [
-          {
-            type: "heading",
-            attrs: { level: 2 },
-            content: [{ type: "text", text: "Understanding Solana Accounts" }],
-          },
-          {
-            type: "paragraph",
-            content: [
-              { type: "text", text: "On Solana, all data is stored in " },
-              { type: "text", marks: [{ type: "bold" }], text: "accounts" },
-              { type: "text", text: ". Each account has a unique address (public key), a lamport balance, an owner program, and an optional data field." },
-            ],
-          },
-          {
-            type: "paragraph",
-            content: [
-              { type: "text", text: "Programs themselves are stored in executable accounts, while the state they manage is stored in separate data accounts. This separation of code and state is a fundamental difference between Solana and EVM-based chains." },
-            ],
-          },
-        ],
-      },
+      content: [
+        {
+          _type: "block",
+          _key: "h1",
+          style: "h2",
+          children: [
+            { _type: "span", _key: "h1s1", text: "Understanding Solana Accounts", marks: [] },
+          ],
+          markDefs: [],
+        },
+        {
+          _type: "block",
+          _key: "p1",
+          style: "normal",
+          children: [
+            { _type: "span", _key: "p1s1", text: "On Solana, all data is stored in ", marks: [] },
+            { _type: "span", _key: "p1s2", text: "accounts", marks: ["strong"] },
+            { _type: "span", _key: "p1s3", text: ". Each account has a unique address (public key), a lamport balance, an owner program, and an optional data field.", marks: [] },
+          ],
+          markDefs: [],
+        },
+        {
+          _type: "block",
+          _key: "p2",
+          style: "normal",
+          children: [
+            { _type: "span", _key: "p2s1", text: "Programs themselves are stored in executable accounts, while the state they manage is stored in separate data accounts. This separation of code and state is a fundamental difference between Solana and EVM-based chains.", marks: [] },
+          ],
+          markDefs: [],
+        },
+      ],
     },
   },
   {
@@ -490,7 +632,8 @@ const SAMPLE_LESSON_BLOCKS: ContentBlock[] = [
       type: "callout",
       calloutType: "tip",
       title: "Key Insight",
-      content: "Unlike Ethereum where smart contracts store their own state, Solana programs are stateless. All state is stored in separate accounts that the program owns.",
+      content:
+        "Unlike Ethereum where smart contracts store their own state, Solana programs are stateless. All state is stored in separate accounts that the program owns.",
     },
   },
   {
@@ -523,22 +666,26 @@ impl UserProfile {
     sortOrder: 3,
     data: {
       type: "text",
-      content: {
-        type: "doc",
-        content: [
-          {
-            type: "heading",
-            attrs: { level: 3 },
-            content: [{ type: "text", text: "Program Derived Addresses (PDAs)" }],
-          },
-          {
-            type: "paragraph",
-            content: [
-              { type: "text", text: "PDAs are special addresses that are derived deterministically from a set of seeds and a program ID. They don't have corresponding private keys, which means only the program can sign for them." },
-            ],
-          },
-        ],
-      },
+      content: [
+        {
+          _type: "block",
+          _key: "h2",
+          style: "h3",
+          children: [
+            { _type: "span", _key: "h2s1", text: "Program Derived Addresses (PDAs)", marks: [] },
+          ],
+          markDefs: [],
+        },
+        {
+          _type: "block",
+          _key: "p3",
+          style: "normal",
+          children: [
+            { _type: "span", _key: "p3s1", text: "PDAs are special addresses that are derived deterministically from a set of seeds and a program ID. They don't have corresponding private keys, which means only the program can sign for them.", marks: [] },
+          ],
+          markDefs: [],
+        },
+      ],
     },
   },
   {
@@ -549,7 +696,8 @@ impl UserProfile {
       type: "callout",
       calloutType: "warning",
       title: "Common Mistake",
-      content: "Never use find_program_address in on-chain code — use bump seeds from your account validation instead. Calling find_program_address on-chain wastes compute units.",
+      content:
+        "Never use find_program_address in on-chain code — use bump seeds from your account validation instead. Calling find_program_address on-chain wastes compute units.",
     },
   },
   {
@@ -566,8 +714,16 @@ impl UserProfile {
   return programId + ":" + seed;
 }`,
       testCases: [
-        { name: "derives PDA from program ID and seed", assertionCode: 'if (derivePDA("abc", "user") !== "abc:user") throw new Error("Expected abc:user")' },
-        { name: "handles empty seed", assertionCode: 'if (derivePDA("abc", "") !== "abc:") throw new Error("Expected abc:")' },
+        {
+          name: "derives PDA from program ID and seed",
+          assertionCode:
+            'if (derivePDA("abc", "user") !== "abc:user") throw new Error("Expected abc:user")',
+        },
+        {
+          name: "handles empty seed",
+          assertionCode:
+            'if (derivePDA("abc", "") !== "abc:") throw new Error("Expected abc:")',
+        },
       ],
       hints: [
         "Concatenate the programId and seed with a separator.",
@@ -620,32 +776,153 @@ const MOCK_ACTIVE_COURSES = [
 ];
 
 const MOCK_ACHIEVEMENTS = [
-  { id: "first-steps", name: "First Steps", description: "Complete your first lesson", category: "progress" as const, xpReward: 50, earned: true, earnedAt: "2026-02-25" },
-  { id: "week-warrior", name: "Week Warrior", description: "7-day streak", category: "streaks" as const, xpReward: 100, earned: true, earnedAt: "2026-02-20" },
-  { id: "rust-rookie", name: "Rust Rookie", description: "Complete a Rust course", category: "skills" as const, xpReward: 150, earned: false },
-  { id: "course-completer", name: "Course Completer", description: "Complete an entire course", category: "progress" as const, xpReward: 200, earned: false },
-  { id: "code-warrior", name: "Code Warrior", description: "Complete 10 code challenges", category: "special" as const, xpReward: 200, earned: true, earnedAt: "2026-02-22" },
-  { id: "monthly-master", name: "Monthly Master", description: "30-day streak", category: "streaks" as const, xpReward: 500, earned: false },
+  {
+    id: "first-steps",
+    name: "First Steps",
+    description: "Complete your first lesson",
+    category: "progress" as const,
+    xpReward: 50,
+    earned: true,
+    earnedAt: "2026-02-25",
+  },
+  {
+    id: "week-warrior",
+    name: "Week Warrior",
+    description: "7-day streak",
+    category: "streaks" as const,
+    xpReward: 100,
+    earned: true,
+    earnedAt: "2026-02-20",
+  },
+  {
+    id: "rust-rookie",
+    name: "Rust Rookie",
+    description: "Complete a Rust course",
+    category: "skills" as const,
+    xpReward: 150,
+    earned: false,
+  },
+  {
+    id: "course-completer",
+    name: "Course Completer",
+    description: "Complete an entire course",
+    category: "progress" as const,
+    xpReward: 200,
+    earned: false,
+  },
+  {
+    id: "code-warrior",
+    name: "Code Warrior",
+    description: "Complete 10 code challenges",
+    category: "special" as const,
+    xpReward: 200,
+    earned: true,
+    earnedAt: "2026-02-22",
+  },
+  {
+    id: "monthly-master",
+    name: "Monthly Master",
+    description: "30-day streak",
+    category: "streaks" as const,
+    xpReward: 500,
+    earned: false,
+  },
 ];
 
 const MOCK_ACTIVITIES = [
-  { id: "a1", type: "lesson_complete" as const, title: "Completed: Transactions", description: "Introduction to Solana Development", timestamp: "2 hours ago", xp: 15 },
-  { id: "a2", type: "achievement" as const, title: "Achievement Unlocked!", description: "Code Warrior — Complete 10 code challenges", timestamp: "3 hours ago", xp: 200 },
-  { id: "a3", type: "xp_earned" as const, title: "XP Earned", description: "Completed quiz in Account Model lesson", timestamp: "5 hours ago", xp: 25 },
-  { id: "a4", type: "streak_milestone" as const, title: "7-Day Streak!", description: "Keep it up! Next milestone at 30 days", timestamp: "1 day ago" },
-  { id: "a5", type: "lesson_complete" as const, title: "Completed: Account Model", description: "Introduction to Solana Development", timestamp: "1 day ago", xp: 15 },
+  {
+    id: "a1",
+    type: "lesson_complete" as const,
+    title: "Completed: Transactions",
+    description: "Introduction to Solana Development",
+    timestamp: "2 hours ago",
+    xp: 15,
+  },
+  {
+    id: "a2",
+    type: "achievement" as const,
+    title: "Achievement Unlocked!",
+    description: "Code Warrior — Complete 10 code challenges",
+    timestamp: "3 hours ago",
+    xp: 200,
+  },
+  {
+    id: "a3",
+    type: "xp_earned" as const,
+    title: "XP Earned",
+    description: "Completed quiz in Account Model lesson",
+    timestamp: "5 hours ago",
+    xp: 25,
+  },
+  {
+    id: "a4",
+    type: "streak_milestone" as const,
+    title: "7-Day Streak!",
+    description: "Keep it up! Next milestone at 30 days",
+    timestamp: "1 day ago",
+  },
+  {
+    id: "a5",
+    type: "lesson_complete" as const,
+    title: "Completed: Account Model",
+    description: "Introduction to Solana Development",
+    timestamp: "1 day ago",
+    xp: 15,
+  },
 ];
 
 const MOCK_LEADERBOARD: LeaderboardEntry[] = [
-  { rank: 1, wallet: "7nYB...kP9q", displayName: "SolanaWhale", xp: 12500, level: 11, streak: 45 },
-  { rank: 2, wallet: "3xAf...mR2w", displayName: "RustCrab", xp: 10800, level: 10, streak: 32 },
-  { rank: 3, wallet: "9kLm...vN4z", displayName: "AnchorDev", xp: 9200, level: 9, streak: 28 },
+  {
+    rank: 1,
+    wallet: "7nYB...kP9q",
+    displayName: "SolanaWhale",
+    xp: 12500,
+    level: 11,
+    streak: 45,
+  },
+  {
+    rank: 2,
+    wallet: "3xAf...mR2w",
+    displayName: "RustCrab",
+    xp: 10800,
+    level: 10,
+    streak: 32,
+  },
+  {
+    rank: 3,
+    wallet: "9kLm...vN4z",
+    displayName: "AnchorDev",
+    xp: 9200,
+    level: 9,
+    streak: 28,
+  },
   { rank: 4, wallet: "5pQr...hJ7y", xp: 7600, level: 8, streak: 14 },
-  { rank: 5, wallet: "2wEs...bK1x", displayName: "TokenMaster", xp: 6400, level: 8, streak: 7 },
+  {
+    rank: 5,
+    wallet: "2wEs...bK1x",
+    displayName: "TokenMaster",
+    xp: 6400,
+    level: 8,
+    streak: 7,
+  },
   { rank: 6, wallet: "8tUi...cL3v", xp: 5100, level: 7, streak: 3 },
-  { rank: 7, wallet: "4rOp...dM5u", displayName: "DeFiBuilder", xp: 4200, level: 6, streak: 12 },
+  {
+    rank: 7,
+    wallet: "4rOp...dM5u",
+    displayName: "DeFiBuilder",
+    xp: 4200,
+    level: 6,
+    streak: 12,
+  },
   { rank: 8, wallet: "6yHg...eN8t", xp: 3800, level: 6, streak: 0 },
-  { rank: 9, wallet: "1aWq...fP2s", displayName: "Web3Newbie", xp: 1850, level: 4, streak: 12 },
+  {
+    rank: 9,
+    wallet: "1aWq...fP2s",
+    displayName: "Web3Newbie",
+    xp: 1850,
+    level: 4,
+    streak: 12,
+  },
   { rank: 10, wallet: "0zXc...gQ9r", xp: 900, level: 3, streak: 1 },
 ];
 
@@ -668,9 +945,36 @@ const MOCK_CERTIFICATE: CertificateData = {
 };
 
 const FEATURED_COURSES = [
-  { id: "fc-1", title: "Introduction to Solana Development", description: "Learn the fundamentals of building on Solana, from account models to program deployment.", difficulty: "beginner" as const, lessonCount: 12, totalXp: 450, tags: ["solana", "rust"] },
-  { id: "fc-2", title: "Anchor Framework Deep Dive", description: "Master the Anchor framework for building secure, tested Solana programs with TypeScript.", difficulty: "intermediate" as const, lessonCount: 16, totalXp: 680, tags: ["anchor", "rust"] },
-  { id: "fc-3", title: "DeFi Protocol Design", description: "Build a full DeFi protocol — AMM, lending, and staking — from scratch on Solana.", difficulty: "advanced" as const, lessonCount: 20, totalXp: 950, tags: ["defi", "solana"] },
+  {
+    id: "fc-1",
+    title: "Introduction to Solana Development",
+    description:
+      "Learn the fundamentals of building on Solana, from account models to program deployment.",
+    difficulty: "beginner" as const,
+    lessonCount: 12,
+    totalXp: 450,
+    tags: ["solana", "rust"],
+  },
+  {
+    id: "fc-2",
+    title: "Anchor Framework Deep Dive",
+    description:
+      "Master the Anchor framework for building secure, tested Solana programs with TypeScript.",
+    difficulty: "intermediate" as const,
+    lessonCount: 16,
+    totalXp: 680,
+    tags: ["anchor", "rust"],
+  },
+  {
+    id: "fc-3",
+    title: "DeFi Protocol Design",
+    description:
+      "Build a full DeFi protocol — AMM, lending, and staking — from scratch on Solana.",
+    difficulty: "advanced" as const,
+    lessonCount: 20,
+    totalXp: 950,
+    tags: ["defi", "solana"],
+  },
 ];
 
 const MOCK_SKILLS = [
@@ -683,30 +987,138 @@ const MOCK_SKILLS = [
 ];
 
 const MOCK_PROFILE_BADGES = [
-  { id: "b1", name: "First Steps", description: "Complete your first lesson", category: "progress" as const, earnedAt: "2026-01-15" },
-  { id: "b2", name: "Week Warrior", description: "7-day streak", category: "streaks" as const, earnedAt: "2026-01-22" },
-  { id: "b3", name: "Code Warrior", description: "Complete 10 code challenges", category: "skills" as const, earnedAt: "2026-02-01" },
-  { id: "b4", name: "Solana Starter", description: "Complete Intro to Solana", category: "progress" as const, earnedAt: "2026-02-10" },
-  { id: "b5", name: "Bug Hunter", description: "Find a bug in a challenge", category: "special" as const, earnedAt: "2026-02-14" },
-  { id: "b6", name: "Speed Demon", description: "Complete 5 lessons in one day", category: "skills" as const, earnedAt: "2026-02-20" },
+  {
+    id: "b1",
+    name: "First Steps",
+    description: "Complete your first lesson",
+    category: "progress" as const,
+    earnedAt: "2026-01-15",
+  },
+  {
+    id: "b2",
+    name: "Week Warrior",
+    description: "7-day streak",
+    category: "streaks" as const,
+    earnedAt: "2026-01-22",
+  },
+  {
+    id: "b3",
+    name: "Code Warrior",
+    description: "Complete 10 code challenges",
+    category: "skills" as const,
+    earnedAt: "2026-02-01",
+  },
+  {
+    id: "b4",
+    name: "Solana Starter",
+    description: "Complete Intro to Solana",
+    category: "progress" as const,
+    earnedAt: "2026-02-10",
+  },
+  {
+    id: "b5",
+    name: "Bug Hunter",
+    description: "Find a bug in a challenge",
+    category: "special" as const,
+    earnedAt: "2026-02-14",
+  },
+  {
+    id: "b6",
+    name: "Speed Demon",
+    description: "Complete 5 lessons in one day",
+    category: "skills" as const,
+    earnedAt: "2026-02-20",
+  },
 ];
 
 const MOCK_CREDENTIALS = [
-  { id: "cr1", courseName: "Introduction to Solana", trackName: "Solana Core", level: 4, totalXp: 450, completedAt: "Feb 10, 2026", mintAddress: "CrEd1MiNt7xkB9fP2sMnOpQrStUvWxYzAbCdEfGh" },
-  { id: "cr2", courseName: "Anchor Framework Deep Dive", trackName: "Solana Core", level: 6, totalXp: 680, completedAt: "Feb 25, 2026", mintAddress: "CrEd2MiNt3xAf9mR2wLnBcDeFgHiJkLmNoPqRsT" },
+  {
+    id: "cr1",
+    courseName: "Introduction to Solana",
+    trackName: "Solana Core",
+    level: 4,
+    totalXp: 450,
+    completedAt: "Feb 10, 2026",
+    mintAddress: "CrEd1MiNt7xkB9fP2sMnOpQrStUvWxYzAbCdEfGh",
+  },
+  {
+    id: "cr2",
+    courseName: "Anchor Framework Deep Dive",
+    trackName: "Solana Core",
+    level: 6,
+    totalXp: 680,
+    completedAt: "Feb 25, 2026",
+    mintAddress: "CrEd2MiNt3xAf9mR2wLnBcDeFgHiJkLmNoPqRsT",
+  },
 ];
 
 const MOCK_COMPLETED_COURSES = [
-  { id: "cc1", title: "Introduction to Solana Development", difficulty: "beginner" as const, lessonsCompleted: 12, totalLessons: 12, xpEarned: 450, completedAt: "Feb 10" },
-  { id: "cc2", title: "Anchor Framework Deep Dive", difficulty: "intermediate" as const, lessonsCompleted: 16, totalLessons: 16, xpEarned: 680, completedAt: "Feb 25" },
+  {
+    id: "cc1",
+    title: "Introduction to Solana Development",
+    difficulty: "beginner" as const,
+    lessonsCompleted: 12,
+    totalLessons: 12,
+    xpEarned: 450,
+    completedAt: "Feb 10",
+  },
+  {
+    id: "cc2",
+    title: "Anchor Framework Deep Dive",
+    difficulty: "intermediate" as const,
+    lessonsCompleted: 16,
+    totalLessons: 16,
+    xpEarned: 680,
+    completedAt: "Feb 25",
+  },
 ];
 
 const MOCK_ADMIN_COURSES: AdminCourseRow[] = [
-  { id: "ac1", title: "Introduction to Solana Development", status: "published", modules: 3, lessons: 12, enrollments: 234, createdAt: "Jan 15, 2026" },
-  { id: "ac2", title: "Anchor Framework Deep Dive", status: "published", modules: 4, lessons: 16, enrollments: 156, createdAt: "Jan 28, 2026" },
-  { id: "ac3", title: "DeFi Protocol Design", status: "published", modules: 5, lessons: 20, enrollments: 89, createdAt: "Feb 5, 2026" },
-  { id: "ac4", title: "NFT Marketplace Tutorial", status: "draft", modules: 2, lessons: 8, enrollments: 0, createdAt: "Feb 20, 2026" },
-  { id: "ac5", title: "Token Extensions Masterclass", status: "draft", modules: 3, lessons: 10, enrollments: 0, createdAt: "Feb 26, 2026" },
+  {
+    id: "ac1",
+    title: "Introduction to Solana Development",
+    status: "published",
+    modules: 3,
+    lessons: 12,
+    enrollments: 234,
+    createdAt: "Jan 15, 2026",
+  },
+  {
+    id: "ac2",
+    title: "Anchor Framework Deep Dive",
+    status: "published",
+    modules: 4,
+    lessons: 16,
+    enrollments: 156,
+    createdAt: "Jan 28, 2026",
+  },
+  {
+    id: "ac3",
+    title: "DeFi Protocol Design",
+    status: "published",
+    modules: 5,
+    lessons: 20,
+    enrollments: 89,
+    createdAt: "Feb 5, 2026",
+  },
+  {
+    id: "ac4",
+    title: "NFT Marketplace Tutorial",
+    status: "draft",
+    modules: 2,
+    lessons: 8,
+    enrollments: 0,
+    createdAt: "Feb 20, 2026",
+  },
+  {
+    id: "ac5",
+    title: "Token Extensions Masterclass",
+    status: "draft",
+    modules: 3,
+    lessons: 10,
+    enrollments: 0,
+    createdAt: "Feb 26, 2026",
+  },
 ];
 
 const SAMPLE_COURSE: Course = {
@@ -1058,7 +1470,8 @@ export default function ShowcasePage() {
           className="mb-6 text-[14px] text-muted-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          Full landing page with hero, feature cards, featured course previews, and call-to-action.
+          Full landing page with hero, feature cards, featured course previews,
+          and call-to-action.
         </p>
         <div className="-mx-6 space-y-0 overflow-hidden rounded-xl border border-border md:-mx-0">
           <Hero />
@@ -1077,7 +1490,7 @@ export default function ShowcasePage() {
               Header (Student)
             </p>
             <div className="overflow-hidden rounded-xl border border-border">
-              <Header currentPath="/courses" />
+              <Header />
             </div>
           </div>
 
@@ -1113,7 +1526,7 @@ export default function ShowcasePage() {
             </p>
             <div className="overflow-hidden rounded-xl border border-border">
               <div className="flex h-[400px]">
-                <AdminSidebar currentPath="/admin/courses" />
+                <AdminSidebar />
                 <div className="flex flex-1 flex-col">
                   <AdminHeader
                     breadcrumbs={[
@@ -1340,7 +1753,9 @@ export default function ShowcasePage() {
           className="mb-6 text-[14px] text-muted-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          Split-pane layout: text/quiz/callouts on the left, code editor and challenges on the right. On mobile (&lt;768px), switches to tabbed view.
+          Split-pane layout: text/quiz/callouts on the left, code editor and
+          challenges on the right. On mobile (&lt;768px), switches to tabbed
+          view.
         </p>
         <div className="space-y-8">
           <div className="overflow-hidden rounded-xl border border-border bg-background">
@@ -1397,7 +1812,8 @@ export default function ShowcasePage() {
           className="mb-6 text-[14px] text-muted-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          XP tracking, streak calendar, active courses, achievements, and activity feed — the student&apos;s home base.
+          XP tracking, streak calendar, active courses, achievements, and
+          activity feed — the student&apos;s home base.
         </p>
         <div className="space-y-6">
           <div className="grid gap-6 lg:grid-cols-[1fr_1fr]">
@@ -1440,7 +1856,8 @@ export default function ShowcasePage() {
           className="mb-6 text-[14px] text-muted-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          User profile with avatar, skill radar chart, achievement badges, on-chain credentials, and completed courses.
+          User profile with avatar, skill radar chart, achievement badges,
+          on-chain credentials, and completed courses.
         </p>
         <div className="space-y-6">
           <ProfileHeader
@@ -1469,7 +1886,8 @@ export default function ShowcasePage() {
           className="mb-6 text-[14px] text-muted-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          XP leaderboard with rankings, filters, and current user highlight. Data sourced from Helius DAS API (XP token holders).
+          XP leaderboard with rankings, filters, and current user highlight.
+          Data sourced from Helius DAS API (XP token holders).
         </p>
         <div className="space-y-4">
           <UserRankCard
@@ -1502,7 +1920,8 @@ export default function ShowcasePage() {
           className="mb-6 text-[14px] text-muted-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          Appearance, language, account info, and linked accounts — all settings in one place.
+          Appearance, language, account info, and linked accounts — all settings
+          in one place.
         </p>
         <div className="grid gap-6 lg:grid-cols-2">
           <AppearanceSettings />
@@ -1525,7 +1944,8 @@ export default function ShowcasePage() {
           className="mb-6 text-[14px] text-muted-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          On-chain credential NFT display with verification proof, attributes, and social sharing.
+          On-chain credential NFT display with verification proof, attributes,
+          and social sharing.
         </p>
         <div className="grid gap-6 lg:grid-cols-[1fr_1fr]">
           <div className="space-y-6">
@@ -1554,7 +1974,8 @@ export default function ShowcasePage() {
           className="mb-6 text-[14px] text-muted-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          Multi-method authentication — Solana wallet (SIWS), Google, and GitHub. Wallet connect shows a step-by-step progress flow.
+          Multi-method authentication — Solana wallet (SIWS), Google, and
+          GitHub. Wallet connect shows a step-by-step progress flow.
         </p>
         <div className="grid gap-8 lg:grid-cols-[1fr_1fr]">
           <div>
@@ -1725,7 +2146,8 @@ export default function ShowcasePage() {
           className="mb-6 text-[14px] text-muted-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          Stats overview with course counts, users, enrollments, XP, course status breakdown, and recent activity.
+          Stats overview with course counts, users, enrollments, XP, course
+          status breakdown, and recent activity.
         </p>
         <AdminDashboard />
       </section>
@@ -1737,7 +2159,8 @@ export default function ShowcasePage() {
           className="mb-4 text-[14px] text-muted-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          Course list with status, stats, and CRUD actions. Edit, preview, publish/unpublish, and delete courses.
+          Course list with status, stats, and CRUD actions. Edit, preview,
+          publish/unpublish, and delete courses.
         </p>
         <div className="space-y-4">
           <PageHeader
@@ -1756,7 +2179,8 @@ export default function ShowcasePage() {
           className="mb-4 text-[14px] text-muted-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          Banner shown when viewing draft content. Displays course name with Exit Preview and Publish actions.
+          Banner shown when viewing draft content. Displays course name with
+          Exit Preview and Publish actions.
         </p>
         <div className="overflow-hidden rounded-xl border border-border">
           <PreviewBanner courseName="NFT Marketplace Tutorial" />

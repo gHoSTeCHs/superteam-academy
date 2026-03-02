@@ -1,11 +1,17 @@
-import type { TiptapJSON } from './tiptap';
-import type { ResponseConfig, QuestionType } from './questions';
+import type { PortableTextBlock } from "@portabletext/react";
+import type { TiptapJSON } from "./tiptap";
+import type { ResponseConfig, QuestionType } from "./questions";
 
 export type ContentBlockType =
-  | 'text' | 'code_example' | 'code_challenge'
-  | 'quiz' | 'callout' | 'image' | 'video_embed';
+  | "text"
+  | "code_example"
+  | "code_challenge"
+  | "quiz"
+  | "callout"
+  | "image"
+  | "video_embed";
 
-export type CalloutType = 'info' | 'warning' | 'tip';
+export type CalloutType = "info" | "warning" | "tip";
 
 export interface ContentBlock {
   id: string;
@@ -24,20 +30,20 @@ export type ContentBlockData =
   | VideoEmbedData;
 
 export interface TextBlockData {
-  type: 'text';
-  content: TiptapJSON | null;
+  type: "text";
+  content: PortableTextBlock[] | TiptapJSON | null;
 }
 
 export interface CodeExampleData {
-  type: 'code_example';
+  type: "code_example";
   language: string;
   code: string;
   filename?: string;
 }
 
 export interface CodeChallengeData {
-  type: 'code_challenge';
-  language: 'typescript' | 'rust';
+  type: "code_challenge";
+  language: "typescript" | "rust";
   starterCode: string;
   solutionCode: string;
   testCases: TestCase[];
@@ -59,28 +65,28 @@ export interface ValidationRule {
 }
 
 export interface QuizBlockData {
-  type: 'quiz';
+  type: "quiz";
   questionType: QuestionType;
   content: string;
   responseConfig: ResponseConfig;
 }
 
 export interface CalloutBlockData {
-  type: 'callout';
+  type: "callout";
   calloutType: CalloutType;
   title?: string;
   content: string;
 }
 
 export interface ImageBlockData {
-  type: 'image';
+  type: "image";
   src: string;
   alt: string;
   caption?: string;
 }
 
 export interface VideoEmbedData {
-  type: 'video_embed';
+  type: "video_embed";
   url: string;
   title?: string;
 }

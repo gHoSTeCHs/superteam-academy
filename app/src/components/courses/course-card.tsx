@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { BookOpenIcon, ClockIcon, UsersIcon, ZapIcon } from 'lucide-react';
-import { Card } from '@/components/ui/card';
-import DifficultyBadge from '@/components/difficulty-badge';
-import { Badge } from '@/components/ui/badge';
-import { cn } from '@/lib/utils';
-import type { Course } from '@/types/course';
+import { Link } from "@/i18n/navigation";
+import { BookOpenIcon, ClockIcon, UsersIcon, ZapIcon } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import DifficultyBadge from "@/components/difficulty-badge";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+import type { Course } from "@/types/course";
 
 interface CourseCardProps {
   course: Course;
   slug?: string;
-  difficulty?: 'beginner' | 'intermediate' | 'advanced';
+  difficulty?: "beginner" | "intermediate" | "advanced";
   enrollmentCount?: number;
   progress?: number;
   className?: string;
@@ -36,18 +36,18 @@ export function CourseCard({
   className,
 }: CourseCardProps) {
   const stats = computeStats(course);
-  const href = slug ? `/courses/${slug}` : '#';
+  const href = slug ? `/courses/${slug}` : "#";
   const resolvedDifficulty =
-    difficulty ?? course.modules[0]?.lessons[0]?.difficulty ?? 'beginner';
+    difficulty ?? course.modules[0]?.lessons[0]?.difficulty ?? "beginner";
 
   return (
-    <Link href={href} className={cn('group block', className)}>
+    <Link href={href} className={cn("group block", className)}>
       <Card className="h-full transition-shadow hover:shadow-lg">
         <div
           className="relative flex flex-col justify-end px-5 py-6"
           style={{
-            background: 'linear-gradient(135deg, #2f6b3f 0%, #008c4c 100%)',
-            minHeight: '140px',
+            background: "linear-gradient(135deg, #2f6b3f 0%, #008c4c 100%)",
+            minHeight: "140px",
           }}
         >
           {course.thumbnail && (
@@ -71,9 +71,9 @@ export function CourseCard({
           <h3
             className="relative z-10 mt-3 text-[18px] font-bold leading-tight text-cream"
             style={{
-              fontFamily: 'var(--font-display)',
-              letterSpacing: '-0.01em',
-              color: '#f7eacb',
+              fontFamily: "var(--font-display)",
+              letterSpacing: "-0.01em",
+              color: "#f7eacb",
             }}
           >
             {course.title}
@@ -83,23 +83,23 @@ export function CourseCard({
         <div className="px-5 py-4">
           <p
             className="mb-4 line-clamp-2 text-[13px] leading-relaxed text-muted-foreground"
-            style={{ fontFamily: 'var(--font-body)' }}
+            style={{ fontFamily: "var(--font-body)" }}
           >
             {course.description}
           </p>
 
-          {typeof progress === 'number' && (
+          {typeof progress === "number" && (
             <div className="mb-4 space-y-1.5">
               <div className="flex items-center justify-between text-[11px]">
                 <span
                   className="font-medium text-muted-foreground"
-                  style={{ fontFamily: 'var(--font-body)' }}
+                  style={{ fontFamily: "var(--font-body)" }}
                 >
                   Progress
                 </span>
                 <span
                   className="font-semibold text-primary"
-                  style={{ fontFamily: 'var(--font-body)' }}
+                  style={{ fontFamily: "var(--font-body)" }}
                 >
                   {progress}%
                 </span>
@@ -109,7 +109,7 @@ export function CourseCard({
                   className="h-full rounded-full transition-all"
                   style={{
                     width: `${progress}%`,
-                    background: 'linear-gradient(90deg, #2f6b3f, #008c4c)',
+                    background: "linear-gradient(90deg, #2f6b3f, #008c4c)",
                   }}
                 />
               </div>
@@ -117,8 +117,16 @@ export function CourseCard({
           )}
 
           <div className="grid grid-cols-4 gap-2 border-t border-border pt-3">
-            <Stat icon={BookOpenIcon} value={stats.lessonCount} label="Lessons" />
-            <Stat icon={ClockIcon} value={`${stats.totalMinutes}m`} label="Time" />
+            <Stat
+              icon={BookOpenIcon}
+              value={stats.lessonCount}
+              label="Lessons"
+            />
+            <Stat
+              icon={ClockIcon}
+              value={`${stats.totalMinutes}m`}
+              label="Time"
+            />
             <Stat icon={ZapIcon} value={stats.totalXp} label="XP" />
             <Stat icon={UsersIcon} value={enrollmentCount} label="Enrolled" />
           </div>
@@ -143,14 +151,14 @@ function Stat({
         <Icon className="size-3 text-muted-foreground" />
         <span
           className="text-[12px] font-semibold text-foreground"
-          style={{ fontFamily: 'var(--font-body)' }}
+          style={{ fontFamily: "var(--font-body)" }}
         >
           {value}
         </span>
       </div>
       <p
         className="text-[10px] text-muted-foreground"
-        style={{ fontFamily: 'var(--font-body)' }}
+        style={{ fontFamily: "var(--font-body)" }}
       >
         {label}
       </p>
