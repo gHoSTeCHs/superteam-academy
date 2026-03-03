@@ -23,145 +23,109 @@ Phase 5 (Admin Pages) audit fixes were implemented, then a 5-agent code review w
 
 ## CRITICAL — Data Loss or Corruption
 
-### C1: `initialRef` never updated after save
+### ~~C1: `initialRef` never updated after save~~ ✅ FIXED
 
-**File:** `app/src/app/[locale]/(admin)/admin/courses/[id]/edit/edit-course-client.tsx`, line 37
+**Commit:** `7093d36`
 
-**Verified:** `const initialRef = useRef(initialCourse)` — no reassignment anywhere in the file. After `router.refresh()`, `useRef` value persists across re-renders. Second save diffs stale baseline, causing:
-- Attempts to delete already-deleted modules (404/silent error)
-- Re-creation of modules/lessons added in the first save (duplicates)
-- Unnecessary reorder calls
+**File:** `app/src/app/[locale]/(admin)/admin/courses/[id]/edit/edit-course-client.tsx`
 
-**Fix:** Set `initialRef.current = course` at the end of `handleSave`, after `syncTree` and `updateCourse` complete.
+**Resolution:** Added `initialRef.current = course` at the end of `handleSave`, after `syncTree` and `updateCourse` complete.
 
 ---
 
-### C2: `reorderLessons` excludes newly-created lessons
+### ~~C2: `reorderLessons` excludes newly-created lessons~~ ✅ FIXED
 
-**File:** `app/src/app/[locale]/(admin)/admin/courses/[id]/edit/edit-course-client.tsx`, lines 94–99
+**Commit:** `7093d36`
 
-**Verified:** Line 95 `.filter((l) => initialLessonIds.has(l.id))` explicitly excludes new lessons. `reorderLessons` (mutations.ts:233) calls `.set({ lessons: refs })` which replaces the entire array, wiping newly-appended lessons. Triggered when user reorders existing lessons AND adds new ones in the same module in a single save.
+**File:** `app/src/app/[locale]/(admin)/admin/courses/[id]/edit/edit-course-client.tsx`
 
-**Fix:** Collect real `_id`s from all `createLesson` calls within the module, then build the full ordered list before calling `reorderLessons`:
-
-```ts
-const newLessonIdMap = new Map<string, string>();
-for (const lesson of mod.lessons) {
-  if (!initialLessonIds.has(lesson.id)) {
-    const result = await createLesson(realModuleId, { ... }, courseId);
-    newLessonIdMap.set(lesson.id, result._id);
-  }
-}
-const allLessonIds = mod.lessons.map((l) => newLessonIdMap.get(l.id) ?? l.id);
-const initialOrder = initialMod.lessons.map((l) => l.id);
-if (JSON.stringify(allLessonIds) !== JSON.stringify(initialOrder)) {
-  await reorderLessons(realModuleId, allLessonIds, courseId);
-}
-```
+**Resolution:** `allLessonIds` maps through `newLessonIdMap` to include real `_id`s from `createLesson` calls. The full ordered list (existing + new) is sent to `reorderLessons`.
 
 ---
 
-### C3: All non-MCQ `responseConfig` silently dropped on save
+### ~~C3: All non-MCQ `responseConfig` silently dropped on save~~ ✅ FIXED
 
-**Files:** `app/src/app/[locale]/(admin)/admin/courses/[id]/lessons/[lessonId]/edit/lesson-editor-client.tsx` (blocksToSanity, lines 48–54), `app/src/sanity/schemas/content-block.ts`
+**Commit:** `7093d36`
 
-**Verified:** The `if (cfg && Array.isArray(cfg.options))` guard on line 49 skips all non-MCQ types. `TrueFalseConfig` has `correct_answer`, `FillBlankConfig` has `blanks`, `MatchingConfig` has `pairs`, etc. — none have an `options` array. No Sanity schema field exists to store serialized non-MCQ configs. Additionally, `mapBlock` (page.tsx lines 109–120) only reconstructs `responseConfig` for MCQ/multi-select; all other types always load as `null`.
+**Files:** `lesson-editor-client.tsx`, `content-block.ts`, `page.tsx` (lesson edit), `queries.ts`
 
-**Fix:** Add a `responseConfigJson` text field to the Sanity `contentBlock` schema. In `blocksToSanity`, serialize non-MCQ configs as `JSON.stringify(cfg)`. In `mapBlock`, parse it back with `JSON.parse(raw.responseConfigJson)`. Update `adminLessonByIdQuery` to fetch the new field.
-
----
-
-### C4: `multi_select_mcq` loses all but first correct answer
-
-**Files:** `lesson-editor-client.tsx` (blocksToSanity, line 52), `page.tsx` (mapBlock, line 117)
-
-**Verified:** `blocksToSanity` line 52: `opts.findIndex((o) => o.is_correct)` returns only the first matching index. Sanity `correctAnswer` is a single `number`. `mapBlock` line 117: `raw.correctAnswer === i` — only one index matches. For a multi-select question with correct answers at indices 1 and 3, index 3 is permanently lost after one save/load cycle.
-
-**Fix:** Add a `correctAnswers` (number array) field to the Sanity schema. Write all correct indices for multi-select. Read them back in `mapBlock` to set `is_correct` on multiple options.
+**Resolution:** Added `responseConfigJson` text field to Sanity `contentBlock` schema. `blocksToSanity` serializes non-MCQ configs via `JSON.stringify(cfg)`. `mapBlock` parses them back via `JSON.parse(raw.responseConfigJson)`. `adminLessonByIdQuery` fetches the new field.
 
 ---
 
-### C5: Student quiz GROQ emits `options` as `string[]`
+### ~~C4: `multi_select_mcq` loses all but first correct answer~~ ✅ FIXED
 
-**File:** `app/src/sanity/queries.ts` (lessonBySlugQuery, lines 96–99)
+**Commit:** `7093d36`
 
-**Verified:** `"options": coalesce(quizOptions, [])` returns `string[]` since `quizOptions` is `string[]` in Sanity. `McqConfig.options` expects `{ label: string; text: string; is_correct: boolean }[]`. Any student renderer calling `option.text` or `option.is_correct` gets `undefined`.
+**Files:** `lesson-editor-client.tsx`, `content-block.ts`, `page.tsx` (lesson edit)
 
-**Fix:** Either reconstruct `McqConfig`-shaped objects in the GROQ projection, or define a student-facing response type and map it in the quiz renderer component.
+**Resolution:** Added `correctAnswers` (number array) field to Sanity schema. `blocksToSanity` writes all correct indices for multi-select. `mapBlock` reconstructs `is_correct` on multiple options using a `Set` from `correctAnswers`.
+
+---
+
+### ~~C5: Student quiz GROQ emits `options` as `string[]`~~ ✅ FIXED
+
+**Commit:** `7093d36`
+
+**Files:** `queries.ts`, `lib/quiz-transform.ts`
+
+**Resolution:** Student GROQ now returns `correctAnswer`, `correctAnswers`, and `responseConfigJson` inside the `responseConfig` object. `quiz-transform.ts` reconstructs `McqConfig`-shaped objects from `string[]` options + correct indices, and parses `responseConfigJson` for non-MCQ types.
 
 ---
 
 ## HIGH — Broken UX or Silent Failures
 
-### H1: `writeClient`/`previewClient` still exported from `client.ts`
+### ~~H1: `writeClient`/`previewClient` still exported from `client.ts`~~ ✅ FIXED
 
-**Files:** `app/src/sanity/client.ts` (lines 14–29), `app/src/sanity/server.ts`
+**Commit:** `7093d36`
 
-**Verified:** `client.ts` has `export const writeClient` and `export const previewClient` with no `server-only` guard. `server.ts` re-exports them with `import "server-only"` but the originals are directly importable via `@/sanity/client`.
+**Files:** `sanity/client.ts`, `sanity/server.ts`
 
-**Fix:** Move `writeClient`/`previewClient` declarations into `server.ts`. Remove them from `client.ts`. Keep only `client`, `safeFetch` in `client.ts`.
-
----
-
-### H2: `LessonViewClient` hardcodes student route for prev/next navigation
-
-**Files:** `app/src/app/[locale]/(main)/courses/[slug]/lessons/[lessonSlug]/lesson-view-client.tsx` (line 31), `app/src/app/[locale]/(admin)/admin/courses/[id]/preview/lessons/[lessonSlug]/page.tsx`
-
-**Verified:** Line 31: `router.push(`/courses/${courseSlug}/lessons/${lessonSlug}`)` — no `lessonBasePath` prop exists. The preview lesson page reuses this component, so prev/next navigation sends users to the public student route.
-
-**Fix:** Add optional `lessonBasePath` prop to `LessonViewClient` (matching the pattern already used in `CourseDetailClient`). Pass it from the preview lesson page.
+**Resolution:** Moved `writeClient`/`previewClient` declarations into `server.ts` (with `import "server-only"` guard). Removed from `client.ts`. Only `client` and `safeFetch` remain in `client.ts`.
 
 ---
 
-### H3: `CourseTree` used without `courseId` in `new-course-client.tsx`
+### ~~H2: `LessonViewClient` hardcodes student route for prev/next navigation~~ ✅ FIXED
 
-**File:** `app/src/app/[locale]/(admin)/admin/courses/new/new-course-client.tsx` (line 82)
+**Commit:** `7093d36`
 
-**Verified:** `<CourseTree course={course} onChange={setCourse} />` — no `courseId` prop. `EMPTY_COURSE` has `id: ""` (line 13). `CourseTree` falls back to `courseId ?? course.id` = `""`. `LessonNode` renders `href="/admin/courses//lessons/..."` (broken URL). Also affects `showcase/page.tsx` line 2248 (same pattern).
+**Files:** `lesson-view-client.tsx`, preview lesson `page.tsx`
 
-**Fix:** Hide the edit button in `LessonNode` when `courseId` is falsy:
-
-```tsx
-{courseId && (
-  <Button type="button" variant="ghost" size="icon" ... asChild>
-    <Link href={`/admin/courses/${courseId}/lessons/${lesson.id}/edit`}>...</Link>
-  </Button>
-)}
-```
+**Resolution:** Added optional `lessonBasePath` prop to `LessonViewClient`. Preview lesson page passes `lessonBasePath={`/admin/courses/${courseId}/preview/lessons`}`. Student page uses default (`/courses/${courseSlug}/lessons`).
 
 ---
 
-### H4: `handlePublishToggle` reads stale `initialCourse.isPublished`
+### ~~H3: `CourseTree` used without `courseId` in `new-course-client.tsx`~~ ✅ FIXED
 
-**File:** `app/src/app/[locale]/(admin)/admin/courses/[id]/edit/edit-course-client.tsx`, lines 144, 168, 185, 190
+**Commit:** `7093d36`
 
-**Verified:** Toggle logic (line 144) and badge rendering (lines 168, 185, 190) all read `initialCourse.isPublished`. `router.refresh()` on line 149 is not awaited — `isPending` can go false before the refresh re-render delivers updated props. Badge shows stale state during the gap.
+**File:** `lesson-node.tsx`
 
-**Fix:** Use `course.isPublished` (state) for all display and toggle logic. Update state optimistically after the mutation completes:
-
-```ts
-if (course.isPublished) {
-  await unpublishCourse(courseId);
-  setCourse((prev) => ({ ...prev, isPublished: false }));
-} else {
-  await publishCourse(courseId);
-  setCourse((prev) => ({ ...prev, isPublished: true }));
-}
-```
+**Resolution:** Wrapped edit `Button` in `{courseId && (...)}` guard. When `courseId` is falsy (new-course page, showcase), the edit button is hidden. Delete button remains visible.
 
 ---
 
-### H5: Language select emits `"pt"` instead of `"pt-BR"`
+### ~~H4: `handlePublishToggle` reads stale `initialCourse.isPublished`~~ ✅ FIXED
 
-**File:** `app/src/components/admin/course-builder/course-tree.tsx`, line 144
+**Commit:** `7093d36`
 
-**Verified:** `<SelectItem value="pt">Portuguese</SelectItem>`. `Course["language"]` is `"pt-BR" | "es" | "en"`. The `as Course["language"]` cast on line 137 hides the mismatch. `"pt"` gets saved to Sanity, mismatching the type and breaking i18n routing.
+**File:** `edit-course-client.tsx`
 
-**Fix:** Change to `<SelectItem value="pt-BR">Portuguese</SelectItem>`.
+**Resolution:** Replaced all `initialCourse.isPublished` references with `course.isPublished` (state). Added optimistic `setCourse` updates after publish/unpublish mutations.
 
 ---
 
-### H6: `testCases`/`validationRules` written without Sanity `_key`
+### ~~H5: Language select emits `"pt"` instead of `"pt-BR"`~~ ✅ FIXED
+
+**Commit:** `7093d36`
+
+**File:** `course-tree.tsx`
+
+**Resolution:** Changed `<SelectItem value="pt">` to `<SelectItem value="pt-BR">`.
+
+---
+
+### ~~H6: `testCases`/`validationRules` written without Sanity `_key`~~ ✅ FIXED
 
 **File:** `app/src/app/[locale]/(admin)/admin/courses/[id]/lessons/[lessonId]/edit/lesson-editor-client.tsx`, lines 41–42
 
@@ -176,7 +140,7 @@ base.validationRules = (block.data.validationRules ?? []).map((vr, i) => ({ _key
 
 ---
 
-### H7: `validationRules` absent from student-facing GROQ
+### ~~H7: `validationRules` absent from student-facing GROQ~~ ✅ FIXED
 
 **File:** `app/src/sanity/queries.ts` (lessonBySlugQuery, code_challenge projection, lines 83–90)
 
@@ -186,7 +150,7 @@ base.validationRules = (block.data.validationRules ?? []).map((vr, i) => ({ _key
 
 ---
 
-### H8: `updateLessonContentBlocks` never revalidates student lesson page
+### ~~H8: `updateLessonContentBlocks` never revalidates student lesson page~~ ✅ FIXED
 
 **File:** `app/src/sanity/mutations.ts`, lines 205–208
 
@@ -250,29 +214,22 @@ base.validationRules = (block.data.validationRules ?? []).map((vr, i) => ({ _key
 
 ## Prioritized Fix Order
 
-### Phase 1 — Data Integrity (C1–C5)
+### ~~Phase 1 — Data Integrity (C1–C5)~~ ✅ ALL FIXED
 
-Fix before any manual testing.
+All 5 critical issues resolved in commit `7093d36`.
 
-1. **C1:** Update `initialRef.current` after successful save
-2. **C2:** Collect real `_id`s from `createLesson` returns, build full ordered list for `reorderLessons`
-3. **C3+C4:** Add `responseConfigJson` + `correctAnswers` fields to Sanity schema; update `blocksToSanity` and `mapBlock`
-4. **C5:** Fix student GROQ quiz projection or add mapping in renderer
+### ~~Phase 2 — Broken UX (H1–H8)~~ ✅ ALL FIXED
 
-### Phase 2 — Broken UX (H1–H8)
+1. ~~**H1:** Move write/preview clients into `server.ts`~~ ✅
+2. ~~**H2:** Add `lessonBasePath` to `LessonViewClient`~~ ✅
+3. ~~**H3:** Hide edit button when `courseId` is falsy~~ ✅
+4. ~~**H4:** Use `course.isPublished` state instead of `initialCourse` prop~~ ✅
+5. ~~**H5:** Change `"pt"` → `"pt-BR"`~~ ✅
+6. ~~**H6:** Add `_key` to testCase/validationRule objects~~ ✅
+7. ~~**H7:** Add `validationRules` to student GROQ~~ ✅
+8. ~~**H8:** Revalidate student lesson pages on content save~~ ✅
 
-Fix before deploying admin.
-
-1. **H1:** Move write/preview clients into `server.ts`
-2. **H2:** Add `lessonBasePath` to `LessonViewClient`
-3. **H3:** Hide edit button when `courseId` is falsy
-4. **H4:** Use `course.isPublished` state instead of `initialCourse` prop
-5. **H5:** Change `"pt"` → `"pt-BR"`
-6. **H6:** Add `_key` to testCase/validationRule objects
-7. **H7:** Add `validationRules` to student GROQ
-8. **H8:** Revalidate student lesson pages on content save
-
-### Phase 3 — Polish (M1–M5)
+### Phase 3 — Polish (M1–M5) — OPEN
 
 Can ship without, but should fix soon.
 

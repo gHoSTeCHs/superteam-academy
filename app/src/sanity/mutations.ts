@@ -205,6 +205,7 @@ export async function updateLessonContentBlocks(
   if (courseId) {
     revalidatePath(`/admin/courses/${courseId}/edit`);
     revalidatePath(`/admin/courses/${courseId}/lessons/${lessonId}/edit`);
+    revalidatePath("/courses", "layout");
   }
 }
 

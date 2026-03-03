@@ -87,6 +87,7 @@ export const lessonBySlugQuery = groq`
           "solutionCode": coalesce(solutionCode, ""),
           "testCases": coalesce(testCases, []),
           "hints": coalesce(hints, []),
+          "validationRules": coalesce(validationRules, []),
           "maxAttempts": coalesce(maxAttempts, 3)
         },
         blockType == "quiz" => {

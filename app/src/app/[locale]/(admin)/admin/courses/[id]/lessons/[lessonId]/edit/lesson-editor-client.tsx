@@ -38,8 +38,8 @@ function blocksToSanity(blocks: ContentBlock[]): Record<string, unknown>[] {
         base.starterCode = block.data.starterCode;
         base.solutionCode = block.data.solutionCode;
         base.hints = block.data.hints;
-        base.testCases = block.data.testCases;
-        base.validationRules = block.data.validationRules;
+        base.testCases = (block.data.testCases ?? []).map((tc, i) => ({ _key: `tc-${i}`, ...tc }));
+        base.validationRules = (block.data.validationRules ?? []).map((vr, i) => ({ _key: `vr-${i}`, ...vr }));
         base.maxAttempts = block.data.maxAttempts;
         break;
       case "quiz": {
