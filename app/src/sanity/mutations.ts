@@ -39,10 +39,7 @@ export async function createCourse(input: CreateCourseInput) {
   return { _id: doc._id };
 }
 
-export async function updateCourse(
-  id: string,
-  patch: Record<string, unknown>,
-) {
+export async function updateCourse(id: string, patch: Record<string, unknown>) {
   await requireAuth();
   await writeClient.patch(id).set(patch).commit();
   revalidatePath("/admin/courses");
@@ -70,10 +67,9 @@ export async function deleteCourse(id: string) {
   await requireAuth();
   const course = await writeClient.fetch<{
     modules: { _ref: string }[] | null;
-  }>(
-    `*[_type == "course" && _id == $id][0]{ "modules": modules[]{ _ref } }`,
-    { id },
-  );
+  }>(`*[_type == "course" && _id == $id][0]{ "modules": modules[]{ _ref } }`, {
+    id,
+  });
   if (course?.modules) {
     for (const mod of course.modules) {
       const moduleDoc = await writeClient.fetch<{
@@ -114,18 +110,13 @@ export async function createModule(courseId: string, input: CreateModuleInput) {
   await writeClient
     .patch(courseId)
     .setIfMissing({ modules: [] })
-    .append("modules", [
-      { _type: "reference", _ref: doc._id, _key: doc._id },
-    ])
+    .append("modules", [{ _type: "reference", _ref: doc._id, _key: doc._id }])
     .commit();
   revalidatePath(`/admin/courses/${courseId}/edit`);
   return { _id: doc._id };
 }
 
-export async function updateModule(
-  id: string,
-  patch: Record<string, unknown>,
-) {
+export async function updateModule(id: string, patch: Record<string, unknown>) {
   await requireAuth();
   await writeClient.patch(id).set(patch).commit();
 }
@@ -134,10 +125,9 @@ export async function deleteModule(courseId: string, moduleId: string) {
   await requireAuth();
   const moduleDoc = await writeClient.fetch<{
     lessons: { _ref: string }[] | null;
-  }>(
-    `*[_type == "module" && _id == $id][0]{ "lessons": lessons[]{ _ref } }`,
-    { id: moduleId },
-  );
+  }>(`*[_type == "module" && _id == $id][0]{ "lessons": lessons[]{ _ref } }`, {
+    id: moduleId,
+  });
   if (moduleDoc?.lessons) {
     for (const lesson of moduleDoc.lessons) {
       await writeClient.delete(lesson._ref);
@@ -158,10 +148,7 @@ export interface CreateLessonInput {
   difficulty?: string;
 }
 
-export async function createLesson(
-  moduleId: string,
-  input: CreateLessonInput,
-) {
+export async function createLesson(moduleId: string, input: CreateLessonInput) {
   await requireAuth();
   const slug = input.title
     .toLowerCase()
@@ -179,9 +166,7 @@ export async function createLesson(
   await writeClient
     .patch(moduleId)
     .setIfMissing({ lessons: [] })
-    .append("lessons", [
-      { _type: "reference", _ref: doc._id, _key: doc._id },
-    ])
+    .append("lessons", [{ _type: "reference", _ref: doc._id, _key: doc._id }])
     .commit();
   return { _id: doc._id };
 }

@@ -75,29 +75,86 @@ function ResponseConfigEditor({
 }) {
   switch (questionType) {
     case "mcq":
-      return <McqBuilder value={config as McqConfig | null} onChange={onChange} />;
+      return (
+        <McqBuilder value={config as McqConfig | null} onChange={onChange} />
+      );
     case "multi_select_mcq":
-      return <MultiSelectMcqBuilder value={config as MultiSelectMcqConfig | null} onChange={onChange} />;
+      return (
+        <MultiSelectMcqBuilder
+          value={config as MultiSelectMcqConfig | null}
+          onChange={onChange}
+        />
+      );
     case "true_false":
-      return <TrueFalseBuilder value={config as TrueFalseConfig | null} onChange={onChange} />;
+      return (
+        <TrueFalseBuilder
+          value={config as TrueFalseConfig | null}
+          onChange={onChange}
+        />
+      );
     case "fill_blank":
-      return <FillBlankBuilder value={config as FillBlankConfig | null} onChange={onChange} />;
+      return (
+        <FillBlankBuilder
+          value={config as FillBlankConfig | null}
+          onChange={onChange}
+        />
+      );
     case "cloze":
-      return <ClozeBuilder value={config as ClozeConfig | null} onChange={onChange} />;
+      return (
+        <ClozeBuilder
+          value={config as ClozeConfig | null}
+          onChange={onChange}
+        />
+      );
     case "matching":
-      return <MatchingBuilder value={config as MatchingConfig | null} onChange={onChange} />;
+      return (
+        <MatchingBuilder
+          value={config as MatchingConfig | null}
+          onChange={onChange}
+        />
+      );
     case "matrix_matching":
-      return <MatrixMatchingBuilder value={config as MatrixMatchingConfig | null} onChange={onChange} />;
+      return (
+        <MatrixMatchingBuilder
+          value={config as MatrixMatchingConfig | null}
+          onChange={onChange}
+        />
+      );
     case "ordering":
-      return <OrderingBuilder value={config as OrderingConfig | null} onChange={onChange} />;
+      return (
+        <OrderingBuilder
+          value={config as OrderingConfig | null}
+          onChange={onChange}
+        />
+      );
     case "diagram_label":
-      return <DiagramLabelBuilder value={config as DiagramLabelConfig | null} onChange={onChange} />;
+      return (
+        <DiagramLabelBuilder
+          value={config as DiagramLabelConfig | null}
+          onChange={onChange}
+        />
+      );
     case "calculation":
-      return <CalculationBuilder value={config as CalculationConfig | null} onChange={onChange} />;
+      return (
+        <CalculationBuilder
+          value={config as CalculationConfig | null}
+          onChange={onChange}
+        />
+      );
     case "numeric_entry":
-      return <NumericEntryBuilder value={config as NumericEntryConfig | null} onChange={onChange} />;
+      return (
+        <NumericEntryBuilder
+          value={config as NumericEntryConfig | null}
+          onChange={onChange}
+        />
+      );
     case "assertion_reason":
-      return <AssertionReasonBuilder value={config as AssertionReasonConfig | null} onChange={onChange} />;
+      return (
+        <AssertionReasonBuilder
+          value={config as AssertionReasonConfig | null}
+          onChange={onChange}
+        />
+      );
     default:
       return null;
   }
@@ -105,7 +162,11 @@ function ResponseConfigEditor({
 
 export function QuizBlockEditor({ data, onChange }: QuizBlockEditorProps) {
   function handleTypeChange(questionType: string) {
-    onChange({ ...data, questionType: questionType as QuestionType, responseConfig: null });
+    onChange({
+      ...data,
+      questionType: questionType as QuestionType,
+      responseConfig: null,
+    });
   }
 
   function handleContentChange(content: string) {
