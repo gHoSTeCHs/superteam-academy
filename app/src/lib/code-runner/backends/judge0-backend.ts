@@ -1,5 +1,5 @@
-import type { CodeRunnerBackend } from './types';
-import type { RunResult, TestCaseInput, TestResult } from '@/types/code-runner';
+import type { CodeRunnerBackend } from "./types";
+import type { RunResult, TestCaseInput, TestResult } from "@/types/code-runner";
 
 const LANGUAGE_IDS: Record<string, number> = {
   rust: 73,
@@ -39,25 +39,31 @@ const STATUS_RUNTIME_ERROR_START = 11;
 const STATUS_RUNTIME_ERROR_END = 12;
 
 function toBase64(str: string): string {
-  return Buffer.from(str, 'utf-8').toString('base64');
+  return Buffer.from(str, "utf-8").toString("base64");
 }
 
 function fromBase64(str: string): string {
-  return Buffer.from(str, 'base64').toString('utf-8');
+  return Buffer.from(str, "base64").toString("utf-8");
 }
 
 function getStatusMessage(statusId: number, statusDescription: string): string {
-  if (statusId === STATUS_ACCEPTED) return 'Accepted';
-  if (statusId === STATUS_WRONG_ANSWER) return 'Wrong Answer';
-  if (statusId === STATUS_TIME_LIMIT) return 'Time Limit Exceeded';
-  if (statusId === STATUS_COMPILATION_ERROR) return 'Compilation Error';
-  if (statusId >= STATUS_RUNTIME_ERROR_START && statusId <= STATUS_RUNTIME_ERROR_END) {
-    return 'Runtime Error';
+  if (statusId === STATUS_ACCEPTED) return "Accepted";
+  if (statusId === STATUS_WRONG_ANSWER) return "Wrong Answer";
+  if (statusId === STATUS_TIME_LIMIT) return "Time Limit Exceeded";
+  if (statusId === STATUS_COMPILATION_ERROR) return "Compilation Error";
+  if (
+    statusId >= STATUS_RUNTIME_ERROR_START &&
+    statusId <= STATUS_RUNTIME_ERROR_END
+  ) {
+    return "Runtime Error";
   }
   return statusDescription;
 }
 
-function wrapRustCode(studentCode: string, assertionCode: string | undefined): string {
+function wrapRustCode(
+  studentCode: string,
+  assertionCode: string | undefined,
+): string {
   if (!assertionCode) {
     return `${studentCode}\n\nfn main() {\n    println!("OK");\n}\n`;
   }
@@ -73,7 +79,7 @@ function buildSubmission(
 ): Judge0Submission {
   let sourceCode = code;
 
-  if (language === 'rust') {
+  if (language === "rust") {
     sourceCode = wrapRustCode(code, testCase.assertionCode);
   } else if (testCase.assertionCode) {
     sourceCode = `${code}\n\n${testCase.assertionCode}\n`;
@@ -126,7 +132,7 @@ function getJudge0Url(): string {
   const url = process.env.JUDGE0_URL;
   if (!url) {
     throw new Error(
-      'Judge0 backend requires JUDGE0_URL environment variable. See docs/setup.md for instructions.',
+      "Judge0 backend requires JUDGE0_URL environment variable. See docs/setup.md for instructions.",
     );
   }
   return url;
@@ -139,15 +145,17 @@ async function submitBatch(
   const response = await fetch(
     `${judge0Url}/submissions/batch?base64_encoded=true&wait=true`,
     {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ submissions }),
     },
   );
 
   if (!response.ok) {
-    const errorText = await response.text().catch(() => 'Unknown error');
-    throw new Error(`Judge0 batch submission failed (${response.status}): ${errorText}`);
+    const errorText = await response.text().catch(() => "Unknown error");
+    throw new Error(
+      `Judge0 batch submission failed (${response.status}): ${errorText}`,
+    );
   }
 
   const data = (await response.json()) as Judge0BatchResponse;
@@ -161,22 +169,28 @@ async function submitSingle(
   const response = await fetch(
     `${judge0Url}/submissions?base64_encoded=true&wait=true`,
     {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(submission),
     },
   );
 
   if (!response.ok) {
-    const errorText = await response.text().catch(() => 'Unknown error');
-    throw new Error(`Judge0 submission failed (${response.status}): ${errorText}`);
+    const errorText = await response.text().catch(() => "Unknown error");
+    throw new Error(
+      `Judge0 submission failed (${response.status}): ${errorText}`,
+    );
   }
 
   return (await response.json()) as Judge0Response;
 }
 
 export class Judge0Backend implements CodeRunnerBackend {
-  async execute(code: string, language: string, testCases: TestCaseInput[]): Promise<RunResult> {
+  async execute(
+    code: string,
+    language: string,
+    testCases: TestCaseInput[],
+  ): Promise<RunResult> {
     const judge0Url = getJudge0Url();
     const languageId = LANGUAGE_IDS[language];
 
@@ -184,7 +198,7 @@ export class Judge0Backend implements CodeRunnerBackend {
       return {
         passed: false,
         results: [],
-        error: `Unsupported language for Judge0: ${language}. Supported: ${Object.keys(LANGUAGE_IDS).join(', ')}`,
+        error: `Unsupported language for Judge0: ${language}. Supported: ${Object.keys(LANGUAGE_IDS).join(", ")}`,
       };
     }
 
@@ -192,14 +206,20 @@ export class Judge0Backend implements CodeRunnerBackend {
       return { passed: true, results: [], executionTimeMs: 0 };
     }
 
-    const submissions = testCases.map((tc) => buildSubmission(code, language, languageId, tc));
+    const submissions = testCases.map((tc) =>
+      buildSubmission(code, language, languageId, tc),
+    );
 
     let responses: Judge0Response[];
 
     if (submissions.length === 1) {
       const singleSubmission = submissions[0];
       if (!singleSubmission) {
-        return { passed: false, results: [], error: 'Failed to build submission.' };
+        return {
+          passed: false,
+          results: [],
+          error: "Failed to build submission.",
+        };
       }
       const singleResponse = await submitSingle(judge0Url, singleSubmission);
       responses = [singleResponse];

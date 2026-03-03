@@ -14,6 +14,7 @@ interface LessonViewClientProps {
   totalLessons: number;
   previousLessonSlug?: string;
   nextLessonSlug?: string;
+  lessonBasePath?: string;
 }
 
 export function LessonViewClient({
@@ -24,11 +25,13 @@ export function LessonViewClient({
   totalLessons,
   previousLessonSlug,
   nextLessonSlug,
+  lessonBasePath,
 }: LessonViewClientProps) {
   const router = useRouter();
 
   function navigateLesson(lessonSlug: string) {
-    router.push(`/courses/${courseSlug}/lessons/${lessonSlug}`);
+    const basePath = lessonBasePath ?? `/courses/${courseSlug}/lessons`;
+    router.push(`${basePath}/${lessonSlug}`);
   }
 
   return (

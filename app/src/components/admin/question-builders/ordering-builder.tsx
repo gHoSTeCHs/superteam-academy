@@ -1,8 +1,8 @@
-import { Plus, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import type { OrderingConfig } from '@/types/questions';
+import { Plus, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import type { OrderingConfig } from "@/types/questions";
 
 interface Props {
   value: OrderingConfig | null;
@@ -11,7 +11,7 @@ interface Props {
 
 function getDefaults(): OrderingConfig {
   return {
-    items: ['', ''],
+    items: ["", ""],
     correct_order: [1, 2],
   };
 }
@@ -20,7 +20,7 @@ export default function OrderingBuilder({ value, onChange }: Props) {
   const config = value ?? getDefaults();
 
   function addItem() {
-    const items = [...config.items, ''];
+    const items = [...config.items, ""];
     const correct_order = [...config.correct_order, items.length];
     onChange({ ...config, items, correct_order });
   }
@@ -41,7 +41,9 @@ export default function OrderingBuilder({ value, onChange }: Props) {
   }
 
   function updateOrder(index: number, order: number) {
-    const correct_order = config.correct_order.map((o, i) => (i === index ? order : o));
+    const correct_order = config.correct_order.map((o, i) =>
+      i === index ? order : o,
+    );
     onChange({ ...config, correct_order });
   }
 
@@ -68,7 +70,9 @@ export default function OrderingBuilder({ value, onChange }: Props) {
               min={1}
               max={config.items.length}
               value={config.correct_order[index] ?? index + 1}
-              onChange={(e) => updateOrder(index, parseInt(e.target.value, 10) || 1)}
+              onChange={(e) =>
+                updateOrder(index, parseInt(e.target.value, 10) || 1)
+              }
               placeholder="Order"
             />
           </div>

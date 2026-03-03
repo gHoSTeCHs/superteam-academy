@@ -1,6 +1,6 @@
-import { EyeIcon, XIcon, RocketIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { EyeIcon, XIcon, RocketIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface PreviewBannerProps {
   courseName?: string;
@@ -10,28 +10,28 @@ interface PreviewBannerProps {
 }
 
 export function PreviewBanner({
-  courseName = 'Untitled Course',
+  courseName = "Untitled Course",
   onExitPreview,
   onPublish,
   className,
 }: PreviewBannerProps) {
   return (
     <div
-      className={cn(
-        'flex items-center justify-between px-4 py-2.5',
-        className,
-      )}
-      style={{ background: 'linear-gradient(90deg, #ffd23f 0%, #f7eacb 100%)' }}
+      className={cn("flex items-center justify-between px-4 py-2.5", className)}
+      style={{ background: "linear-gradient(90deg, #ffd23f 0%, #f7eacb 100%)" }}
     >
       <div className="flex items-center gap-2">
-        <EyeIcon className="size-4" style={{ color: '#1b231d' }} />
+        <EyeIcon className="size-4" style={{ color: "#1b231d" }} />
         <span
           className="text-[13px] font-semibold"
-          style={{ fontFamily: 'var(--font-body)', color: '#1b231d' }}
+          style={{ fontFamily: "var(--font-body)", color: "#1b231d" }}
         >
           Preview Mode
         </span>
-        <span className="text-[12px]" style={{ color: 'rgba(27, 35, 29, 0.6)' }}>
+        <span
+          className="text-[12px]"
+          style={{ color: "rgba(27, 35, 29, 0.6)" }}
+        >
           — Viewing draft of &ldquo;{courseName}&rdquo;
         </span>
       </div>

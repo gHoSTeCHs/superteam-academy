@@ -597,7 +597,12 @@ const SAMPLE_LESSON_BLOCKS: ContentBlock[] = [
           _key: "h1",
           style: "h2",
           children: [
-            { _type: "span", _key: "h1s1", text: "Understanding Solana Accounts", marks: [] },
+            {
+              _type: "span",
+              _key: "h1s1",
+              text: "Understanding Solana Accounts",
+              marks: [],
+            },
           ],
           markDefs: [],
         },
@@ -606,9 +611,24 @@ const SAMPLE_LESSON_BLOCKS: ContentBlock[] = [
           _key: "p1",
           style: "normal",
           children: [
-            { _type: "span", _key: "p1s1", text: "On Solana, all data is stored in ", marks: [] },
-            { _type: "span", _key: "p1s2", text: "accounts", marks: ["strong"] },
-            { _type: "span", _key: "p1s3", text: ". Each account has a unique address (public key), a lamport balance, an owner program, and an optional data field.", marks: [] },
+            {
+              _type: "span",
+              _key: "p1s1",
+              text: "On Solana, all data is stored in ",
+              marks: [],
+            },
+            {
+              _type: "span",
+              _key: "p1s2",
+              text: "accounts",
+              marks: ["strong"],
+            },
+            {
+              _type: "span",
+              _key: "p1s3",
+              text: ". Each account has a unique address (public key), a lamport balance, an owner program, and an optional data field.",
+              marks: [],
+            },
           ],
           markDefs: [],
         },
@@ -617,7 +637,12 @@ const SAMPLE_LESSON_BLOCKS: ContentBlock[] = [
           _key: "p2",
           style: "normal",
           children: [
-            { _type: "span", _key: "p2s1", text: "Programs themselves are stored in executable accounts, while the state they manage is stored in separate data accounts. This separation of code and state is a fundamental difference between Solana and EVM-based chains.", marks: [] },
+            {
+              _type: "span",
+              _key: "p2s1",
+              text: "Programs themselves are stored in executable accounts, while the state they manage is stored in separate data accounts. This separation of code and state is a fundamental difference between Solana and EVM-based chains.",
+              marks: [],
+            },
           ],
           markDefs: [],
         },
@@ -672,7 +697,12 @@ impl UserProfile {
           _key: "h2",
           style: "h3",
           children: [
-            { _type: "span", _key: "h2s1", text: "Program Derived Addresses (PDAs)", marks: [] },
+            {
+              _type: "span",
+              _key: "h2s1",
+              text: "Program Derived Addresses (PDAs)",
+              marks: [],
+            },
           ],
           markDefs: [],
         },
@@ -681,7 +711,12 @@ impl UserProfile {
           _key: "p3",
           style: "normal",
           children: [
-            { _type: "span", _key: "p3s1", text: "PDAs are special addresses that are derived deterministically from a set of seeds and a program ID. They don't have corresponding private keys, which means only the program can sign for them.", marks: [] },
+            {
+              _type: "span",
+              _key: "p3s1",
+              text: "PDAs are special addresses that are derived deterministically from a set of seeds and a program ID. They don't have corresponding private keys, which means only the program can sign for them.",
+              marks: [],
+            },
           ],
           markDefs: [],
         },

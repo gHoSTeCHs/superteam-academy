@@ -1,1 +1,1 @@
-export { CourseTree } from './course-tree';
+export { CourseTree } from "./course-tree";

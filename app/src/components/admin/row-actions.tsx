@@ -1,12 +1,12 @@
-import Link from 'next/link';
-import { MoreHorizontal, Pencil } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import Link from "next/link";
+import { MoreHorizontal, Pencil } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from "@/components/ui/dropdown-menu";
 
 interface RowAction {
   label: string;

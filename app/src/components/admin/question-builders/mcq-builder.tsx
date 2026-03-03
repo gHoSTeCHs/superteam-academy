@@ -1,11 +1,11 @@
-import { Plus, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { cn } from '@/lib/utils';
-import type { McqConfig } from '@/types/questions';
+import { Plus, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
+import type { McqConfig } from "@/types/questions";
 
-const OPTION_LABELS = ['A', 'B', 'C', 'D', 'E', 'F'] as const;
+const OPTION_LABELS = ["A", "B", "C", "D", "E", "F"] as const;
 const MIN_OPTIONS = 2;
 const MAX_OPTIONS = 6;
 
@@ -17,8 +17,8 @@ interface Props {
 function getDefaults(): McqConfig {
   return {
     options: [
-      { label: 'A', text: '', is_correct: false },
-      { label: 'B', text: '', is_correct: false },
+      { label: "A", text: "", is_correct: false },
+      { label: "B", text: "", is_correct: false },
     ],
   };
 }
@@ -26,31 +26,36 @@ function getDefaults(): McqConfig {
 export default function McqBuilder({ value, onChange }: Props) {
   const config = value ?? getDefaults();
 
-  function updateOptions(options: McqConfig['options']) {
+  function updateOptions(options: McqConfig["options"]) {
     onChange({ ...config, options });
   }
 
   function addOption() {
     if (config.options.length >= MAX_OPTIONS) return;
-    const label = OPTION_LABELS[config.options.length] ?? '';
-    updateOptions([...config.options, { label, text: '', is_correct: false }]);
+    const label = OPTION_LABELS[config.options.length] ?? "";
+    updateOptions([...config.options, { label, text: "", is_correct: false }]);
   }
 
   function removeOption(index: number) {
     if (config.options.length <= MIN_OPTIONS) return;
     const updated = config.options
       .filter((_, i) => i !== index)
-      .map((opt, i) => ({ ...opt, label: OPTION_LABELS[i] ?? '' }));
+      .map((opt, i) => ({ ...opt, label: OPTION_LABELS[i] ?? "" }));
     updateOptions(updated);
   }
 
   function updateText(index: number, text: string) {
-    const updated = config.options.map((opt, i) => (i === index ? { ...opt, text } : opt));
+    const updated = config.options.map((opt, i) =>
+      i === index ? { ...opt, text } : opt,
+    );
     updateOptions(updated);
   }
 
   function setCorrect(index: number) {
-    const updated = config.options.map((opt, i) => ({ ...opt, is_correct: i === index }));
+    const updated = config.options.map((opt, i) => ({
+      ...opt,
+      is_correct: i === index,
+    }));
     updateOptions(updated);
   }
 
@@ -62,10 +67,10 @@ export default function McqBuilder({ value, onChange }: Props) {
         <div key={index} className="flex items-center gap-3">
           <label
             className={cn(
-              'flex h-9 shrink-0 cursor-pointer items-center gap-2 rounded-md border px-3 transition-colors',
+              "flex h-9 shrink-0 cursor-pointer items-center gap-2 rounded-md border px-3 transition-colors",
               option.is_correct
-                ? 'border-primary/40 bg-primary/5 text-primary'
-                : 'border-border bg-background text-muted-foreground hover:border-ring/40',
+                ? "border-primary/40 bg-primary/5 text-primary"
+                : "border-border bg-background text-muted-foreground hover:border-ring/40",
             )}
           >
             <input
@@ -75,7 +80,9 @@ export default function McqBuilder({ value, onChange }: Props) {
               onChange={() => setCorrect(index)}
               className="accent-primary size-3.5"
             />
-            <span className="text-sm font-semibold tabular-nums">{OPTION_LABELS[index]}</span>
+            <span className="text-sm font-semibold tabular-nums">
+              {OPTION_LABELS[index]}
+            </span>
           </label>
 
           <Input
@@ -94,7 +101,9 @@ export default function McqBuilder({ value, onChange }: Props) {
             disabled={config.options.length <= MIN_OPTIONS}
           >
             <X className="size-4" />
-            <span className="sr-only">Remove option {OPTION_LABELS[index]}</span>
+            <span className="sr-only">
+              Remove option {OPTION_LABELS[index]}
+            </span>
           </Button>
         </div>
       ))}

@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useState, useCallback, useRef, useEffect } from 'react';
-import { cn } from '@/lib/utils';
-import { createCodeRunner } from '@/lib/code-runner';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { CodeEditor } from '@/components/code-editor';
+import { useState, useCallback, useRef, useEffect } from "react";
+import { cn } from "@/lib/utils";
+import { createCodeRunner } from "@/lib/code-runner";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { CodeEditor } from "@/components/code-editor";
 import {
   Play,
   RotateCcw,
@@ -14,10 +14,10 @@ import {
   XCircle,
   Lightbulb,
   Loader2,
-} from 'lucide-react';
-import type { CodeChallengeData } from '@/types/content';
-import type { RunResult } from '@/types/code-runner';
-import type { CodeRunner } from '@/types/code-runner';
+} from "lucide-react";
+import type { CodeChallengeData } from "@/types/content";
+import type { RunResult } from "@/types/code-runner";
+import type { CodeRunner } from "@/types/code-runner";
 
 interface CodeChallengeProps {
   challenge: CodeChallengeData;
@@ -53,7 +53,11 @@ export function CodeChallenge({ challenge, onComplete }: CodeChallengeProps) {
       const runner = createCodeRunner(challenge.language);
       runnerRef.current = runner;
 
-      const result = await runner.run(code, challenge.language, challenge.testCases);
+      const result = await runner.run(
+        code,
+        challenge.language,
+        challenge.testCases,
+      );
       setResults(result);
 
       const nextAttempts = attempts + 1;
@@ -89,8 +93,12 @@ export function CodeChallenge({ challenge, onComplete }: CodeChallengeProps) {
     setHintsShown((prev) => Math.min(prev + 1, challenge.hints.length));
   }, [challenge.hints.length]);
 
-  const passCount = results ? results.results.filter((r) => r.passed).length : 0;
-  const failCount = results ? results.results.filter((r) => !r.passed).length : 0;
+  const passCount = results
+    ? results.results.filter((r) => r.passed).length
+    : 0;
+  const failCount = results
+    ? results.results.filter((r) => !r.passed).length
+    : 0;
   const canShowSolution = attempts >= maxAttempts && !showSolution;
   const canShowHintButton =
     attempts >= HINT_UNLOCK_THRESHOLD && hintsShown < challenge.hints.length;
@@ -112,7 +120,7 @@ export function CodeChallenge({ challenge, onComplete }: CodeChallengeProps) {
             ) : (
               <Play className="h-4 w-4" />
             )}
-            {running ? 'Running...' : 'Run'}
+            {running ? "Running..." : "Run"}
           </Button>
 
           <Button
@@ -126,11 +134,7 @@ export function CodeChallenge({ challenge, onComplete }: CodeChallengeProps) {
           </Button>
 
           {canShowSolution && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleShowSolution}
-            >
+            <Button variant="ghost" size="sm" onClick={handleShowSolution}>
               <Eye className="h-4 w-4" />
               Show Solution
             </Button>
@@ -151,7 +155,11 @@ export function CodeChallenge({ challenge, onComplete }: CodeChallengeProps) {
         </div>
 
         <div className="min-w-0 space-y-4">
-          <TestResultsPanel results={results} passCount={passCount} failCount={failCount} />
+          <TestResultsPanel
+            results={results}
+            passCount={passCount}
+            failCount={failCount}
+          />
 
           {(canShowHintButton || hintsShown > 0) && (
             <HintsSection
@@ -173,7 +181,11 @@ interface TestResultsPanelProps {
   failCount: number;
 }
 
-function TestResultsPanel({ results, passCount, failCount }: TestResultsPanelProps) {
+function TestResultsPanel({
+  results,
+  passCount,
+  failCount,
+}: TestResultsPanelProps) {
   return (
     <div className="rounded-lg border border-border bg-bg-surface p-4">
       <div className="mb-3 flex items-center justify-between">
@@ -215,14 +227,16 @@ function TestResultsPanel({ results, passCount, failCount }: TestResultsPanelPro
               <div>
                 <span
                   className={cn(
-                    'font-medium',
-                    test.passed ? 'text-green-500' : 'text-red-500',
+                    "font-medium",
+                    test.passed ? "text-green-500" : "text-red-500",
                   )}
                 >
                   {test.name}
                 </span>
                 {test.message && (
-                  <p className="text-xs text-muted-foreground">{test.message}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {test.message}
+                  </p>
                 )}
               </div>
             </li>
@@ -240,7 +254,12 @@ interface HintsSectionProps {
   onRevealHint: () => void;
 }
 
-function HintsSection({ hints, hintsShown, canShowMore, onRevealHint }: HintsSectionProps) {
+function HintsSection({
+  hints,
+  hintsShown,
+  canShowMore,
+  onRevealHint,
+}: HintsSectionProps) {
   return (
     <div className="rounded-lg border border-border bg-bg-surface p-4">
       <div className="mb-2 flex items-center gap-2">

@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'Superteam Academy Studio',
+  title: "Superteam Academy Studio",
 };
 
 export default function StudioLayout({
@@ -7,5 +7,5 @@ export default function StudioLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div style={{ height: '100vh' }}>{children}</div>;
+  return <div style={{ height: "100vh" }}>{children}</div>;
 }

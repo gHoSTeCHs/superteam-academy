@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
-import { previewClient } from "@/sanity/client";
+import { previewClient } from "@/sanity/server";
 import { lessonBySlugQuery } from "@/sanity/queries";
+import { transformQuizBlocks } from "@/lib/quiz-transform";
 import { groq } from "next-sanity";
 import { PreviewBannerWrapper } from "../../preview-banner-wrapper";
 import { LessonViewClient } from "@/app/[locale]/(main)/courses/[slug]/lessons/[lessonSlug]/lesson-view-client";
@@ -62,6 +63,8 @@ export default async function LessonPreviewPage({
 
   if (!lesson || !course) notFound();
 
+  lesson = transformQuizBlocks(lesson);
+
   const allLessons = course.modules?.flatMap((m) => m.lessons) ?? [];
   const currentIndex = allLessons.findIndex(
     (l) => l.slug === lessonSlug || l.id === lesson.id,
@@ -86,6 +89,7 @@ export default async function LessonPreviewPage({
           totalLessons={allLessons.length}
           previousLessonSlug={allLessons[currentIndex - 1]?.slug}
           nextLessonSlug={allLessons[currentIndex + 1]?.slug}
+          lessonBasePath={`/admin/courses/${courseId}/preview/lessons`}
         />
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { previewClient } from "@/sanity/client";
+import { previewClient } from "@/sanity/server";
 import { groq } from "next-sanity";
 import { PreviewBannerWrapper } from "./preview-banner-wrapper";
 import { CourseDetailClient } from "@/app/[locale]/(main)/courses/[slug]/course-detail-client";
@@ -59,7 +59,10 @@ export default async function CoursePreviewPage({ params }: PreviewPageProps) {
         locale={locale}
       />
       <div className="p-6">
-        <CourseDetailClient course={course} />
+        <CourseDetailClient
+          course={course}
+          lessonBasePath={`/admin/courses/${id}/preview/lessons`}
+        />
       </div>
     </div>
   );

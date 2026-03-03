@@ -1,33 +1,33 @@
-'use client';
+"use client";
 
-import '@/styles/tiptap.css';
+import "@/styles/tiptap.css";
 
-import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
-import Image from '@tiptap/extension-image';
-import Link from '@tiptap/extension-link';
-import Mathematics from '@tiptap/extension-mathematics';
-import Placeholder from '@tiptap/extension-placeholder';
-import { Table } from '@tiptap/extension-table';
-import { TableCell } from '@tiptap/extension-table-cell';
-import { TableHeader } from '@tiptap/extension-table-header';
-import { TableRow } from '@tiptap/extension-table-row';
-import Underline from '@tiptap/extension-underline';
+import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
+import Image from "@tiptap/extension-image";
+import Link from "@tiptap/extension-link";
+import Mathematics from "@tiptap/extension-mathematics";
+import Placeholder from "@tiptap/extension-placeholder";
+import { Table } from "@tiptap/extension-table";
+import { TableCell } from "@tiptap/extension-table-cell";
+import { TableHeader } from "@tiptap/extension-table-header";
+import { TableRow } from "@tiptap/extension-table-row";
+import Underline from "@tiptap/extension-underline";
 import {
   type Editor,
   EditorContent,
   useEditor,
   useEditorState,
-} from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import bash from 'highlight.js/lib/languages/bash';
-import css from 'highlight.js/lib/languages/css';
-import javascript from 'highlight.js/lib/languages/javascript';
-import json from 'highlight.js/lib/languages/json';
-import python from 'highlight.js/lib/languages/python';
-import rust from 'highlight.js/lib/languages/rust';
-import sql from 'highlight.js/lib/languages/sql';
-import typescript from 'highlight.js/lib/languages/typescript';
-import xml from 'highlight.js/lib/languages/xml';
+} from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import bash from "highlight.js/lib/languages/bash";
+import css from "highlight.js/lib/languages/css";
+import javascript from "highlight.js/lib/languages/javascript";
+import json from "highlight.js/lib/languages/json";
+import python from "highlight.js/lib/languages/python";
+import rust from "highlight.js/lib/languages/rust";
+import sql from "highlight.js/lib/languages/sql";
+import typescript from "highlight.js/lib/languages/typescript";
+import xml from "highlight.js/lib/languages/xml";
 import {
   ArrowDownToLine,
   ArrowLeftToLine,
@@ -54,8 +54,8 @@ import {
   Underline as UnderlineIcon,
   Undo2,
   Upload,
-} from 'lucide-react';
-import { createLowlight } from 'lowlight';
+} from "lucide-react";
+import { createLowlight } from "lowlight";
 import {
   type FormEvent,
   type ReactNode,
@@ -63,9 +63,9 @@ import {
   useMemo,
   useRef,
   useState,
-} from 'react';
+} from "react";
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -73,16 +73,16 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { cn } from '@/lib/utils';
-import type { TiptapJSON } from '@/types/tiptap';
+} from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
+import type { TiptapJSON } from "@/types/tiptap";
 
 const lowlight = createLowlight();
 lowlight.register({
@@ -114,7 +114,7 @@ export function TiptapEditor({
   className,
   disabled = false,
 }: TiptapEditorProps) {
-  'use no memo';
+  "use no memo";
   const lastEmittedJson = useRef<TiptapJSON | null>(value);
   const [linkDialogOpen, setLinkDialogOpen] = useState(false);
   const [imageDialogOpen, setImageDialogOpen] = useState(false);
@@ -125,7 +125,7 @@ export function TiptapEditor({
       Underline,
       Link.configure({
         openOnClick: false,
-        HTMLAttributes: { class: 'tiptap-link' },
+        HTMLAttributes: { class: "tiptap-link" },
       }),
       Image.configure({ inline: false, allowBase64: false }),
       Table.configure({ resizable: true }),
@@ -134,7 +134,7 @@ export function TiptapEditor({
       TableCell,
       CodeBlockLowlight.configure({ lowlight }),
       Placeholder.configure({
-        placeholder: placeholder ?? 'Start writing...',
+        placeholder: placeholder ?? "Start writing...",
       }),
       Mathematics,
     ],
@@ -170,8 +170,8 @@ export function TiptapEditor({
   return (
     <div
       className={cn(
-        'tiptap-editor overflow-hidden rounded-lg border border-border bg-card',
-        disabled && 'opacity-60',
+        "tiptap-editor overflow-hidden rounded-lg border border-border bg-card",
+        disabled && "opacity-60",
         className,
       )}
     >
@@ -249,74 +249,214 @@ function EditorToolbar({
   onLinkClick,
   onImageClick,
 }: EditorToolbarProps) {
-  'use no memo';
-  const iconSize = 'size-4';
+  "use no memo";
+  const iconSize = "size-4";
 
   const state = useEditorState({
     editor,
     selector: ({ editor: e }) => ({
       canUndo: e.can().undo(),
       canRedo: e.can().redo(),
-      isParagraph: e.isActive('paragraph'),
-      isH1: e.isActive('heading', { level: 1 }),
-      isH2: e.isActive('heading', { level: 2 }),
-      isH3: e.isActive('heading', { level: 3 }),
-      isBold: e.isActive('bold'),
-      isItalic: e.isActive('italic'),
-      isUnderline: e.isActive('underline'),
-      isStrike: e.isActive('strike'),
-      isCode: e.isActive('code'),
-      isBulletList: e.isActive('bulletList'),
-      isOrderedList: e.isActive('orderedList'),
-      isBlockquote: e.isActive('blockquote'),
-      isCodeBlock: e.isActive('codeBlock'),
-      isLink: e.isActive('link'),
-      isTable: e.isActive('table'),
+      isParagraph: e.isActive("paragraph"),
+      isH1: e.isActive("heading", { level: 1 }),
+      isH2: e.isActive("heading", { level: 2 }),
+      isH3: e.isActive("heading", { level: 3 }),
+      isBold: e.isActive("bold"),
+      isItalic: e.isActive("italic"),
+      isUnderline: e.isActive("underline"),
+      isStrike: e.isActive("strike"),
+      isCode: e.isActive("code"),
+      isBulletList: e.isActive("bulletList"),
+      isOrderedList: e.isActive("orderedList"),
+      isBlockquote: e.isActive("blockquote"),
+      isCodeBlock: e.isActive("codeBlock"),
+      isLink: e.isActive("link"),
+      isTable: e.isActive("table"),
     }),
   });
 
   return (
     <div className="flex flex-wrap items-center gap-0.5 border-b border-border bg-muted/30 px-2 py-1.5">
-      <ToolbarButton icon={<Undo2 className={iconSize} />} label="Undo" onClick={() => editor.chain().focus().undo().run()} disabled={disabled || !state.canUndo} />
-      <ToolbarButton icon={<Redo2 className={iconSize} />} label="Redo" onClick={() => editor.chain().focus().redo().run()} disabled={disabled || !state.canRedo} />
+      <ToolbarButton
+        icon={<Undo2 className={iconSize} />}
+        label="Undo"
+        onClick={() => editor.chain().focus().undo().run()}
+        disabled={disabled || !state.canUndo}
+      />
+      <ToolbarButton
+        icon={<Redo2 className={iconSize} />}
+        label="Redo"
+        onClick={() => editor.chain().focus().redo().run()}
+        disabled={disabled || !state.canRedo}
+      />
 
       <ToolbarDivider />
 
-      <ToolbarButton icon={<Pilcrow className={iconSize} />} label="Paragraph" onClick={() => editor.chain().focus().setParagraph().run()} active={state.isParagraph} disabled={disabled} />
-      <ToolbarButton icon={<Heading1 className={iconSize} />} label="Heading 1" onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} active={state.isH1} disabled={disabled} />
-      <ToolbarButton icon={<Heading2 className={iconSize} />} label="Heading 2" onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} active={state.isH2} disabled={disabled} />
-      <ToolbarButton icon={<Heading3 className={iconSize} />} label="Heading 3" onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} active={state.isH3} disabled={disabled} />
+      <ToolbarButton
+        icon={<Pilcrow className={iconSize} />}
+        label="Paragraph"
+        onClick={() => editor.chain().focus().setParagraph().run()}
+        active={state.isParagraph}
+        disabled={disabled}
+      />
+      <ToolbarButton
+        icon={<Heading1 className={iconSize} />}
+        label="Heading 1"
+        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+        active={state.isH1}
+        disabled={disabled}
+      />
+      <ToolbarButton
+        icon={<Heading2 className={iconSize} />}
+        label="Heading 2"
+        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+        active={state.isH2}
+        disabled={disabled}
+      />
+      <ToolbarButton
+        icon={<Heading3 className={iconSize} />}
+        label="Heading 3"
+        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+        active={state.isH3}
+        disabled={disabled}
+      />
 
       <ToolbarDivider />
 
-      <ToolbarButton icon={<Bold className={iconSize} />} label="Bold" onClick={() => editor.chain().focus().toggleBold().run()} active={state.isBold} disabled={disabled} />
-      <ToolbarButton icon={<Italic className={iconSize} />} label="Italic" onClick={() => editor.chain().focus().toggleItalic().run()} active={state.isItalic} disabled={disabled} />
-      <ToolbarButton icon={<UnderlineIcon className={iconSize} />} label="Underline" onClick={() => editor.chain().focus().toggleUnderline().run()} active={state.isUnderline} disabled={disabled} />
-      <ToolbarButton icon={<Strikethrough className={iconSize} />} label="Strikethrough" onClick={() => editor.chain().focus().toggleStrike().run()} active={state.isStrike} disabled={disabled} />
-      <ToolbarButton icon={<Code className={iconSize} />} label="Inline Code" onClick={() => editor.chain().focus().toggleCode().run()} active={state.isCode} disabled={disabled} />
+      <ToolbarButton
+        icon={<Bold className={iconSize} />}
+        label="Bold"
+        onClick={() => editor.chain().focus().toggleBold().run()}
+        active={state.isBold}
+        disabled={disabled}
+      />
+      <ToolbarButton
+        icon={<Italic className={iconSize} />}
+        label="Italic"
+        onClick={() => editor.chain().focus().toggleItalic().run()}
+        active={state.isItalic}
+        disabled={disabled}
+      />
+      <ToolbarButton
+        icon={<UnderlineIcon className={iconSize} />}
+        label="Underline"
+        onClick={() => editor.chain().focus().toggleUnderline().run()}
+        active={state.isUnderline}
+        disabled={disabled}
+      />
+      <ToolbarButton
+        icon={<Strikethrough className={iconSize} />}
+        label="Strikethrough"
+        onClick={() => editor.chain().focus().toggleStrike().run()}
+        active={state.isStrike}
+        disabled={disabled}
+      />
+      <ToolbarButton
+        icon={<Code className={iconSize} />}
+        label="Inline Code"
+        onClick={() => editor.chain().focus().toggleCode().run()}
+        active={state.isCode}
+        disabled={disabled}
+      />
 
       <ToolbarDivider />
 
-      <ToolbarButton icon={<List className={iconSize} />} label="Bullet List" onClick={() => editor.chain().focus().toggleBulletList().run()} active={state.isBulletList} disabled={disabled} />
-      <ToolbarButton icon={<ListOrdered className={iconSize} />} label="Ordered List" onClick={() => editor.chain().focus().toggleOrderedList().run()} active={state.isOrderedList} disabled={disabled} />
-      <ToolbarButton icon={<Quote className={iconSize} />} label="Blockquote" onClick={() => editor.chain().focus().toggleBlockquote().run()} active={state.isBlockquote} disabled={disabled} />
-      <ToolbarButton icon={<CodeXml className={iconSize} />} label="Code Block" onClick={() => editor.chain().focus().toggleCodeBlock().run()} active={state.isCodeBlock} disabled={disabled} />
-      <ToolbarButton icon={<Minus className={iconSize} />} label="Horizontal Rule" onClick={() => editor.chain().focus().setHorizontalRule().run()} disabled={disabled} />
+      <ToolbarButton
+        icon={<List className={iconSize} />}
+        label="Bullet List"
+        onClick={() => editor.chain().focus().toggleBulletList().run()}
+        active={state.isBulletList}
+        disabled={disabled}
+      />
+      <ToolbarButton
+        icon={<ListOrdered className={iconSize} />}
+        label="Ordered List"
+        onClick={() => editor.chain().focus().toggleOrderedList().run()}
+        active={state.isOrderedList}
+        disabled={disabled}
+      />
+      <ToolbarButton
+        icon={<Quote className={iconSize} />}
+        label="Blockquote"
+        onClick={() => editor.chain().focus().toggleBlockquote().run()}
+        active={state.isBlockquote}
+        disabled={disabled}
+      />
+      <ToolbarButton
+        icon={<CodeXml className={iconSize} />}
+        label="Code Block"
+        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+        active={state.isCodeBlock}
+        disabled={disabled}
+      />
+      <ToolbarButton
+        icon={<Minus className={iconSize} />}
+        label="Horizontal Rule"
+        onClick={() => editor.chain().focus().setHorizontalRule().run()}
+        disabled={disabled}
+      />
 
       <ToolbarDivider />
 
-      <ToolbarButton icon={<LinkIcon className={iconSize} />} label="Link" onClick={onLinkClick} active={state.isLink} disabled={disabled} />
-      <ToolbarButton icon={<ImagePlus className={iconSize} />} label="Image" onClick={onImageClick} disabled={disabled} />
-      <ToolbarButton icon={<TableIcon className={iconSize} />} label="Table" onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()} disabled={disabled} />
+      <ToolbarButton
+        icon={<LinkIcon className={iconSize} />}
+        label="Link"
+        onClick={onLinkClick}
+        active={state.isLink}
+        disabled={disabled}
+      />
+      <ToolbarButton
+        icon={<ImagePlus className={iconSize} />}
+        label="Image"
+        onClick={onImageClick}
+        disabled={disabled}
+      />
+      <ToolbarButton
+        icon={<TableIcon className={iconSize} />}
+        label="Table"
+        onClick={() =>
+          editor
+            .chain()
+            .focus()
+            .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+            .run()
+        }
+        disabled={disabled}
+      />
 
       {state.isTable && (
         <>
           <ToolbarDivider />
-          <ToolbarButton icon={<ArrowLeftToLine className={iconSize} />} label="Add Column Before" onClick={() => editor.chain().focus().addColumnBefore().run()} disabled={disabled} />
-          <ToolbarButton icon={<ArrowRightToLine className={iconSize} />} label="Add Column After" onClick={() => editor.chain().focus().addColumnAfter().run()} disabled={disabled} />
-          <ToolbarButton icon={<ArrowUpToLine className={iconSize} />} label="Add Row Before" onClick={() => editor.chain().focus().addRowBefore().run()} disabled={disabled} />
-          <ToolbarButton icon={<ArrowDownToLine className={iconSize} />} label="Add Row After" onClick={() => editor.chain().focus().addRowAfter().run()} disabled={disabled} />
-          <ToolbarButton icon={<Trash2 className={iconSize} />} label="Delete Table" onClick={() => editor.chain().focus().deleteTable().run()} disabled={disabled} />
+          <ToolbarButton
+            icon={<ArrowLeftToLine className={iconSize} />}
+            label="Add Column Before"
+            onClick={() => editor.chain().focus().addColumnBefore().run()}
+            disabled={disabled}
+          />
+          <ToolbarButton
+            icon={<ArrowRightToLine className={iconSize} />}
+            label="Add Column After"
+            onClick={() => editor.chain().focus().addColumnAfter().run()}
+            disabled={disabled}
+          />
+          <ToolbarButton
+            icon={<ArrowUpToLine className={iconSize} />}
+            label="Add Row Before"
+            onClick={() => editor.chain().focus().addRowBefore().run()}
+            disabled={disabled}
+          />
+          <ToolbarButton
+            icon={<ArrowDownToLine className={iconSize} />}
+            label="Add Row After"
+            onClick={() => editor.chain().focus().addRowAfter().run()}
+            disabled={disabled}
+          />
+          <ToolbarButton
+            icon={<Trash2 className={iconSize} />}
+            label="Delete Table"
+            onClick={() => editor.chain().focus().deleteTable().run()}
+            disabled={disabled}
+          />
         </>
       )}
     </div>
@@ -332,18 +472,18 @@ function LinkDialog({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
-  const [url, setUrl] = useState('');
-  const isEditing = editor.isActive('link');
+  const [url, setUrl] = useState("");
+  const isEditing = editor.isActive("link");
 
   useEffect(() => {
     if (open) {
-      setUrl(editor.getAttributes('link').href ?? '');
+      setUrl(editor.getAttributes("link").href ?? "");
     }
   }, [open, editor]);
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    if (url === '') {
+    if (url === "") {
       editor.chain().focus().unsetLink().run();
     } else {
       editor.chain().focus().setLink({ href: url }).run();
@@ -360,8 +500,10 @@ function LinkDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>{isEditing ? 'Edit Link' : 'Insert Link'}</DialogTitle>
-          <DialogDescription>Enter a URL to create a hyperlink.</DialogDescription>
+          <DialogTitle>{isEditing ? "Edit Link" : "Insert Link"}</DialogTitle>
+          <DialogDescription>
+            Enter a URL to create a hyperlink.
+          </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
@@ -381,7 +523,7 @@ function LinkDialog({
               </Button>
             )}
             <Button type="submit">
-              {isEditing ? 'Update Link' : 'Insert Link'}
+              {isEditing ? "Update Link" : "Insert Link"}
             </Button>
           </DialogFooter>
         </form>
@@ -401,13 +543,13 @@ function ImageDialog({
   onOpenChange: (open: boolean) => void;
   onImageUpload?: (file: File) => Promise<string>;
 }) {
-  const [url, setUrl] = useState('');
+  const [url, setUrl] = useState("");
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (open) {
-      setUrl('');
+      setUrl("");
       setUploading(false);
     }
   }, [open]);
@@ -431,7 +573,7 @@ function ImageDialog({
     } finally {
       setUploading(false);
       if (fileInputRef.current) {
-        fileInputRef.current.value = '';
+        fileInputRef.current.value = "";
       }
     }
   }
@@ -441,7 +583,9 @@ function ImageDialog({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Insert Image</DialogTitle>
-          <DialogDescription>Insert an image from a URL or upload a file.</DialogDescription>
+          <DialogDescription>
+            Insert an image from a URL or upload a file.
+          </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
           {onImageUpload && (
@@ -456,7 +600,7 @@ function ImageDialog({
                     onClick={() => fileInputRef.current?.click()}
                   >
                     <Upload className="size-4" />
-                    {uploading ? 'Uploading...' : 'Choose File'}
+                    {uploading ? "Uploading..." : "Choose File"}
                   </Button>
                   <input
                     ref={fileInputRef}

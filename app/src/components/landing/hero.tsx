@@ -1,7 +1,7 @@
-import { ArrowRightIcon, WalletIcon, ZapIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { cn } from '@/lib/utils';
+import { ArrowRightIcon, WalletIcon, ZapIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 interface HeroProps {
   onBrowseCourses?: () => void;
@@ -9,25 +9,40 @@ interface HeroProps {
   className?: string;
 }
 
-export function Hero({ onBrowseCourses, onConnectWallet, className }: HeroProps) {
+export function Hero({
+  onBrowseCourses,
+  onConnectWallet,
+  className,
+}: HeroProps) {
   return (
-    <section className={cn('relative overflow-hidden', className)}>
+    <section className={cn("relative overflow-hidden", className)}>
       <div
         className="relative px-6 py-20 md:px-12 md:py-28 lg:py-36"
         style={{
-          background: 'linear-gradient(135deg, #1b231d 0%, #2f6b3f 50%, #008c4c 100%)',
+          background:
+            "linear-gradient(135deg, #1b231d 0%, #2f6b3f 50%, #008c4c 100%)",
         }}
       >
-        <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: 'radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 50%, white 1px, transparent 1px)',
-          backgroundSize: '32px 32px',
-        }} />
-
-        <div className="absolute -right-32 -top-32 size-96 rounded-full opacity-10"
-          style={{ background: 'radial-gradient(circle, #ffd23f 0%, transparent 70%)' }}
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 50%, white 1px, transparent 1px)",
+            backgroundSize: "32px 32px",
+          }}
         />
-        <div className="absolute -bottom-24 -left-24 size-72 rounded-full opacity-10"
-          style={{ background: 'radial-gradient(circle, #008c4c 0%, transparent 70%)' }}
+
+        <div
+          className="absolute -right-32 -top-32 size-96 rounded-full opacity-10"
+          style={{
+            background: "radial-gradient(circle, #ffd23f 0%, transparent 70%)",
+          }}
+        />
+        <div
+          className="absolute -bottom-24 -left-24 size-72 rounded-full opacity-10"
+          style={{
+            background: "radial-gradient(circle, #008c4c 0%, transparent 70%)",
+          }}
         />
 
         <div className="relative mx-auto max-w-4xl text-center">
@@ -35,24 +50,31 @@ export function Hero({ onBrowseCourses, onConnectWallet, className }: HeroProps)
             variant="reward"
             className="mb-6 border-0 bg-white/10 text-[12px] text-white backdrop-blur-sm"
           >
-            <ZapIcon className="mr-1 size-3" style={{ color: '#ffd23f' }} />
+            <ZapIcon className="mr-1 size-3" style={{ color: "#ffd23f" }} />
             Earn on-chain credentials as you learn
           </Badge>
 
           <h1
             className="mb-4 text-[40px] font-bold leading-[1.1] text-white md:text-[56px] lg:text-[64px]"
-            style={{ fontFamily: 'var(--font-display)', letterSpacing: '-0.03em' }}
+            style={{
+              fontFamily: "var(--font-display)",
+              letterSpacing: "-0.03em",
+            }}
           >
-            Learn Solana.{' '}
-            <span style={{ color: '#ffd23f' }}>Build on-chain.</span>
+            Learn Solana.{" "}
+            <span style={{ color: "#ffd23f" }}>Build on-chain.</span>
           </h1>
 
           <p
             className="mx-auto mb-8 max-w-2xl text-[16px] leading-relaxed md:text-[18px]"
-            style={{ fontFamily: 'var(--font-body)', color: 'rgba(247, 234, 203, 0.7)' }}
+            style={{
+              fontFamily: "var(--font-body)",
+              color: "rgba(247, 234, 203, 0.7)",
+            }}
           >
-            Interactive courses with real code challenges, XP rewards, and verifiable
-            NFT credentials. Master Solana development from beginner to expert.
+            Interactive courses with real code challenges, XP rewards, and
+            verifiable NFT credentials. Master Solana development from beginner
+            to expert.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-3">
@@ -62,7 +84,9 @@ export function Hero({ onBrowseCourses, onConnectWallet, className }: HeroProps)
               className="gap-2 bg-white text-[#1b231d] hover:bg-white/90"
               onClick={onBrowseCourses}
             >
-              <span style={{ fontFamily: 'var(--font-body)' }}>Browse Courses</span>
+              <span style={{ fontFamily: "var(--font-body)" }}>
+                Browse Courses
+              </span>
               <ArrowRightIcon className="size-4" />
             </Button>
             <Button
@@ -72,26 +96,31 @@ export function Hero({ onBrowseCourses, onConnectWallet, className }: HeroProps)
               onClick={onConnectWallet}
             >
               <WalletIcon className="size-4" />
-              <span style={{ fontFamily: 'var(--font-body)' }}>Connect Wallet</span>
+              <span style={{ fontFamily: "var(--font-body)" }}>
+                Connect Wallet
+              </span>
             </Button>
           </div>
 
           <div className="mt-10 flex items-center justify-center gap-8">
             {[
-              { value: '500+', label: 'Learners' },
-              { value: '12', label: 'Courses' },
-              { value: '150+', label: 'Lessons' },
+              { value: "500+", label: "Learners" },
+              { value: "12", label: "Courses" },
+              { value: "150+", label: "Lessons" },
             ].map((stat) => (
               <div key={stat.label} className="text-center">
                 <p
                   className="text-[24px] font-bold text-white md:text-[28px]"
-                  style={{ fontFamily: 'var(--font-display)' }}
+                  style={{ fontFamily: "var(--font-display)" }}
                 >
                   {stat.value}
                 </p>
                 <p
                   className="text-[11px] uppercase tracking-widest"
-                  style={{ fontFamily: 'var(--font-body)', color: 'rgba(247, 234, 203, 0.5)' }}
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    color: "rgba(247, 234, 203, 0.5)",
+                  }}
                 >
                   {stat.label}
                 </p>

@@ -1,5 +1,5 @@
-import type { LucideIcon } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
+import type { LucideIcon } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface StatCardProps {
   title: string;
@@ -8,7 +8,12 @@ interface StatCardProps {
   description?: string;
 }
 
-export function StatCard({ title, value, icon: Icon, description }: StatCardProps) {
+export function StatCard({
+  title,
+  value,
+  icon: Icon,
+  description,
+}: StatCardProps) {
   return (
     <Card>
       <CardContent className="flex items-center gap-4">
@@ -18,20 +23,20 @@ export function StatCard({ title, value, icon: Icon, description }: StatCardProp
         <div className="min-w-0">
           <p
             className="text-[12px] font-medium text-muted-foreground"
-            style={{ fontFamily: 'var(--font-body)' }}
+            style={{ fontFamily: "var(--font-body)" }}
           >
             {title}
           </p>
           <p
             className="text-[20px] font-bold leading-tight"
-            style={{ fontFamily: 'var(--font-display)' }}
+            style={{ fontFamily: "var(--font-display)" }}
           >
             {value}
           </p>
           {description && (
             <p
               className="mt-0.5 text-[12px] text-muted-foreground"
-              style={{ fontFamily: 'var(--font-body)' }}
+              style={{ fontFamily: "var(--font-body)" }}
             >
               {description}
             </p>

@@ -38,10 +38,38 @@ function blocksToSanity(blocks: ContentBlock[]): Record<string, unknown>[] {
         base.starterCode = block.data.starterCode;
         base.solutionCode = block.data.solutionCode;
         base.hints = block.data.hints;
+        base.testCases = block.data.testCases;
+        base.validationRules = block.data.validationRules;
+        base.maxAttempts = block.data.maxAttempts;
         break;
-      case "quiz":
+      case "quiz": {
         base.quizQuestion = block.data.content;
+        base.questionType = block.data.questionType;
+        const cfg = block.data.responseConfig as Record<string, unknown> | null;
+
+        if (cfg && Array.isArray(cfg.options)) {
+          const opts = cfg.options as { text: string; is_correct?: boolean }[];
+          base.quizOptions = opts.map((o) => o.text);
+
+          if (block.data.questionType === "multi_select_mcq") {
+            const correctIndices = opts
+              .map((o, i) => (o.is_correct ? i : -1))
+              .filter((i) => i !== -1);
+            base.correctAnswers = correctIndices;
+            base.correctAnswer = correctIndices[0] ?? null;
+          } else {
+            const correctIdx = opts.findIndex((o) => o.is_correct);
+            if (correctIdx !== -1) base.correctAnswer = correctIdx;
+          }
+          base.responseConfigJson = null;
+        } else if (cfg) {
+          base.responseConfigJson = JSON.stringify(cfg);
+          base.quizOptions = null;
+          base.correctAnswer = null;
+          base.correctAnswers = null;
+        }
         break;
+      }
       case "callout":
         base.calloutType = block.data.calloutType;
         base.calloutTitle = block.data.title;
@@ -50,6 +78,12 @@ function blocksToSanity(blocks: ContentBlock[]): Record<string, unknown>[] {
       case "image":
         base.alt = block.data.alt;
         base.caption = block.data.caption;
+        if (block.data.assetId) {
+          base.image = {
+            _type: "image",
+            asset: { _type: "reference", _ref: block.data.assetId },
+          };
+        }
         break;
       case "video_embed":
         base.videoUrl = block.data.url;
@@ -73,7 +107,11 @@ export function LessonEditorClient({
 
   function handleSave() {
     startTransition(async () => {
-      await updateLessonContentBlocks(lessonId, blocksToSanity(blocks));
+      await updateLessonContentBlocks(
+        lessonId,
+        blocksToSanity(blocks),
+        courseId,
+      );
       router.refresh();
     });
   }

@@ -1,39 +1,43 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectTrigger,
   SelectContent,
   SelectItem,
   SelectValue,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from '@/components/ui/dialog';
-import type { Module, ModuleType } from '@/types/course';
+} from "@/components/ui/dialog";
+import type { Module, ModuleType } from "@/types/course";
 
 interface AddModuleDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onAdd: (module: Omit<Module, 'id' | 'sortOrder' | 'lessons'>) => void;
+  onAdd: (module: Omit<Module, "id" | "sortOrder" | "lessons">) => void;
 }
 
 const INITIAL_STATE = {
-  title: '',
-  description: '',
-  type: '' as ModuleType | '',
+  title: "",
+  description: "",
+  type: "" as ModuleType | "",
 };
 
-export function AddModuleDialog({ open, onOpenChange, onAdd }: AddModuleDialogProps) {
+export function AddModuleDialog({
+  open,
+  onOpenChange,
+  onAdd,
+}: AddModuleDialogProps) {
   const [form, setForm] = useState(INITIAL_STATE);
 
   function resetForm() {
@@ -59,15 +63,13 @@ export function AddModuleDialog({ open, onOpenChange, onAdd }: AddModuleDialogPr
     onOpenChange(false);
   }
 
-  const isValid = form.title.trim().length > 0 && form.type !== '';
+  const isValid = form.title.trim().length > 0 && form.type !== "";
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle
-            className="font-[family-name:var(--font-display)]"
-          >
+          <DialogTitle className="font-[family-name:var(--font-display)]">
             Add Module
           </DialogTitle>
         </DialogHeader>
@@ -86,7 +88,9 @@ export function AddModuleDialog({ open, onOpenChange, onAdd }: AddModuleDialogPr
             <Label className="text-muted-foreground">Description</Label>
             <Textarea
               value={form.description}
-              onChange={(e) => setForm({ ...form, description: e.target.value })}
+              onChange={(e) =>
+                setForm({ ...form, description: e.target.value })
+              }
               placeholder="Brief description of this module"
               rows={3}
             />

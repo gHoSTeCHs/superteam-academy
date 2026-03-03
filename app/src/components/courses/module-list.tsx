@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 import {
   ChevronDownIcon,
   PlayCircleIcon,
@@ -10,12 +10,15 @@ import {
   CircleIcon,
   ZapIcon,
   ClockIcon,
-} from 'lucide-react';
-import DifficultyBadge from '@/components/difficulty-badge';
-import { cn } from '@/lib/utils';
-import type { Module, ModuleType } from '@/types/course';
+} from "lucide-react";
+import DifficultyBadge from "@/components/difficulty-badge";
+import { cn } from "@/lib/utils";
+import type { Module, ModuleType } from "@/types/course";
 
-const moduleTypeIcons: Record<ModuleType, React.ComponentType<{ className?: string }>> = {
+const moduleTypeIcons: Record<
+  ModuleType,
+  React.ComponentType<{ className?: string }>
+> = {
   text: FileTextIcon,
   video: PlayCircleIcon,
   assessment: ClipboardCheckIcon,
@@ -52,7 +55,7 @@ export function ModuleList({
   }
 
   return (
-    <div className={cn('space-y-3', className)}>
+    <div className={cn("space-y-3", className)}>
       {modules.map((mod, index) => {
         const isExpanded = expandedModules.has(mod.id);
         const ModIcon = moduleTypeIcons[mod.type] ?? FileTextIcon;
@@ -72,10 +75,10 @@ export function ModuleList({
             >
               <div
                 className={cn(
-                  'flex size-8 shrink-0 items-center justify-center rounded-lg',
+                  "flex size-8 shrink-0 items-center justify-center rounded-lg",
                   allComplete
-                    ? 'bg-primary/10 text-primary'
-                    : 'bg-muted text-muted-foreground',
+                    ? "bg-primary/10 text-primary"
+                    : "bg-muted text-muted-foreground",
                 )}
               >
                 <ModIcon className="size-4" />
@@ -84,7 +87,7 @@ export function ModuleList({
                 <div className="flex items-center gap-2">
                   <span
                     className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground"
-                    style={{ fontFamily: 'var(--font-body)' }}
+                    style={{ fontFamily: "var(--font-body)" }}
                   >
                     Module {index + 1}
                   </span>
@@ -94,21 +97,21 @@ export function ModuleList({
                 </div>
                 <h4
                   className="truncate text-[14px] font-semibold text-foreground"
-                  style={{ fontFamily: 'var(--font-display)' }}
+                  style={{ fontFamily: "var(--font-display)" }}
                 >
                   {mod.title}
                 </h4>
               </div>
               <span
                 className="shrink-0 text-[12px] text-muted-foreground"
-                style={{ fontFamily: 'var(--font-body)' }}
+                style={{ fontFamily: "var(--font-body)" }}
               >
                 {completedCount}/{mod.lessons.length}
               </span>
               <ChevronDownIcon
                 className={cn(
-                  'size-4 shrink-0 text-muted-foreground transition-transform',
-                  isExpanded && 'rotate-180',
+                  "size-4 shrink-0 text-muted-foreground transition-transform",
+                  isExpanded && "rotate-180",
                 )}
               />
             </button>
@@ -118,7 +121,7 @@ export function ModuleList({
                 {mod.description && (
                   <p
                     className="px-5 pt-3 text-[13px] text-muted-foreground"
-                    style={{ fontFamily: 'var(--font-body)' }}
+                    style={{ fontFamily: "var(--font-body)" }}
                   >
                     {mod.description}
                   </p>
@@ -140,10 +143,12 @@ export function ModuleList({
                           <div className="flex-1 min-w-0">
                             <p
                               className={cn(
-                                'truncate text-[13px] font-medium',
-                                isComplete ? 'text-muted-foreground' : 'text-foreground',
+                                "truncate text-[13px] font-medium",
+                                isComplete
+                                  ? "text-muted-foreground"
+                                  : "text-foreground",
                               )}
-                              style={{ fontFamily: 'var(--font-body)' }}
+                              style={{ fontFamily: "var(--font-body)" }}
                             >
                               {lessonIndex + 1}. {lesson.title}
                             </p>

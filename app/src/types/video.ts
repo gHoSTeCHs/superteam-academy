@@ -1,10 +1,10 @@
-import type { CodeChallengeData } from './content';
-import type { QuestionType, ResponseConfig } from './questions';
+import type { CodeChallengeData } from "./content";
+import type { QuestionType, ResponseConfig } from "./questions";
 
 export interface VideoCheckpoint {
   id: string;
   timestamp: number;
-  type: 'quiz' | 'code_challenge';
+  type: "quiz" | "code_challenge";
   questionData?: CheckpointQuestionData;
   challengeData?: CodeChallengeData;
   maxAttempts: number;

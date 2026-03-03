@@ -1,6 +1,6 @@
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import type { NumericEntryConfig } from '@/types/questions';
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import type { NumericEntryConfig } from "@/types/questions";
 
 interface Props {
   value: NumericEntryConfig | null;
@@ -11,7 +11,7 @@ function getDefaults(): NumericEntryConfig {
   return {
     answer: 0,
     tolerance: undefined,
-    unit: '',
+    unit: "",
   };
 }
 
@@ -44,9 +44,13 @@ export default function NumericEntryBuilder({ value, onChange }: Props) {
             type="number"
             step="any"
             min={0}
-            value={config.tolerance ?? ''}
+            value={config.tolerance ?? ""}
             onChange={(e) =>
-              update({ tolerance: e.target.value ? parseFloat(e.target.value) : undefined })
+              update({
+                tolerance: e.target.value
+                  ? parseFloat(e.target.value)
+                  : undefined,
+              })
             }
             placeholder="e.g. 0.5"
           />
@@ -56,7 +60,7 @@ export default function NumericEntryBuilder({ value, onChange }: Props) {
           <Label htmlFor="numeric_unit">Unit (optional)</Label>
           <Input
             id="numeric_unit"
-            value={config.unit ?? ''}
+            value={config.unit ?? ""}
             onChange={(e) => update({ unit: e.target.value || undefined })}
             placeholder="e.g. cm, kg"
           />

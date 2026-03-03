@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface LessonNavigationProps {
   moduleName: string;
@@ -28,13 +28,13 @@ export function LessonNavigation({
   className,
 }: LessonNavigationProps) {
   return (
-    <div className={cn('space-y-4', className)}>
+    <div className={cn("space-y-4", className)}>
       <div className="flex items-center gap-2 text-[12px] text-muted-foreground">
-        <span style={{ fontFamily: 'var(--font-body)' }}>{moduleName}</span>
+        <span style={{ fontFamily: "var(--font-body)" }}>{moduleName}</span>
         <ChevronRightIcon className="size-3" />
         <span
           className="font-medium text-foreground"
-          style={{ fontFamily: 'var(--font-body)' }}
+          style={{ fontFamily: "var(--font-body)" }}
         >
           Lesson {currentLesson} of {totalLessons}
         </span>
@@ -42,7 +42,7 @@ export function LessonNavigation({
 
       <h1
         className="text-[24px] font-bold leading-tight text-foreground"
-        style={{ fontFamily: 'var(--font-display)', letterSpacing: '-0.02em' }}
+        style={{ fontFamily: "var(--font-display)", letterSpacing: "-0.02em" }}
       >
         {lessonTitle}
       </h1>
@@ -56,12 +56,12 @@ export function LessonNavigation({
           className="gap-1"
         >
           <ChevronLeftIcon className="size-4" />
-          <span style={{ fontFamily: 'var(--font-body)' }}>Previous</span>
+          <span style={{ fontFamily: "var(--font-body)" }}>Previous</span>
         </Button>
 
         <span
           className="text-[12px] text-muted-foreground"
-          style={{ fontFamily: 'var(--font-body)' }}
+          style={{ fontFamily: "var(--font-body)" }}
         >
           {currentLesson} / {totalLessons}
         </span>
@@ -73,7 +73,7 @@ export function LessonNavigation({
           onClick={onNext}
           className="gap-1"
         >
-          <span style={{ fontFamily: 'var(--font-body)' }}>Next</span>
+          <span style={{ fontFamily: "var(--font-body)" }}>Next</span>
           <ChevronRightIcon className="size-4" />
         </Button>
       </div>

@@ -1,19 +1,28 @@
-import type { CodeRunner, RunResult, TestCaseInput, TestResult } from '@/types/code-runner';
+import type {
+  CodeRunner,
+  RunResult,
+  TestCaseInput,
+  TestResult,
+} from "@/types/code-runner";
 
 const EXECUTION_TIMEOUT_MS = 5000;
 
 export class TypeScriptRunner implements CodeRunner {
   private iframe: HTMLIFrameElement | null = null;
 
-  async run(code: string, _language: string, testCases: TestCaseInput[]): Promise<RunResult> {
+  async run(
+    code: string,
+    _language: string,
+    testCases: TestCaseInput[],
+  ): Promise<RunResult> {
     this.dispose();
 
     const startTime = performance.now();
 
     return new Promise<RunResult>((resolve) => {
-      const iframe = document.createElement('iframe');
-      iframe.sandbox.add('allow-scripts');
-      iframe.style.display = 'none';
+      const iframe = document.createElement("iframe");
+      iframe.sandbox.add("allow-scripts");
+      iframe.style.display = "none";
       document.body.appendChild(iframe);
       this.iframe = iframe;
 
@@ -22,7 +31,7 @@ export class TypeScriptRunner implements CodeRunner {
         resolve({
           passed: false,
           results: [],
-          error: 'Execution timed out after 5 seconds.',
+          error: "Execution timed out after 5 seconds.",
           executionTimeMs: EXECUTION_TIMEOUT_MS,
         });
       }, EXECUTION_TIMEOUT_MS);
@@ -36,7 +45,7 @@ export class TypeScriptRunner implements CodeRunner {
           error?: string;
         };
 
-        if (data.type !== 'test-results') return;
+        if (data.type !== "test-results") return;
 
         cleanup();
 
@@ -60,17 +69,17 @@ export class TypeScriptRunner implements CodeRunner {
 
       const cleanup = () => {
         clearTimeout(timeoutId);
-        window.removeEventListener('message', onMessage);
+        window.removeEventListener("message", onMessage);
         this.dispose();
       };
 
-      window.addEventListener('message', onMessage);
+      window.addEventListener("message", onMessage);
 
       const testCaseJSON = JSON.stringify(testCases);
       const escapedCode = code
-        .replace(/\\/g, '\\\\')
-        .replace(/`/g, '\\`')
-        .replace(/\$/g, '\\$');
+        .replace(/\\/g, "\\\\")
+        .replace(/`/g, "\\`")
+        .replace(/\$/g, "\\$");
 
       const html = buildSandboxHTML(escapedCode, testCaseJSON);
 

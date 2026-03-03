@@ -1,8 +1,9 @@
-'use client';
+"use client";
 
-import { ChevronRightIcon } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { UserMenu } from '@/components/layout/user-menu';
+import { ChevronRightIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Link } from "@/i18n/navigation";
+import { UserMenu } from "@/components/layout/user-menu";
 
 interface Breadcrumb {
   label: string;
@@ -16,14 +17,14 @@ interface AdminHeaderProps {
 }
 
 export function AdminHeader({
-  breadcrumbs = [{ label: 'Dashboard' }],
+  breadcrumbs = [{ label: "Dashboard" }],
   title,
   className,
 }: AdminHeaderProps) {
   return (
     <header
       className={cn(
-        'flex h-14 items-center justify-between border-b border-border bg-card px-6',
+        "flex h-14 items-center justify-between border-b border-border bg-card px-6",
         className,
       )}
     >
@@ -34,17 +35,17 @@ export function AdminHeader({
               <ChevronRightIcon className="size-3.5 text-muted-foreground" />
             )}
             {crumb.href ? (
-              <a
+              <Link
                 href={crumb.href}
                 className="text-[13px] font-medium text-muted-foreground transition-colors hover:text-foreground"
-                style={{ fontFamily: 'var(--font-body)' }}
+                style={{ fontFamily: "var(--font-body)" }}
               >
                 {crumb.label}
-              </a>
+              </Link>
             ) : (
               <span
                 className="text-[13px] font-medium text-foreground"
-                style={{ fontFamily: 'var(--font-body)' }}
+                style={{ fontFamily: "var(--font-body)" }}
               >
                 {crumb.label}
               </span>
@@ -57,12 +58,12 @@ export function AdminHeader({
         {title && (
           <span
             className="text-[14px] font-semibold text-foreground"
-            style={{ fontFamily: 'var(--font-display)' }}
+            style={{ fontFamily: "var(--font-display)" }}
           >
             {title}
           </span>
         )}
-        <UserMenu userName="Admin" />
+        <UserMenu />
       </div>
     </header>
   );

@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useRef, useState, useCallback, type SyntheticEvent } from 'react';
-import ReactPlayer from 'react-player';
-import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { VideoCheckpointOverlay } from '@/components/video-checkpoint-overlay';
-import type { VideoCheckpoint } from '@/types/video';
+import { useRef, useState, useCallback, type SyntheticEvent } from "react";
+import ReactPlayer from "react-player";
+import { Play, Pause, Volume2, VolumeX } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { VideoCheckpointOverlay } from "@/components/video-checkpoint-overlay";
+import type { VideoCheckpoint } from "@/types/video";
 
 interface VideoPlayerProps {
   url: string;
@@ -17,7 +17,7 @@ interface VideoPlayerProps {
 function formatTime(seconds: number): string {
   const mins = Math.floor(seconds / 60);
   const secs = Math.floor(seconds % 60);
-  return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
 }
 
 export function VideoPlayer({
@@ -30,8 +30,11 @@ export function VideoPlayer({
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [activeCheckpoint, setActiveCheckpoint] = useState<VideoCheckpoint | null>(null);
-  const [completedCheckpoints, setCompletedCheckpoints] = useState<Set<string>>(new Set());
+  const [activeCheckpoint, setActiveCheckpoint] =
+    useState<VideoCheckpoint | null>(null);
+  const [completedCheckpoints, setCompletedCheckpoints] = useState<Set<string>>(
+    new Set(),
+  );
   const [muted, setMuted] = useState(false);
 
   const played = duration > 0 ? currentTime / duration : 0;
@@ -56,14 +59,20 @@ export function VideoPlayer({
     [checkpoints, completedCheckpoints],
   );
 
-  const handleDurationChange = useCallback((e: SyntheticEvent<HTMLVideoElement>) => {
-    setDuration(e.currentTarget.duration);
-  }, []);
+  const handleDurationChange = useCallback(
+    (e: SyntheticEvent<HTMLVideoElement>) => {
+      setDuration(e.currentTarget.duration);
+    },
+    [],
+  );
 
   const handleSeekClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       const rect = e.currentTarget.getBoundingClientRect();
-      const fraction = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      const fraction = Math.max(
+        0,
+        Math.min(1, (e.clientX - rect.left) / rect.width),
+      );
       const seekTime = fraction * duration;
 
       if (playerRef.current) {
@@ -126,7 +135,9 @@ export function VideoPlayer({
   }, [activeCheckpoint, onCheckpointComplete]);
 
   return (
-    <div className={cn('relative rounded-lg overflow-hidden bg-black', className)}>
+    <div
+      className={cn("relative rounded-lg overflow-hidden bg-black", className)}
+    >
       <div className="aspect-video">
         <ReactPlayer
           ref={playerRef}
@@ -148,7 +159,11 @@ export function VideoPlayer({
           onClick={togglePlay}
           className="text-white hover:text-white/80 transition-colors"
         >
-          {playing ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
+          {playing ? (
+            <Pause className="h-5 w-5" />
+          ) : (
+            <Play className="h-5 w-5" />
+          )}
         </button>
 
         <div
@@ -171,12 +186,15 @@ export function VideoPlayer({
               <div
                 key={cp.id}
                 className={cn(
-                  'absolute top-1/2 -translate-y-1/2 h-3 w-3 rounded-full border-2 border-black/50',
+                  "absolute top-1/2 -translate-y-1/2 h-3 w-3 rounded-full border-2 border-black/50",
                   completedCheckpoints.has(cp.id)
-                    ? 'bg-green-400'
-                    : 'bg-yellow-400',
+                    ? "bg-green-400"
+                    : "bg-yellow-400",
                 )}
-                style={{ left: `${position}%`, transform: 'translate(-50%, -50%)' }}
+                style={{
+                  left: `${position}%`,
+                  transform: "translate(-50%, -50%)",
+                }}
               />
             );
           })}
@@ -191,7 +209,11 @@ export function VideoPlayer({
           onClick={() => setMuted((m) => !m)}
           className="text-white hover:text-white/80 transition-colors"
         >
-          {muted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+          {muted ? (
+            <VolumeX className="h-5 w-5" />
+          ) : (
+            <Volume2 className="h-5 w-5" />
+          )}
         </button>
       </div>
 

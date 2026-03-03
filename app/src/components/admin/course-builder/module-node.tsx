@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 import {
   GripVertical,
   ChevronDown,
   ChevronRight,
   Trash2,
   Plus,
-} from 'lucide-react';
+} from "lucide-react";
 import {
   DndContext,
   closestCenter,
@@ -15,36 +15,43 @@ import {
   KeyboardSensor,
   useSensor,
   useSensors,
-} from '@dnd-kit/core';
-import type { DragEndEvent } from '@dnd-kit/core';
+} from "@dnd-kit/core";
+import type { DragEndEvent } from "@dnd-kit/core";
 import {
   SortableContext,
   verticalListSortingStrategy,
   arrayMove,
   sortableKeyboardCoordinates,
-} from '@dnd-kit/sortable';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { cn } from '@/lib/utils';
-import { LessonNode } from './lesson-node';
-import { AddLessonDialog } from './add-lesson-dialog';
-import type { Module, Lesson, ModuleType } from '@/types/course';
+} from "@dnd-kit/sortable";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+import { LessonNode } from "./lesson-node";
+import { AddLessonDialog } from "./add-lesson-dialog";
+import type { Module, Lesson, ModuleType } from "@/types/course";
 
 interface ModuleNodeProps {
   module: Module;
+  courseId: string;
   onChange: (module: Module) => void;
   onDelete: () => void;
 }
 
-const MODULE_TYPE_VARIANT: Record<ModuleType, 'primary' | 'reward' | 'danger'> = {
-  text: 'primary',
-  video: 'reward',
-  assessment: 'danger',
-};
+const MODULE_TYPE_VARIANT: Record<ModuleType, "primary" | "reward" | "danger"> =
+  {
+    text: "primary",
+    video: "reward",
+    assessment: "danger",
+  };
 
-export function ModuleNode({ module, onChange, onDelete }: ModuleNodeProps) {
+export function ModuleNode({
+  module,
+  courseId,
+  onChange,
+  onDelete,
+}: ModuleNodeProps) {
   const [expanded, setExpanded] = useState(true);
   const [lessonDialogOpen, setLessonDialogOpen] = useState(false);
 
@@ -85,7 +92,7 @@ export function ModuleNode({ module, onChange, onDelete }: ModuleNodeProps) {
     onChange({ ...module, lessons: reordered });
   }
 
-  function handleAddLesson(data: Omit<Lesson, 'id' | 'sortOrder'>) {
+  function handleAddLesson(data: Omit<Lesson, "id" | "sortOrder">) {
     const newLesson: Lesson = {
       ...data,
       id: crypto.randomUUID(),
@@ -108,8 +115,8 @@ export function ModuleNode({ module, onChange, onDelete }: ModuleNodeProps) {
       ref={setNodeRef}
       style={style}
       className={cn(
-        'rounded-lg border border-border bg-card',
-        isDragging && 'z-50 opacity-50 shadow-lg',
+        "rounded-lg border border-border bg-card",
+        isDragging && "z-50 opacity-50 shadow-lg",
       )}
     >
       <div className="flex items-center gap-3 px-4 py-3">
@@ -122,7 +129,10 @@ export function ModuleNode({ module, onChange, onDelete }: ModuleNodeProps) {
           <GripVertical className="size-4" />
         </button>
 
-        <Badge variant={MODULE_TYPE_VARIANT[module.type]} className="shrink-0 uppercase">
+        <Badge
+          variant={MODULE_TYPE_VARIANT[module.type]}
+          className="shrink-0 uppercase"
+        >
           {module.type}
         </Badge>
 
@@ -131,7 +141,7 @@ export function ModuleNode({ module, onChange, onDelete }: ModuleNodeProps) {
         </span>
 
         <span className="shrink-0 text-[12px] text-muted-foreground">
-          {module.lessons.length} lesson{module.lessons.length !== 1 ? 's' : ''}
+          {module.lessons.length} lesson{module.lessons.length !== 1 ? "s" : ""}
         </span>
 
         <Button
@@ -147,7 +157,7 @@ export function ModuleNode({ module, onChange, onDelete }: ModuleNodeProps) {
             <ChevronRight className="size-4" />
           )}
           <span className="sr-only">
-            {expanded ? 'Collapse' : 'Expand'} module
+            {expanded ? "Collapse" : "Expand"} module
           </span>
         </Button>
 
@@ -185,6 +195,7 @@ export function ModuleNode({ module, onChange, onDelete }: ModuleNodeProps) {
                   <LessonNode
                     key={lesson.id}
                     lesson={lesson}
+                    courseId={courseId}
                     onDelete={() => handleDeleteLesson(lesson.id)}
                   />
                 ))}

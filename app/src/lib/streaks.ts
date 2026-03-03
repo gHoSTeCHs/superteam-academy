@@ -6,7 +6,12 @@ interface StreakData {
 }
 
 function defaultStreak(): StreakData {
-  return { currentStreak: 0, longestStreak: 0, lastActivityDate: '', activityDays: [] };
+  return {
+    currentStreak: 0,
+    longestStreak: 0,
+    lastActivityDate: "",
+    activityDays: [],
+  };
 }
 
 function storageKey(walletAddress: string): string {
@@ -24,7 +29,7 @@ function yesterdayISO(): string {
 }
 
 export function getStreak(walletAddress: string): StreakData {
-  if (typeof window === 'undefined') return defaultStreak();
+  if (typeof window === "undefined") return defaultStreak();
   try {
     const raw = localStorage.getItem(storageKey(walletAddress));
     if (!raw) return defaultStreak();
@@ -50,7 +55,7 @@ export function recordActivity(walletAddress: string): StreakData {
   };
   updated.longestStreak = Math.max(data.longestStreak, updated.currentStreak);
 
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     localStorage.setItem(storageKey(walletAddress), JSON.stringify(updated));
   }
 
@@ -94,13 +99,21 @@ export function getCalendarData(
   return days;
 }
 
-export function getXpLevel(xp: number): { level: number; currentXp: number; nextLevelXp: number; progress: number } {
+export function getXpLevel(xp: number): {
+  level: number;
+  currentXp: number;
+  nextLevelXp: number;
+  progress: number;
+} {
   const level = Math.floor(Math.sqrt(xp / 100));
   const currentLevelXp = level * level * 100;
   const nextLevelXp = (level + 1) * (level + 1) * 100;
-  const progress = nextLevelXp > currentLevelXp
-    ? Math.round(((xp - currentLevelXp) / (nextLevelXp - currentLevelXp)) * 100)
-    : 0;
+  const progress =
+    nextLevelXp > currentLevelXp
+      ? Math.round(
+          ((xp - currentLevelXp) / (nextLevelXp - currentLevelXp)) * 100,
+        )
+      : 0;
 
   return { level, currentXp: xp, nextLevelXp, progress };
 }

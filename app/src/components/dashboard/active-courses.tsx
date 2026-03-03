@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { PlayIcon, BookOpenIcon } from 'lucide-react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { ProgressBar } from '@/components/courses/progress-bar';
-import DifficultyBadge from '@/components/difficulty-badge';
-import { cn } from '@/lib/utils';
+import Link from "next/link";
+import { PlayIcon, BookOpenIcon } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ProgressBar } from "@/components/courses/progress-bar";
+import DifficultyBadge from "@/components/difficulty-badge";
+import { cn } from "@/lib/utils";
 
 interface ActiveCourse {
   id: string;
   title: string;
   slug: string;
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  difficulty: "beginner" | "intermediate" | "advanced";
   completedLessons: number;
   totalLessons: number;
   nextLessonTitle: string;
@@ -27,17 +27,17 @@ interface ActiveCoursesProps {
 export function ActiveCourses({ courses, className }: ActiveCoursesProps) {
   if (courses.length === 0) {
     return (
-      <Card className={cn('px-6 py-8 text-center', className)}>
+      <Card className={cn("px-6 py-8 text-center", className)}>
         <BookOpenIcon className="mx-auto mb-3 size-8 text-muted-foreground" />
         <p
           className="text-[14px] font-medium text-foreground"
-          style={{ fontFamily: 'var(--font-body)' }}
+          style={{ fontFamily: "var(--font-body)" }}
         >
           No active courses
         </p>
         <p
           className="mt-1 text-[13px] text-muted-foreground"
-          style={{ fontFamily: 'var(--font-body)' }}
+          style={{ fontFamily: "var(--font-body)" }}
         >
           Enroll in a course to start learning
         </p>
@@ -49,7 +49,7 @@ export function ActiveCourses({ courses, className }: ActiveCoursesProps) {
   }
 
   return (
-    <div className={cn('space-y-3', className)}>
+    <div className={cn("space-y-3", className)}>
       {courses.map((course) => {
         const progress = Math.round(
           (course.completedLessons / course.totalLessons) * 100,
@@ -61,7 +61,7 @@ export function ActiveCourses({ courses, className }: ActiveCoursesProps) {
                 <div className="mb-1 flex items-center gap-2">
                   <h4
                     className="truncate text-[14px] font-semibold text-foreground"
-                    style={{ fontFamily: 'var(--font-display)' }}
+                    style={{ fontFamily: "var(--font-display)" }}
                   >
                     {course.title}
                   </h4>
@@ -76,14 +76,21 @@ export function ActiveCourses({ courses, className }: ActiveCoursesProps) {
                 <div className="flex items-center gap-2">
                   <span
                     className="text-[12px] text-muted-foreground"
-                    style={{ fontFamily: 'var(--font-body)' }}
+                    style={{ fontFamily: "var(--font-body)" }}
                   >
                     Next: {course.nextLessonTitle}
                   </span>
                 </div>
               </div>
-              <Button variant="primary" size="sm" className="shrink-0 gap-1.5" asChild>
-                <Link href={`/courses/${course.slug}/lessons/${course.nextLessonSlug}`}>
+              <Button
+                variant="primary"
+                size="sm"
+                className="shrink-0 gap-1.5"
+                asChild
+              >
+                <Link
+                  href={`/courses/${course.slug}/lessons/${course.nextLessonSlug}`}
+                >
                   <PlayIcon className="size-3.5" />
                   Continue
                 </Link>

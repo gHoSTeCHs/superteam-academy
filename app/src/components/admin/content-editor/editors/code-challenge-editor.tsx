@@ -1,33 +1,36 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Plus, X, ChevronDown, ChevronRight } from 'lucide-react';
-import { CodeEditor } from '@/components/code-editor';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import { useState } from "react";
+import { Plus, X, ChevronDown, ChevronRight } from "lucide-react";
+import { CodeEditor } from "@/components/code-editor";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Separator } from '@/components/ui/separator';
-import { cn } from '@/lib/utils';
-import type { CodeChallengeData, TestCase } from '@/types/content';
+} from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
+import type { CodeChallengeData, TestCase } from "@/types/content";
 
 interface CodeChallengeEditorProps {
   data: CodeChallengeData;
   onChange: (data: CodeChallengeData) => void;
 }
 
-export function CodeChallengeEditor({ data, onChange }: CodeChallengeEditorProps) {
+export function CodeChallengeEditor({
+  data,
+  onChange,
+}: CodeChallengeEditorProps) {
   const [showSolution, setShowSolution] = useState(false);
 
   function handleLanguageChange(language: string) {
-    if (language === 'typescript' || language === 'rust') {
+    if (language === "typescript" || language === "rust") {
       onChange({ ...data, language });
     }
   }
@@ -49,7 +52,7 @@ export function CodeChallengeEditor({ data, onChange }: CodeChallengeEditorProps
   }
 
   function addTestCase() {
-    const newTestCase: TestCase = { name: '', assertionCode: '' };
+    const newTestCase: TestCase = { name: "", assertionCode: "" };
     onChange({ ...data, testCases: [...data.testCases, newTestCase] });
   }
 
@@ -64,13 +67,13 @@ export function CodeChallengeEditor({ data, onChange }: CodeChallengeEditorProps
     onChange({
       ...data,
       testCases: data.testCases.map((tc, i) =>
-        i === index ? { ...tc, ...updates } : tc
+        i === index ? { ...tc, ...updates } : tc,
       ),
     });
   }
 
   function addHint() {
-    onChange({ ...data, hints: [...data.hints, ''] });
+    onChange({ ...data, hints: [...data.hints, ""] });
   }
 
   function removeHint(index: number) {
@@ -104,11 +107,13 @@ export function CodeChallengeEditor({ data, onChange }: CodeChallengeEditorProps
         </div>
 
         <div className="space-y-2">
-          <Label className="text-muted-foreground">Max Attempts (optional)</Label>
+          <Label className="text-muted-foreground">
+            Max Attempts (optional)
+          </Label>
           <Input
             type="number"
             min={1}
-            value={data.maxAttempts ?? ''}
+            value={data.maxAttempts ?? ""}
             onChange={(e) => handleMaxAttemptsChange(e.target.value)}
             placeholder="Unlimited"
           />
@@ -130,7 +135,7 @@ export function CodeChallengeEditor({ data, onChange }: CodeChallengeEditorProps
           type="button"
           onClick={() => setShowSolution(!showSolution)}
           className={cn(
-            'flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground'
+            "flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground",
           )}
         >
           {showSolution ? (
@@ -155,7 +160,12 @@ export function CodeChallengeEditor({ data, onChange }: CodeChallengeEditorProps
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <Label className="text-muted-foreground">Test Cases</Label>
-          <Button type="button" variant="outline" size="sm" onClick={addTestCase}>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={addTestCase}
+          >
             <Plus className="size-4" />
             Add Test Case
           </Button>
@@ -170,11 +180,13 @@ export function CodeChallengeEditor({ data, onChange }: CodeChallengeEditorProps
               <div className="flex-1 space-y-3">
                 <Input
                   value={testCase.name}
-                  onChange={(e) => updateTestCase(index, { name: e.target.value })}
+                  onChange={(e) =>
+                    updateTestCase(index, { name: e.target.value })
+                  }
                   placeholder="Test case name"
                 />
                 <Textarea
-                  value={testCase.assertionCode ?? ''}
+                  value={testCase.assertionCode ?? ""}
                   onChange={(e) =>
                     updateTestCase(index, { assertionCode: e.target.value })
                   }

@@ -1,10 +1,15 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { CheckCircle2Icon, Loader2Icon, TrophyIcon, ZapIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { XpBurst } from '@/components/ui/xp-burst';
-import { cn } from '@/lib/utils';
+import { useState, useCallback } from "react";
+import {
+  CheckCircle2Icon,
+  Loader2Icon,
+  TrophyIcon,
+  ZapIcon,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { XpBurst } from "@/components/ui/xp-burst";
+import { cn } from "@/lib/utils";
 
 interface LessonCompleteButtonProps {
   xpReward: number;
@@ -53,12 +58,12 @@ export function LessonCompleteButton({
 
   if (showFinalize) {
     return (
-      <div className={cn('space-y-3', className)}>
+      <div className={cn("space-y-3", className)}>
         <div className="flex items-center gap-2 rounded-lg bg-primary/10 px-4 py-3">
           <TrophyIcon className="size-5 text-primary" />
           <span
             className="text-[14px] font-semibold text-primary"
-            style={{ fontFamily: 'var(--font-body)' }}
+            style={{ fontFamily: "var(--font-body)" }}
           >
             All lessons completed!
           </span>
@@ -75,8 +80,8 @@ export function LessonCompleteButton({
           ) : (
             <TrophyIcon className="size-4" />
           )}
-          <span style={{ fontFamily: 'var(--font-body)' }}>
-            {loading ? 'Finalizing...' : 'Claim Course Credential'}
+          <span style={{ fontFamily: "var(--font-body)" }}>
+            {loading ? "Finalizing..." : "Claim Course Credential"}
           </span>
         </Button>
         <XpBurst
@@ -90,17 +95,19 @@ export function LessonCompleteButton({
 
   if (isCompleted) {
     return (
-      <div className={cn('flex items-center gap-2', className)}>
+      <div className={cn("flex items-center gap-2", className)}>
         <CheckCircle2Icon className="size-5 text-primary" />
         <span
           className="text-[14px] font-medium text-primary"
-          style={{ fontFamily: 'var(--font-body)' }}
+          style={{ fontFamily: "var(--font-body)" }}
         >
           Lesson completed
         </span>
-        <span className="ml-auto flex items-center gap-1 text-[13px] font-semibold" style={{ color: '#ffd23f' }}>
-          <ZapIcon className="size-3.5" />
-          +{xpReward} XP
+        <span
+          className="ml-auto flex items-center gap-1 text-[13px] font-semibold"
+          style={{ color: "#ffd23f" }}
+        >
+          <ZapIcon className="size-3.5" />+{xpReward} XP
         </span>
         <XpBurst
           xp={xpReward}
@@ -125,8 +132,8 @@ export function LessonCompleteButton({
         ) : (
           <CheckCircle2Icon className="size-4" />
         )}
-        <span style={{ fontFamily: 'var(--font-body)' }}>
-          {loading ? 'Completing...' : 'Mark as Complete'}
+        <span style={{ fontFamily: "var(--font-body)" }}>
+          {loading ? "Completing..." : "Mark as Complete"}
         </span>
         <span className="ml-1 flex items-center gap-1 rounded-full bg-white/20 px-2 py-0.5 text-[11px]">
           <ZapIcon className="size-3" />

@@ -1,18 +1,24 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { useWalletModal } from '@solana/wallet-adapter-react-ui';
+import { useState, useCallback, useEffect, useRef } from "react";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import {
   WalletIcon,
   Loader2Icon,
   CheckCircle2Icon,
   ShieldCheckIcon,
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/use-auth";
+import { cn } from "@/lib/utils";
 
-type WalletStep = 'idle' | 'connecting' | 'signing' | 'verifying' | 'authenticated';
+type WalletStep =
+  | "idle"
+  | "connecting"
+  | "signing"
+  | "verifying"
+  | "authenticated";
 
 interface WalletSignInProps {
   onAuthenticated?: (wallet: string) => void;
@@ -23,57 +29,80 @@ function truncateWallet(wallet: string): string {
   return `${wallet.slice(0, 4)}...${wallet.slice(-4)}`;
 }
 
-export function WalletSignIn({ onAuthenticated, className }: WalletSignInProps) {
-  const [step, setStep] = useState<WalletStep>('idle');
+export function WalletSignIn({
+  onAuthenticated,
+  className,
+}: WalletSignInProps) {
+  const [step, setStep] = useState<WalletStep>("idle");
   const { publicKey, signMessage, connected } = useWallet();
   const { setVisible } = useWalletModal();
+  const { isAuthenticated } = useAuth();
+  const signingRef = useRef(false);
 
-  const handleConnect = useCallback(async () => {
-    if (!connected) {
-      setStep('connecting');
-      setVisible(true);
-      return;
-    }
+  const performSign = useCallback(async () => {
+    if (!publicKey || !signMessage || signingRef.current) return;
 
-    if (!publicKey || !signMessage) return;
-
+    signingRef.current = true;
     try {
-      setStep('signing');
+      setStep("signing");
       const message = `Sign in to Superteam Academy\nTimestamp: ${Date.now()}`;
       const encoded = new TextEncoder().encode(message);
       const signature = await signMessage(encoded);
 
-      setStep('verifying');
-      const response = await fetch('/api/auth/sign-in/solana', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      setStep("verifying");
+      const response = await fetch("/api/auth/sign-in/solana", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           publicKey: publicKey.toBase58(),
-          signature: Buffer.from(signature).toString('base64'),
+          signature: Buffer.from(signature).toString("base64"),
           message,
         }),
       });
 
       if (response.ok) {
-        setStep('authenticated');
+        setStep("authenticated");
         onAuthenticated?.(publicKey.toBase58());
       } else {
-        setStep('idle');
+        setStep("idle");
       }
     } catch {
-      setStep('idle');
+      setStep("idle");
+    } finally {
+      signingRef.current = false;
     }
-  }, [connected, publicKey, signMessage, setVisible, onAuthenticated]);
+  }, [publicKey, signMessage, onAuthenticated]);
 
-  if (step === 'authenticated' && publicKey) {
+  useEffect(() => {
+    if (connected && step === "connecting") {
+      performSign();
+    }
+  }, [connected, step, performSign]);
+
+  const handleConnect = useCallback(async () => {
+    if (connected) {
+      await performSign();
+      return;
+    }
+
+    setStep("connecting");
+    setVisible(true);
+  }, [connected, performSign, setVisible]);
+
+  if (isAuthenticated && publicKey) {
     return (
-      <div className={cn('flex flex-col items-center gap-3 rounded-xl border-2 border-primary/30 bg-primary/5 px-6 py-5', className)}>
+      <div
+        className={cn(
+          "flex flex-col items-center gap-3 rounded-xl border-2 border-primary/30 bg-primary/5 px-6 py-5",
+          className,
+        )}
+      >
         <div className="flex size-12 items-center justify-center rounded-full bg-primary/10">
           <CheckCircle2Icon className="size-6 text-primary" />
         </div>
         <p
           className="text-[14px] font-semibold text-foreground"
-          style={{ fontFamily: 'var(--font-body)' }}
+          style={{ fontFamily: "var(--font-body)" }}
         >
           Wallet Connected
         </p>
@@ -84,18 +113,42 @@ export function WalletSignIn({ onAuthenticated, className }: WalletSignInProps) 
     );
   }
 
-  const isLoading = step !== 'idle';
+  if (step === "authenticated" && publicKey) {
+    return (
+      <div
+        className={cn(
+          "flex flex-col items-center gap-3 rounded-xl border-2 border-primary/30 bg-primary/5 px-6 py-5",
+          className,
+        )}
+      >
+        <div className="flex size-12 items-center justify-center rounded-full bg-primary/10">
+          <CheckCircle2Icon className="size-6 text-primary" />
+        </div>
+        <p
+          className="text-[14px] font-semibold text-foreground"
+          style={{ fontFamily: "var(--font-body)" }}
+        >
+          Wallet Connected
+        </p>
+        <p className="font-mono text-[12px] text-muted-foreground">
+          {truncateWallet(publicKey.toBase58())}
+        </p>
+      </div>
+    );
+  }
+
+  const isLoading = step !== "idle";
 
   const stepLabels: Record<WalletStep, string> = {
-    idle: connected ? 'Sign In with Wallet' : 'Connect Wallet',
-    connecting: 'Connecting...',
-    signing: 'Sign message in wallet...',
-    verifying: 'Verifying signature...',
-    authenticated: 'Authenticated',
+    idle: connected ? "Sign In with Wallet" : "Connect Wallet",
+    connecting: "Connecting...",
+    signing: "Sign message in wallet...",
+    verifying: "Verifying signature...",
+    authenticated: "Authenticated",
   };
 
   return (
-    <div className={cn('flex flex-col items-center gap-4', className)}>
+    <div className={cn("flex flex-col items-center gap-4", className)}>
       <Button
         variant="primary"
         size="lg"
@@ -108,7 +161,7 @@ export function WalletSignIn({ onAuthenticated, className }: WalletSignInProps) 
         ) : (
           <WalletIcon className="size-5" />
         )}
-        <span style={{ fontFamily: 'var(--font-body)' }}>
+        <span style={{ fontFamily: "var(--font-body)" }}>
           {stepLabels[step]}
         </span>
       </Button>
@@ -116,26 +169,43 @@ export function WalletSignIn({ onAuthenticated, className }: WalletSignInProps) 
       {isLoading && (
         <div className="flex items-center gap-3 rounded-lg bg-muted/50 px-4 py-2.5">
           <div className="flex gap-1">
-            {(['connecting', 'signing', 'verifying'] as WalletStep[]).map((s) => {
-              const active = s === step;
-              const done = (['connecting', 'signing', 'verifying', 'authenticated'] as WalletStep[])
-                .indexOf(step) > (['connecting', 'signing', 'verifying', 'authenticated'] as WalletStep[]).indexOf(s);
-              return (
-                <div
-                  key={s}
-                  className={cn(
-                    'size-2 rounded-full transition-all',
-                    active && 'scale-125 bg-primary',
-                    done && 'bg-primary/40',
-                    !active && !done && 'bg-muted-foreground/20',
-                  )}
-                />
-              );
-            })}
+            {(["connecting", "signing", "verifying"] as WalletStep[]).map(
+              (s) => {
+                const active = s === step;
+                const done =
+                  (
+                    [
+                      "connecting",
+                      "signing",
+                      "verifying",
+                      "authenticated",
+                    ] as WalletStep[]
+                  ).indexOf(step) >
+                  (
+                    [
+                      "connecting",
+                      "signing",
+                      "verifying",
+                      "authenticated",
+                    ] as WalletStep[]
+                  ).indexOf(s);
+                return (
+                  <div
+                    key={s}
+                    className={cn(
+                      "size-2 rounded-full transition-all",
+                      active && "scale-125 bg-primary",
+                      done && "bg-primary/40",
+                      !active && !done && "bg-muted-foreground/20",
+                    )}
+                  />
+                );
+              },
+            )}
           </div>
           <span
             className="text-[12px] text-muted-foreground"
-            style={{ fontFamily: 'var(--font-body)' }}
+            style={{ fontFamily: "var(--font-body)" }}
           >
             {stepLabels[step]}
           </span>
@@ -144,7 +214,7 @@ export function WalletSignIn({ onAuthenticated, className }: WalletSignInProps) 
 
       <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
         <ShieldCheckIcon className="size-3" />
-        <span style={{ fontFamily: 'var(--font-body)' }}>
+        <span style={{ fontFamily: "var(--font-body)" }}>
           Sign-In with Solana (SIWS) — no transaction fees
         </span>
       </div>

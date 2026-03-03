@@ -37,7 +37,9 @@ interface SanityCourse {
     | null;
 }
 
-function mapSanityCourse(raw: SanityCourse): Course & { isPublished: boolean } {
+function mapSanityCourse(
+  raw: SanityCourse,
+): Course & { isPublished: boolean; difficulty?: string } {
   return {
     id: raw._id,
     slug: raw.slug,
@@ -47,6 +49,7 @@ function mapSanityCourse(raw: SanityCourse): Course & { isPublished: boolean } {
     thumbnail: raw.thumbnail ?? undefined,
     tags: raw.tags ?? [],
     isPublished: raw.isPublished ?? false,
+    difficulty: raw.difficulty ?? "beginner",
     modules: (raw.modules ?? []).map(
       (m, mi): Module => ({
         id: m._id,

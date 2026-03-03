@@ -1,8 +1,8 @@
-import Link from 'next/link';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import type { PaginationLinks, PaginationMeta } from '@/types/models';
+import Link from "next/link";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import type { PaginationLinks, PaginationMeta } from "@/types/models";
 
 interface PaginationProps {
   meta: PaginationMeta;
@@ -12,16 +12,16 @@ interface PaginationProps {
 function buildPageUrl(currentUrl: string | null, page: number): string {
   if (!currentUrl) {
     const params = new URLSearchParams();
-    params.set('page', String(page));
+    params.set("page", String(page));
     return `?${params.toString()}`;
   }
   try {
-    const url = new URL(currentUrl, 'http://localhost');
-    url.searchParams.set('page', String(page));
+    const url = new URL(currentUrl, "http://localhost");
+    url.searchParams.set("page", String(page));
     return `?${url.searchParams.toString()}`;
   } catch {
     const params = new URLSearchParams();
-    params.set('page', String(page));
+    params.set("page", String(page));
     return `?${params.toString()}`;
   }
 }
@@ -66,7 +66,10 @@ export function Pagination({ meta, links }: PaginationProps) {
 
   return (
     <div className="flex items-center justify-between px-4 py-3">
-      <p className="text-[13px] text-muted-foreground" style={{ fontFamily: 'var(--font-body)' }}>
+      <p
+        className="text-[13px] text-muted-foreground"
+        style={{ fontFamily: "var(--font-body)" }}
+      >
         {meta.from !== null && meta.to !== null
           ? `Showing ${meta.from} to ${meta.to} of ${meta.total} results`
           : `${meta.total} results`}
@@ -103,9 +106,9 @@ export function Pagination({ meta, links }: PaginationProps) {
           return (
             <Button
               key={page}
-              variant={isCurrent ? 'secondary' : 'ghost'}
+              variant={isCurrent ? "secondary" : "ghost"}
               size="icon"
-              className={cn('h-8 w-8 text-[13px]', isCurrent && 'font-bold')}
+              className={cn("h-8 w-8 text-[13px]", isCurrent && "font-bold")}
               asChild={!isCurrent}
               disabled={isCurrent}
             >

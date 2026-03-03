@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Plus } from 'lucide-react';
+import { useState } from "react";
+import { Plus } from "lucide-react";
 import {
   DndContext,
   closestCenter,
@@ -9,35 +9,36 @@ import {
   KeyboardSensor,
   useSensor,
   useSensors,
-} from '@dnd-kit/core';
-import type { DragEndEvent } from '@dnd-kit/core';
+} from "@dnd-kit/core";
+import type { DragEndEvent } from "@dnd-kit/core";
 import {
   SortableContext,
   verticalListSortingStrategy,
   arrayMove,
   sortableKeyboardCoordinates,
-} from '@dnd-kit/sortable';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
+} from "@dnd-kit/sortable";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectTrigger,
   SelectContent,
   SelectItem,
   SelectValue,
-} from '@/components/ui/select';
-import { ModuleNode } from './module-node';
-import { AddModuleDialog } from './add-module-dialog';
-import type { Course, Module } from '@/types/course';
+} from "@/components/ui/select";
+import { ModuleNode } from "./module-node";
+import { AddModuleDialog } from "./add-module-dialog";
+import type { Course, Module } from "@/types/course";
 
 interface CourseTreeProps {
   course: Course;
+  courseId?: string;
   onChange: (course: Course) => void;
 }
 
-export function CourseTree({ course, onChange }: CourseTreeProps) {
+export function CourseTree({ course, courseId, onChange }: CourseTreeProps) {
   const [moduleDialogOpen, setModuleDialogOpen] = useState(false);
 
   const sensors = useSensors(
@@ -53,10 +54,10 @@ export function CourseTree({ course, onChange }: CourseTreeProps) {
 
   function handleTagsChange(raw: string) {
     const tags = raw
-      .split(',')
+      .split(",")
       .map((t) => t.trim())
       .filter((t) => t.length > 0);
-    updateField('tags', tags);
+    updateField("tags", tags);
   }
 
   function handleModuleDragEnd(event: DragEndEvent) {
@@ -72,31 +73,31 @@ export function CourseTree({ course, onChange }: CourseTreeProps) {
       (mod, idx) => ({ ...mod, sortOrder: idx }),
     );
 
-    updateField('modules', reordered);
+    updateField("modules", reordered);
   }
 
-  function handleAddModule(data: Omit<Module, 'id' | 'sortOrder' | 'lessons'>) {
+  function handleAddModule(data: Omit<Module, "id" | "sortOrder" | "lessons">) {
     const newModule: Module = {
       ...data,
       id: crypto.randomUUID(),
       sortOrder: course.modules.length,
       lessons: [],
     };
-    updateField('modules', [...course.modules, newModule]);
+    updateField("modules", [...course.modules, newModule]);
   }
 
   function handleModuleChange(updated: Module) {
     const modules = course.modules.map((m) =>
       m.id === updated.id ? updated : m,
     );
-    updateField('modules', modules);
+    updateField("modules", modules);
   }
 
   function handleModuleDelete(moduleId: string) {
     const modules = course.modules
       .filter((m) => m.id !== moduleId)
       .map((m, idx) => ({ ...m, sortOrder: idx }));
-    updateField('modules', modules);
+    updateField("modules", modules);
   }
 
   const moduleIds = course.modules.map((m) => m.id);
@@ -112,7 +113,7 @@ export function CourseTree({ course, onChange }: CourseTreeProps) {
           <Label className="text-muted-foreground">Title</Label>
           <Input
             value={course.title}
-            onChange={(e) => updateField('title', e.target.value)}
+            onChange={(e) => updateField("title", e.target.value)}
             placeholder="Course title"
           />
         </div>
@@ -121,7 +122,7 @@ export function CourseTree({ course, onChange }: CourseTreeProps) {
           <Label className="text-muted-foreground">Description</Label>
           <Textarea
             value={course.description}
-            onChange={(e) => updateField('description', e.target.value)}
+            onChange={(e) => updateField("description", e.target.value)}
             placeholder="What will students learn?"
             rows={3}
           />
@@ -133,14 +134,14 @@ export function CourseTree({ course, onChange }: CourseTreeProps) {
             <Select
               value={course.language}
               onValueChange={(val: string) =>
-                updateField('language', val as Course['language'])
+                updateField("language", val as Course["language"])
               }
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select language" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="pt">Portuguese</SelectItem>
+                <SelectItem value="pt-BR">Portuguese</SelectItem>
                 <SelectItem value="es">Spanish</SelectItem>
                 <SelectItem value="en">English</SelectItem>
               </SelectContent>
@@ -150,7 +151,7 @@ export function CourseTree({ course, onChange }: CourseTreeProps) {
           <div className="space-y-2">
             <Label className="text-muted-foreground">Tags</Label>
             <Input
-              value={course.tags.join(', ')}
+              value={course.tags.join(", ")}
               onChange={(e) => handleTagsChange(e.target.value)}
               placeholder="solana, web3, defi"
             />
@@ -177,6 +178,7 @@ export function CourseTree({ course, onChange }: CourseTreeProps) {
                 <ModuleNode
                   key={mod.id}
                   module={mod}
+                  courseId={courseId ?? course.id}
                   onChange={handleModuleChange}
                   onDelete={() => handleModuleDelete(mod.id)}
                 />

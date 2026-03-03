@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { SearchIcon, XIcon } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { useState } from "react";
+import { SearchIcon, XIcon } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-const DIFFICULTIES = ['all', 'beginner', 'intermediate', 'advanced'] as const;
+const DIFFICULTIES = ["all", "beginner", "intermediate", "advanced"] as const;
 type Difficulty = (typeof DIFFICULTIES)[number];
 
-const TRACKS = ['all', 'solana', 'rust', 'defi', 'nft', 'frontend'] as const;
+const TRACKS = ["all", "solana", "rust", "defi", "nft", "frontend"] as const;
 type Track = (typeof TRACKS)[number];
 
 interface CourseFiltersProps {
@@ -25,9 +25,9 @@ export function CourseFilters({
   onTrackChange,
   className,
 }: CourseFiltersProps) {
-  const [search, setSearch] = useState('');
-  const [difficulty, setDifficulty] = useState<Difficulty>('all');
-  const [track, setTrack] = useState<Track>('all');
+  const [search, setSearch] = useState("");
+  const [difficulty, setDifficulty] = useState<Difficulty>("all");
+  const [track, setTrack] = useState<Track>("all");
 
   function handleSearch(value: string) {
     setSearch(value);
@@ -45,7 +45,7 @@ export function CourseFilters({
   }
 
   return (
-    <div className={cn('space-y-4', className)}>
+    <div className={cn("space-y-4", className)}>
       <div className="relative">
         <SearchIcon className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
         <Input
@@ -56,7 +56,7 @@ export function CourseFilters({
         />
         {search && (
           <button
-            onClick={() => handleSearch('')}
+            onClick={() => handleSearch("")}
             className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
           >
             <XIcon className="size-4" />
@@ -68,7 +68,7 @@ export function CourseFilters({
         <div className="space-y-1.5">
           <p
             className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground"
-            style={{ fontFamily: 'var(--font-body)' }}
+            style={{ fontFamily: "var(--font-body)" }}
           >
             Difficulty
           </p>
@@ -76,7 +76,7 @@ export function CourseFilters({
             {DIFFICULTIES.map((d) => (
               <Button
                 key={d}
-                variant={difficulty === d ? 'primary' : 'ghost'}
+                variant={difficulty === d ? "primary" : "ghost"}
                 size="sm"
                 className="h-7 px-2.5 text-[11px] capitalize"
                 onClick={() => handleDifficulty(d)}
@@ -90,7 +90,7 @@ export function CourseFilters({
         <div className="space-y-1.5">
           <p
             className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground"
-            style={{ fontFamily: 'var(--font-body)' }}
+            style={{ fontFamily: "var(--font-body)" }}
           >
             Track
           </p>
@@ -98,7 +98,7 @@ export function CourseFilters({
             {TRACKS.map((t) => (
               <Button
                 key={t}
-                variant={track === t ? 'primary' : 'ghost'}
+                variant={track === t ? "primary" : "ghost"}
                 size="sm"
                 className="h-7 px-2.5 text-[11px] capitalize"
                 onClick={() => handleTrack(t)}

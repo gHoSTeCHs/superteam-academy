@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { UserIcon, MailIcon, CameraIcon } from 'lucide-react';
-import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { useState } from "react";
+import { UserIcon, MailIcon, CameraIcon } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface AccountSettingsProps {
   displayName?: string;
@@ -15,8 +15,8 @@ interface AccountSettingsProps {
 }
 
 export function AccountSettings({
-  displayName: nameProp = '',
-  email: emailProp = '',
+  displayName: nameProp = "",
+  email: emailProp = "",
   onSave,
   className,
 }: AccountSettingsProps) {
@@ -30,21 +30,19 @@ export function AccountSettings({
     setTimeout(() => setSaved(false), 2000);
   }
 
-  const initials = displayName
-    ? displayName.slice(0, 2).toUpperCase()
-    : 'U';
+  const initials = displayName ? displayName.slice(0, 2).toUpperCase() : "U";
 
   return (
-    <Card className={cn('px-6 py-5', className)}>
+    <Card className={cn("px-6 py-5", className)}>
       <h3
         className="mb-1 text-[14px] font-semibold text-foreground"
-        style={{ fontFamily: 'var(--font-display)' }}
+        style={{ fontFamily: "var(--font-display)" }}
       >
         Account
       </h3>
       <p
         className="mb-5 text-[13px] text-muted-foreground"
-        style={{ fontFamily: 'var(--font-body)' }}
+        style={{ fontFamily: "var(--font-body)" }}
       >
         Manage your profile information.
       </p>
@@ -54,8 +52,8 @@ export function AccountSettings({
           <div
             className="flex size-16 items-center justify-center rounded-full text-[18px] font-bold text-white"
             style={{
-              background: 'linear-gradient(135deg, #2f6b3f 0%, #008c4c 100%)',
-              fontFamily: 'var(--font-display)',
+              background: "linear-gradient(135deg, #2f6b3f 0%, #008c4c 100%)",
+              fontFamily: "var(--font-display)",
             }}
           >
             {initials}
@@ -70,13 +68,13 @@ export function AccountSettings({
         <div>
           <p
             className="text-[13px] font-semibold text-foreground"
-            style={{ fontFamily: 'var(--font-body)' }}
+            style={{ fontFamily: "var(--font-body)" }}
           >
             Profile Photo
           </p>
           <p
             className="text-[11px] text-muted-foreground"
-            style={{ fontFamily: 'var(--font-body)' }}
+            style={{ fontFamily: "var(--font-body)" }}
           >
             Click to upload a new avatar
           </p>
@@ -87,7 +85,7 @@ export function AccountSettings({
         <div>
           <label
             className="mb-1.5 flex items-center gap-1.5 text-[12px] font-semibold text-muted-foreground"
-            style={{ fontFamily: 'var(--font-body)' }}
+            style={{ fontFamily: "var(--font-body)" }}
           >
             <UserIcon className="size-3.5" />
             Display Name
@@ -102,7 +100,7 @@ export function AccountSettings({
         <div>
           <label
             className="mb-1.5 flex items-center gap-1.5 text-[12px] font-semibold text-muted-foreground"
-            style={{ fontFamily: 'var(--font-body)' }}
+            style={{ fontFamily: "var(--font-body)" }}
           >
             <MailIcon className="size-3.5" />
             Email
@@ -117,12 +115,12 @@ export function AccountSettings({
 
         <div className="flex items-center gap-3 pt-2">
           <Button variant="primary" size="sm" onClick={handleSave}>
-            {saved ? 'Saved!' : 'Save Changes'}
+            {saved ? "Saved!" : "Save Changes"}
           </Button>
           {saved && (
             <span
               className="text-[12px] font-medium text-primary"
-              style={{ fontFamily: 'var(--font-body)' }}
+              style={{ fontFamily: "var(--font-body)" }}
             >
               Changes saved successfully
             </span>

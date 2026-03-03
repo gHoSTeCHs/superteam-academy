@@ -1,21 +1,25 @@
-import type { CodeRunner, RunResult, TestCaseInput } from '@/types/code-runner';
+import type { CodeRunner, RunResult, TestCaseInput } from "@/types/code-runner";
 
 interface ErrorResponseBody {
   error?: string;
 }
 
 export class ServerSideRunner implements CodeRunner {
-  async run(code: string, language: string, testCases: TestCaseInput[]): Promise<RunResult> {
-    const response = await fetch('/api/run-code', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+  async run(
+    code: string,
+    language: string,
+    testCases: TestCaseInput[],
+  ): Promise<RunResult> {
+    const response = await fetch("/api/run-code", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ code, language, testCases }),
     });
 
     if (!response.ok) {
-      const errorData: ErrorResponseBody = await response
+      const errorData: ErrorResponseBody = (await response
         .json()
-        .catch(() => ({ error: 'Server error' })) as ErrorResponseBody;
+        .catch(() => ({ error: "Server error" }))) as ErrorResponseBody;
 
       return {
         passed: false,

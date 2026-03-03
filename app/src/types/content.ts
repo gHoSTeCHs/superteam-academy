@@ -83,6 +83,7 @@ export interface ImageBlockData {
   src: string;
   alt: string;
   caption?: string;
+  assetId?: string;
 }
 
 export interface VideoEmbedData {

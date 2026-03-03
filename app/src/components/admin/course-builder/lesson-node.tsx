@@ -1,18 +1,20 @@
-import { GripVertical, Trash2, Clock } from 'lucide-react';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import DifficultyBadge from '@/components/difficulty-badge';
-import { cn } from '@/lib/utils';
-import type { Lesson } from '@/types/course';
+import { GripVertical, Trash2, Clock, Pencil } from "lucide-react";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import DifficultyBadge from "@/components/difficulty-badge";
+import { Link } from "@/i18n/navigation";
+import { cn } from "@/lib/utils";
+import type { Lesson } from "@/types/course";
 
 interface LessonNodeProps {
   lesson: Lesson;
+  courseId: string;
   onDelete: () => void;
 }
 
-export function LessonNode({ lesson, onDelete }: LessonNodeProps) {
+export function LessonNode({ lesson, courseId, onDelete }: LessonNodeProps) {
   const {
     attributes,
     listeners,
@@ -32,9 +34,9 @@ export function LessonNode({ lesson, onDelete }: LessonNodeProps) {
       ref={setNodeRef}
       style={style}
       className={cn(
-        'flex items-center gap-3 rounded-lg border border-border bg-card px-3 py-2',
-        'font-[family-name:var(--font-body)]',
-        isDragging && 'z-50 opacity-50 shadow-lg',
+        "flex items-center gap-3 rounded-lg border border-border bg-card px-3 py-2",
+        "font-[family-name:var(--font-body)]",
+        isDragging && "z-50 opacity-50 shadow-lg",
       )}
     >
       <button
@@ -60,6 +62,21 @@ export function LessonNode({ lesson, onDelete }: LessonNodeProps) {
         <Clock className="size-3.5" />
         {lesson.estimatedMinutes}m
       </span>
+
+      {courseId && (
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="size-8 shrink-0 text-muted-foreground hover:text-primary"
+          asChild
+        >
+          <Link href={`/admin/courses/${courseId}/lessons/${lesson.id}/edit`}>
+            <Pencil className="size-4" />
+            <span className="sr-only">Edit lesson {lesson.title}</span>
+          </Link>
+        </Button>
+      )}
 
       <Button
         type="button"

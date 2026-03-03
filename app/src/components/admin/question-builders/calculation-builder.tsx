@@ -1,7 +1,7 @@
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
-import type { CalculationConfig } from '@/types/questions';
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import type { CalculationConfig } from "@/types/questions";
 
 interface Props {
   value: CalculationConfig | null;
@@ -10,8 +10,8 @@ interface Props {
 
 function getDefaults(): CalculationConfig {
   return {
-    answer: '',
-    unit: '',
+    answer: "",
+    unit: "",
     tolerance: undefined,
     requires_working: false,
   };
@@ -41,7 +41,7 @@ export default function CalculationBuilder({ value, onChange }: Props) {
           <Label htmlFor="calc_unit">Unit (optional)</Label>
           <Input
             id="calc_unit"
-            value={config.unit ?? ''}
+            value={config.unit ?? ""}
             onChange={(e) => update({ unit: e.target.value || undefined })}
             placeholder="e.g. m/s, kg, N"
           />
@@ -54,9 +54,13 @@ export default function CalculationBuilder({ value, onChange }: Props) {
             type="number"
             step="any"
             min={0}
-            value={config.tolerance ?? ''}
+            value={config.tolerance ?? ""}
             onChange={(e) =>
-              update({ tolerance: e.target.value ? parseFloat(e.target.value) : undefined })
+              update({
+                tolerance: e.target.value
+                  ? parseFloat(e.target.value)
+                  : undefined,
+              })
             }
             placeholder="e.g. 0.01"
           />

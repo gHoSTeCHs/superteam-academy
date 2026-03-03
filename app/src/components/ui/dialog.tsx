@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import * as DialogPrimitive from '@radix-ui/react-dialog';
-import { XIcon } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import type { ComponentPropsWithoutRef, HTMLAttributes } from 'react';
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { XIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import type { ComponentPropsWithoutRef, HTMLAttributes } from "react";
 
 type DialogProps = ComponentPropsWithoutRef<typeof DialogPrimitive.Root>;
 
@@ -11,7 +11,9 @@ export function Dialog({ ...props }: DialogProps) {
   return <DialogPrimitive.Root {...props} />;
 }
 
-type DialogTriggerProps = ComponentPropsWithoutRef<typeof DialogPrimitive.Trigger>;
+type DialogTriggerProps = ComponentPropsWithoutRef<
+  typeof DialogPrimitive.Trigger
+>;
 
 export function DialogTrigger({ ...props }: DialogTriggerProps) {
   return <DialogPrimitive.Trigger {...props} />;
@@ -23,13 +25,15 @@ export function DialogClose({ ...props }: DialogCloseProps) {
   return <DialogPrimitive.Close {...props} />;
 }
 
-type DialogOverlayProps = ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>;
+type DialogOverlayProps = ComponentPropsWithoutRef<
+  typeof DialogPrimitive.Overlay
+>;
 
 function DialogOverlay({ className, ...props }: DialogOverlayProps) {
   return (
     <DialogPrimitive.Overlay
       className={cn(
-        'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/80',
+        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/80",
         className,
       )}
       {...props}
@@ -37,15 +41,21 @@ function DialogOverlay({ className, ...props }: DialogOverlayProps) {
   );
 }
 
-type DialogContentProps = ComponentPropsWithoutRef<typeof DialogPrimitive.Content>;
+type DialogContentProps = ComponentPropsWithoutRef<
+  typeof DialogPrimitive.Content
+>;
 
-export function DialogContent({ className, children, ...props }: DialogContentProps) {
+export function DialogContent({
+  className,
+  children,
+  ...props
+}: DialogContentProps) {
   return (
     <DialogPrimitive.Portal>
       <DialogOverlay />
       <DialogPrimitive.Content
         className={cn(
-          'bg-card data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border border-border p-6 shadow-lg duration-200 sm:max-w-lg',
+          "bg-card data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border border-border p-6 shadow-lg duration-200 sm:max-w-lg",
           className,
         )}
         {...props}
@@ -60,19 +70,28 @@ export function DialogContent({ className, children, ...props }: DialogContentPr
   );
 }
 
-export function DialogHeader({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+export function DialogHeader({
+  className,
+  ...props
+}: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn('flex flex-col gap-2 text-center sm:text-left', className)}
+      className={cn("flex flex-col gap-2 text-center sm:text-left", className)}
       {...props}
     />
   );
 }
 
-export function DialogFooter({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+export function DialogFooter({
+  className,
+  ...props
+}: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn('flex flex-col-reverse gap-2 sm:flex-row sm:justify-end', className)}
+      className={cn(
+        "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end",
+        className,
+      )}
       {...props}
     />
   );
@@ -83,18 +102,23 @@ type DialogTitleProps = ComponentPropsWithoutRef<typeof DialogPrimitive.Title>;
 export function DialogTitle({ className, ...props }: DialogTitleProps) {
   return (
     <DialogPrimitive.Title
-      className={cn('text-lg leading-none font-semibold', className)}
+      className={cn("text-lg leading-none font-semibold", className)}
       {...props}
     />
   );
 }
 
-type DialogDescriptionProps = ComponentPropsWithoutRef<typeof DialogPrimitive.Description>;
+type DialogDescriptionProps = ComponentPropsWithoutRef<
+  typeof DialogPrimitive.Description
+>;
 
-export function DialogDescription({ className, ...props }: DialogDescriptionProps) {
+export function DialogDescription({
+  className,
+  ...props
+}: DialogDescriptionProps) {
   return (
     <DialogPrimitive.Description
-      className={cn('text-muted-foreground text-sm', className)}
+      className={cn("text-muted-foreground text-sm", className)}
       {...props}
     />
   );

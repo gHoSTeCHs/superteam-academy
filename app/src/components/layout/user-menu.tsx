@@ -1,6 +1,11 @@
-'use client';
+"use client";
 
-import { UserIcon, SettingsIcon, LogOutIcon, LayoutDashboardIcon } from 'lucide-react';
+import {
+  UserIcon,
+  SettingsIcon,
+  LogOutIcon,
+  LayoutDashboardIcon,
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,14 +14,20 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from "@/components/ui/dropdown-menu";
+import { Link } from "@/i18n/navigation";
+import { useAuth } from "@/hooks/use-auth";
 
-interface UserMenuProps {
-  userName?: string;
-  avatarUrl?: string;
+function truncateAddress(address: string): string {
+  return `${address.slice(0, 4)}...${address.slice(-4)}`;
 }
 
-export function UserMenu({ userName = 'Student', avatarUrl }: UserMenuProps) {
+export function UserMenu() {
+  const { user, walletAddress, signOut } = useAuth();
+
+  const userName = (user?.name as string) || "Student";
+  const avatarUrl = user?.image as string | undefined;
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -36,28 +47,41 @@ export function UserMenu({ userName = 'Student', avatarUrl }: UserMenuProps) {
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
-        <DropdownMenuLabel
-          style={{ fontFamily: 'var(--font-body)' }}
-        >
-          {userName}
+        <DropdownMenuLabel style={{ fontFamily: "var(--font-body)" }}>
+          <div>{userName}</div>
+          {walletAddress && (
+            <div className="font-mono text-[11px] font-normal text-muted-foreground">
+              {truncateAddress(walletAddress)}
+            </div>
+          )}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem style={{ fontFamily: 'var(--font-body)' }}>
-            <LayoutDashboardIcon className="size-4" />
-            Dashboard
+          <DropdownMenuItem asChild style={{ fontFamily: "var(--font-body)" }}>
+            <Link href="/dashboard">
+              <LayoutDashboardIcon className="size-4" />
+              Dashboard
+            </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem style={{ fontFamily: 'var(--font-body)' }}>
-            <UserIcon className="size-4" />
-            Profile
+          <DropdownMenuItem asChild style={{ fontFamily: "var(--font-body)" }}>
+            <Link href="/profile">
+              <UserIcon className="size-4" />
+              Profile
+            </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem style={{ fontFamily: 'var(--font-body)' }}>
-            <SettingsIcon className="size-4" />
-            Settings
+          <DropdownMenuItem asChild style={{ fontFamily: "var(--font-body)" }}>
+            <Link href="/settings">
+              <SettingsIcon className="size-4" />
+              Settings
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem variant="destructive" style={{ fontFamily: 'var(--font-body)' }}>
+        <DropdownMenuItem
+          variant="destructive"
+          style={{ fontFamily: "var(--font-body)" }}
+          onClick={() => signOut()}
+        >
           <LogOutIcon className="size-4" />
           Sign Out
         </DropdownMenuItem>

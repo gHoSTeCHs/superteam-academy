@@ -1,5 +1,5 @@
-import type { CodeRunner, RunResult, TestCaseInput } from '@/types/code-runner';
-import type { ValidationRule } from '@/types/content';
+import type { CodeRunner, RunResult, TestCaseInput } from "@/types/code-runner";
+import type { ValidationRule } from "@/types/content";
 
 export class StructuralValidator implements CodeRunner {
   private validationRules: ValidationRule[];
@@ -8,7 +8,11 @@ export class StructuralValidator implements CodeRunner {
     this.validationRules = validationRules;
   }
 
-  async run(code: string, _language: string, testCases: TestCaseInput[]): Promise<RunResult> {
+  async run(
+    code: string,
+    _language: string,
+    testCases: TestCaseInput[],
+  ): Promise<RunResult> {
     const startTime = performance.now();
     const results: { name: string; passed: boolean; message: string }[] = [];
 
@@ -17,7 +21,7 @@ export class StructuralValidator implements CodeRunner {
         results.push({
           name: testCase.name,
           passed: true,
-          message: 'No pattern to validate.',
+          message: "No pattern to validate.",
         });
         continue;
       }
@@ -30,7 +34,7 @@ export class StructuralValidator implements CodeRunner {
           name: testCase.name,
           passed: matched,
           message: matched
-            ? 'Pattern matched successfully.'
+            ? "Pattern matched successfully."
             : `Code did not match expected pattern: ${testCase.assertionCode}`,
         });
       } catch (err) {
@@ -51,7 +55,7 @@ export class StructuralValidator implements CodeRunner {
         results.push({
           name: rule.message,
           passed: matched,
-          message: matched ? 'Validation passed.' : rule.message,
+          message: matched ? "Validation passed." : rule.message,
         });
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : String(err);

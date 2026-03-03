@@ -1,7 +1,7 @@
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
-import { cn } from '@/lib/utils';
-import type { TrueFalseConfig } from '@/types/questions';
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { cn } from "@/lib/utils";
+import type { TrueFalseConfig } from "@/types/questions";
 
 interface Props {
   value: TrueFalseConfig | null;
@@ -35,10 +35,10 @@ export default function TrueFalseBuilder({ value, onChange }: Props) {
             <label
               key={String(answer)}
               className={cn(
-                'flex h-9 cursor-pointer items-center gap-2 rounded-md border px-4 transition-colors',
+                "flex h-9 cursor-pointer items-center gap-2 rounded-md border px-4 transition-colors",
                 config.correct_answer === answer
-                  ? 'border-primary/40 bg-primary/5 text-primary'
-                  : 'border-border bg-background text-muted-foreground hover:border-ring/40',
+                  ? "border-primary/40 bg-primary/5 text-primary"
+                  : "border-border bg-background text-muted-foreground hover:border-ring/40",
               )}
             >
               <input
@@ -48,7 +48,9 @@ export default function TrueFalseBuilder({ value, onChange }: Props) {
                 onChange={() => setCorrectAnswer(answer)}
                 className="accent-primary size-3.5"
               />
-              <span className="text-sm font-medium">{answer ? 'True' : 'False'}</span>
+              <span className="text-sm font-medium">
+                {answer ? "True" : "False"}
+              </span>
             </label>
           ))}
         </div>

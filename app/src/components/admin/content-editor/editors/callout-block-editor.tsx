@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import type { CalloutBlockData, CalloutType } from '@/types/content';
+} from "@/components/ui/select";
+import type { CalloutBlockData, CalloutType } from "@/types/content";
 
 interface CalloutBlockEditorProps {
   data: CalloutBlockData;
@@ -18,12 +18,15 @@ interface CalloutBlockEditorProps {
 }
 
 const CALLOUT_TYPE_OPTIONS: { label: string; value: CalloutType }[] = [
-  { label: 'Info', value: 'info' },
-  { label: 'Warning', value: 'warning' },
-  { label: 'Tip', value: 'tip' },
+  { label: "Info", value: "info" },
+  { label: "Warning", value: "warning" },
+  { label: "Tip", value: "tip" },
 ];
 
-export function CalloutBlockEditor({ data, onChange }: CalloutBlockEditorProps) {
+export function CalloutBlockEditor({
+  data,
+  onChange,
+}: CalloutBlockEditorProps) {
   function handleTypeChange(calloutType: string) {
     onChange({ ...data, calloutType: calloutType as CalloutType });
   }
@@ -58,7 +61,7 @@ export function CalloutBlockEditor({ data, onChange }: CalloutBlockEditorProps) 
         <div className="space-y-2">
           <Label className="text-muted-foreground">Title (optional)</Label>
           <Input
-            value={data.title ?? ''}
+            value={data.title ?? ""}
             onChange={(e) => handleTitleChange(e.target.value)}
             placeholder="e.g. Important Note"
           />

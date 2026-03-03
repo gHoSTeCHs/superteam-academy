@@ -1,9 +1,10 @@
-import { notFound } from 'next/navigation';
-import { NextIntlClientProvider, hasLocale } from 'next-intl';
-import { getMessages } from 'next-intl/server';
-import { routing } from '@/i18n/routing';
-import { ThemeProvider } from '@/components/theme-provider';
-import { SolanaProvider } from '@/providers/solana-provider';
+import { notFound } from "next/navigation";
+import { NextIntlClientProvider, hasLocale } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { routing } from "@/i18n/routing";
+import { ThemeProvider } from "@/components/theme-provider";
+import { SolanaProvider } from "@/providers/solana-provider";
+import { AuthProvider } from "@/providers/auth-provider";
 
 export default async function LocaleLayout({
   children,
@@ -23,9 +24,9 @@ export default async function LocaleLayout({
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <SolanaProvider>
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+        </AuthProvider>
       </SolanaProvider>
     </NextIntlClientProvider>
   );

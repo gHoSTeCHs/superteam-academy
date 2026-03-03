@@ -1,9 +1,15 @@
-import { Plus, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import type { ClozeConfig } from '@/types/questions';
+import { Plus, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import type { ClozeConfig } from "@/types/questions";
 
 interface Props {
   value: ClozeConfig | null;
@@ -12,22 +18,26 @@ interface Props {
 
 function getDefaults(): ClozeConfig {
   return {
-    gaps: [{ position: 1, options: ['', ''], correct: 0 }],
+    gaps: [{ position: 1, options: ["", ""], correct: 0 }],
   };
 }
 
 export default function ClozeBuilder({ value, onChange }: Props) {
   const config = value ?? getDefaults();
 
-  function updateGaps(gaps: ClozeConfig['gaps']) {
+  function updateGaps(gaps: ClozeConfig["gaps"]) {
     onChange({ ...config, gaps });
   }
 
   function addGap() {
-    const nextPosition = config.gaps.length > 0
-      ? Math.max(...config.gaps.map((g) => g.position)) + 1
-      : 1;
-    updateGaps([...config.gaps, { position: nextPosition, options: ['', ''], correct: 0 }]);
+    const nextPosition =
+      config.gaps.length > 0
+        ? Math.max(...config.gaps.map((g) => g.position)) + 1
+        : 1;
+    updateGaps([
+      ...config.gaps,
+      { position: nextPosition, options: ["", ""], correct: 0 },
+    ]);
   }
 
   function removeGap(index: number) {
@@ -43,7 +53,7 @@ export default function ClozeBuilder({ value, onChange }: Props) {
   }
 
   function updateGapOptions(index: number, raw: string) {
-    const options = raw.split(',').map((s) => s.trim());
+    const options = raw.split(",").map((s) => s.trim());
     const gap = config.gaps[index];
     if (!gap) return;
     const correct = gap.correct >= options.length ? 0 : gap.correct;
@@ -54,7 +64,7 @@ export default function ClozeBuilder({ value, onChange }: Props) {
   }
 
   function getOptionsString(options: string[]): string {
-    return options.join(', ');
+    return options.join(", ");
   }
 
   function updateCorrect(index: number, correct: number) {
@@ -76,7 +86,9 @@ export default function ClozeBuilder({ value, onChange }: Props) {
                 type="number"
                 min={1}
                 value={gap.position}
-                onChange={(e) => updatePosition(index, parseInt(e.target.value, 10) || 1)}
+                onChange={(e) =>
+                  updatePosition(index, parseInt(e.target.value, 10) || 1)
+                }
                 placeholder="Pos"
               />
             </div>

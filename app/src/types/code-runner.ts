@@ -12,7 +12,11 @@ export interface TestResult {
 }
 
 export interface CodeRunner {
-  run(code: string, language: string, testCases: TestCaseInput[]): Promise<RunResult>;
+  run(
+    code: string,
+    language: string,
+    testCases: TestCaseInput[],
+  ): Promise<RunResult>;
   dispose?(): void;
 }
 

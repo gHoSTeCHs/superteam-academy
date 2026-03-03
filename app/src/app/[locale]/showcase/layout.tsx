@@ -1,6 +1,6 @@
-import { ThemeToggle } from '@/components/theme-toggle';
-import Image from 'next/image';
-import type { ReactNode } from 'react';
+import { ThemeToggle } from "@/components/theme-toggle";
+import Image from "next/image";
+import type { ReactNode } from "react";
 
 export default function ShowcaseLayout({ children }: { children: ReactNode }) {
   return (
@@ -24,9 +24,7 @@ export default function ShowcaseLayout({ children }: { children: ReactNode }) {
         />
         <ThemeToggle />
       </header>
-      <main className="mx-auto max-w-5xl px-6 py-10">
-        {children}
-      </main>
+      <main className="mx-auto max-w-5xl px-6 py-10">{children}</main>
     </div>
   );
 }

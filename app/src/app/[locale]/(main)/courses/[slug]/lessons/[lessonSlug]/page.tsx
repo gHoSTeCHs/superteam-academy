@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { safeFetch } from "@/sanity/client";
 import { lessonBySlugQuery, courseBySlugQuery } from "@/sanity/queries";
+import { transformQuizBlocks } from "@/lib/quiz-transform";
 import { LessonViewClient } from "./lesson-view-client";
 import type { Lesson, Course } from "@/types/course";
 
@@ -11,12 +12,14 @@ interface LessonPageProps {
 export default async function LessonPage({ params }: LessonPageProps) {
   const { slug: courseSlug, lessonSlug } = await params;
 
-  const [lesson, course] = await Promise.all([
+  const [rawLesson, course] = await Promise.all([
     safeFetch<Lesson | null>(lessonBySlugQuery, { slug: lessonSlug }),
     safeFetch<Course | null>(courseBySlugQuery, { slug: courseSlug }),
   ]);
 
-  if (!lesson || !course) notFound();
+  if (!rawLesson || !course) notFound();
+
+  const lesson = transformQuizBlocks(rawLesson);
 
   const allLessons = course.modules?.flatMap((m) => m.lessons) ?? [];
   const currentIndex = allLessons.findIndex(

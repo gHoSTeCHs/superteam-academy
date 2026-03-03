@@ -1,16 +1,16 @@
-import type { CodeRunnerBackend } from './types';
-import type { RunResult, TestCaseInput, TestResult } from '@/types/code-runner';
+import type { CodeRunnerBackend } from "./types";
+import type { RunResult, TestCaseInput, TestResult } from "@/types/code-runner";
 
 const MOCK_DISCLAIMER =
-  'Mock backend: structural validation only. Set CODE_RUNNER_BACKEND=judge0 for real compilation.';
+  "Mock backend: structural validation only. Set CODE_RUNNER_BACKEND=judge0 for real compilation.";
 
 const SOLANA_PATTERNS: ReadonlyArray<{ pattern: RegExp; label: string }> = [
-  { pattern: /#\[program\]/, label: '#[program] attribute' },
-  { pattern: /#\[derive\(Accounts\)\]/, label: '#[derive(Accounts)]' },
-  { pattern: /pub\s+fn\s+\w+/, label: 'public function declaration' },
-  { pattern: /Context</, label: 'Context<T> parameter' },
-  { pattern: /msg!\s*\(/, label: 'msg! macro' },
-  { pattern: /#\[account\s*\(/, label: '#[account(...)] attribute' },
+  { pattern: /#\[program\]/, label: "#[program] attribute" },
+  { pattern: /#\[derive\(Accounts\)\]/, label: "#[derive(Accounts)]" },
+  { pattern: /pub\s+fn\s+\w+/, label: "public function declaration" },
+  { pattern: /Context</, label: "Context<T> parameter" },
+  { pattern: /msg!\s*\(/, label: "msg! macro" },
+  { pattern: /#\[account\s*\(/, label: "#[account(...)] attribute" },
 ];
 
 function simulateDelay(): Promise<void> {
@@ -21,8 +21,8 @@ function simulateDelay(): Promise<void> {
 function checkBraceBalance(code: string): boolean {
   let depth = 0;
   for (const ch of code) {
-    if (ch === '{') depth++;
-    if (ch === '}') depth--;
+    if (ch === "{") depth++;
+    if (ch === "}") depth--;
     if (depth < 0) return false;
   }
   return depth === 0;
@@ -42,15 +42,17 @@ function validateRustStructure(code: string): string[] {
   const issues: string[] = [];
 
   if (!checkBraceBalance(code)) {
-    issues.push('Mismatched braces detected.');
+    issues.push("Mismatched braces detected.");
   }
 
   if (!checkFnSignatures(code)) {
-    issues.push('No valid function signatures found.');
+    issues.push("No valid function signatures found.");
   }
 
   if (!checkUseStatements(code)) {
-    issues.push('No use statements found. Anchor programs typically import from anchor_lang.');
+    issues.push(
+      "No use statements found. Anchor programs typically import from anchor_lang.",
+    );
   }
 
   return issues;
@@ -66,7 +68,10 @@ function detectSolanaPatterns(code: string): string[] {
   return found;
 }
 
-function evaluateRustTestCase(code: string, testCase: TestCaseInput): TestResult {
+function evaluateRustTestCase(
+  code: string,
+  testCase: TestCaseInput,
+): TestResult {
   if (testCase.assertionCode) {
     try {
       const regex = new RegExp(testCase.assertionCode);
@@ -101,7 +106,7 @@ function evaluateRustTestCase(code: string, testCase: TestCaseInput): TestResult
     return {
       name: testCase.name,
       passed: false,
-      message: `Structural issues: ${structuralIssues.join(' ')} (${MOCK_DISCLAIMER})`,
+      message: `Structural issues: ${structuralIssues.join(" ")} (${MOCK_DISCLAIMER})`,
     };
   }
 
@@ -142,20 +147,24 @@ function evaluateJsTestCase(code: string, testCase: TestCaseInput): TestResult {
 }
 
 export class MockBackend implements CodeRunnerBackend {
-  async execute(code: string, language: string, testCases: TestCaseInput[]): Promise<RunResult> {
+  async execute(
+    code: string,
+    language: string,
+    testCases: TestCaseInput[],
+  ): Promise<RunResult> {
     await simulateDelay();
     const startTime = Date.now();
 
-    const isRust = language === 'rust';
+    const isRust = language === "rust";
     const results: TestResult[] = [];
 
     if (isRust) {
       const solanaPatterns = detectSolanaPatterns(code);
       if (solanaPatterns.length > 0 && testCases.length > 0) {
         results.push({
-          name: 'Solana/Anchor pattern detection',
+          name: "Solana/Anchor pattern detection",
           passed: true,
-          message: `Detected patterns: ${solanaPatterns.join(', ')}. (${MOCK_DISCLAIMER})`,
+          message: `Detected patterns: ${solanaPatterns.join(", ")}. (${MOCK_DISCLAIMER})`,
         });
       }
     }

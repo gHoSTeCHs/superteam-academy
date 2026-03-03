@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import * as SelectPrimitive from '@radix-ui/react-select';
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import type { ComponentPropsWithoutRef } from 'react';
+import * as SelectPrimitive from "@radix-ui/react-select";
+import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import type { ComponentPropsWithoutRef } from "react";
 
 type SelectProps = ComponentPropsWithoutRef<typeof SelectPrimitive.Root>;
 
@@ -23,13 +23,19 @@ export function SelectValue({ ...props }: SelectValueProps) {
   return <SelectPrimitive.Value {...props} />;
 }
 
-type SelectTriggerProps = ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>;
+type SelectTriggerProps = ComponentPropsWithoutRef<
+  typeof SelectPrimitive.Trigger
+>;
 
-export function SelectTrigger({ className, children, ...props }: SelectTriggerProps) {
+export function SelectTrigger({
+  className,
+  children,
+  ...props
+}: SelectTriggerProps) {
   return (
     <SelectPrimitive.Trigger
       className={cn(
-        'flex h-10 w-full items-center justify-between rounded-lg border border-border bg-card px-3 py-2 text-[14px] text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1',
+        "flex h-10 w-full items-center justify-between rounded-lg border border-border bg-card px-3 py-2 text-[14px] text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
         className,
       )}
       {...props}
@@ -42,16 +48,23 @@ export function SelectTrigger({ className, children, ...props }: SelectTriggerPr
   );
 }
 
-type SelectContentProps = ComponentPropsWithoutRef<typeof SelectPrimitive.Content>;
+type SelectContentProps = ComponentPropsWithoutRef<
+  typeof SelectPrimitive.Content
+>;
 
-export function SelectContent({ className, children, position = 'popper', ...props }: SelectContentProps) {
+export function SelectContent({
+  className,
+  children,
+  position = "popper",
+  ...props
+}: SelectContentProps) {
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
         className={cn(
-          'bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-md border shadow-md',
-          position === 'popper' &&
-            'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
+          "bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-md border shadow-md",
+          position === "popper" &&
+            "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
           className,
         )}
         position={position}
@@ -60,9 +73,9 @@ export function SelectContent({ className, children, position = 'popper', ...pro
         <SelectScrollUpButton />
         <SelectPrimitive.Viewport
           className={cn(
-            'p-1',
-            position === 'popper' &&
-              'h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)] scroll-my-1',
+            "p-1",
+            position === "popper" &&
+              "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)] scroll-my-1",
           )}
         >
           {children}
@@ -78,7 +91,7 @@ type SelectLabelProps = ComponentPropsWithoutRef<typeof SelectPrimitive.Label>;
 export function SelectLabel({ className, ...props }: SelectLabelProps) {
   return (
     <SelectPrimitive.Label
-      className={cn('px-2 py-1.5 text-sm font-medium', className)}
+      className={cn("px-2 py-1.5 text-sm font-medium", className)}
       {...props}
     />
   );
@@ -90,7 +103,7 @@ export function SelectItem({ className, children, ...props }: SelectItemProps) {
   return (
     <SelectPrimitive.Item
       className={cn(
-        'focus:bg-muted focus:text-foreground relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+        "focus:bg-muted focus:text-foreground relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         className,
       )}
       {...props}
@@ -105,21 +118,29 @@ export function SelectItem({ className, children, ...props }: SelectItemProps) {
   );
 }
 
-type SelectSeparatorProps = ComponentPropsWithoutRef<typeof SelectPrimitive.Separator>;
+type SelectSeparatorProps = ComponentPropsWithoutRef<
+  typeof SelectPrimitive.Separator
+>;
 
 export function SelectSeparator({ className, ...props }: SelectSeparatorProps) {
   return (
     <SelectPrimitive.Separator
-      className={cn('bg-border pointer-events-none -mx-1 my-1 h-px', className)}
+      className={cn("bg-border pointer-events-none -mx-1 my-1 h-px", className)}
       {...props}
     />
   );
 }
 
-function SelectScrollUpButton({ className, ...props }: ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollUpButton>) {
+function SelectScrollUpButton({
+  className,
+  ...props
+}: ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollUpButton>) {
   return (
     <SelectPrimitive.ScrollUpButton
-      className={cn('flex cursor-default items-center justify-center py-1', className)}
+      className={cn(
+        "flex cursor-default items-center justify-center py-1",
+        className,
+      )}
       {...props}
     >
       <ChevronUpIcon className="size-4" />
@@ -127,10 +148,16 @@ function SelectScrollUpButton({ className, ...props }: ComponentPropsWithoutRef<
   );
 }
 
-function SelectScrollDownButton({ className, ...props }: ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollDownButton>) {
+function SelectScrollDownButton({
+  className,
+  ...props
+}: ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollDownButton>) {
   return (
     <SelectPrimitive.ScrollDownButton
-      className={cn('flex cursor-default items-center justify-center py-1', className)}
+      className={cn(
+        "flex cursor-default items-center justify-center py-1",
+        className,
+      )}
       {...props}
     >
       <ChevronDownIcon className="size-4" />

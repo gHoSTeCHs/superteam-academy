@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 interface PageHeaderProps {
   title: string;
@@ -13,14 +13,14 @@ export function PageHeader({ title, description, action }: PageHeaderProps) {
       <div>
         <h1
           className="text-[22px] font-bold tracking-tight"
-          style={{ fontFamily: 'var(--font-display)' }}
+          style={{ fontFamily: "var(--font-display)" }}
         >
           {title}
         </h1>
         {description && (
           <p
             className="mt-1 text-[14px] text-muted-foreground"
-            style={{ fontFamily: 'var(--font-body)' }}
+            style={{ fontFamily: "var(--font-body)" }}
           >
             {description}
           </p>

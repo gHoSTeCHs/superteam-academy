@@ -1,39 +1,43 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectTrigger,
   SelectContent,
   SelectItem,
   SelectValue,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from '@/components/ui/dialog';
-import type { Lesson } from '@/types/course';
+} from "@/components/ui/dialog";
+import type { Lesson } from "@/types/course";
 
 interface AddLessonDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onAdd: (lesson: Omit<Lesson, 'id' | 'sortOrder'>) => void;
+  onAdd: (lesson: Omit<Lesson, "id" | "sortOrder">) => void;
 }
 
 const INITIAL_STATE = {
-  title: '',
+  title: "",
   xpReward: 10,
   estimatedMinutes: 5,
-  difficulty: '' as Lesson['difficulty'] | '',
+  difficulty: "" as Lesson["difficulty"] | "",
 };
 
-export function AddLessonDialog({ open, onOpenChange, onAdd }: AddLessonDialogProps) {
+export function AddLessonDialog({
+  open,
+  onOpenChange,
+  onAdd,
+}: AddLessonDialogProps) {
   const [form, setForm] = useState(INITIAL_STATE);
 
   function resetForm() {
@@ -53,22 +57,20 @@ export function AddLessonDialog({ open, onOpenChange, onAdd }: AddLessonDialogPr
       title: form.title.trim(),
       xpReward: form.xpReward,
       estimatedMinutes: form.estimatedMinutes,
-      difficulty: form.difficulty as Lesson['difficulty'],
+      difficulty: form.difficulty as Lesson["difficulty"],
     });
 
     resetForm();
     onOpenChange(false);
   }
 
-  const isValid = form.title.trim().length > 0 && form.difficulty !== '';
+  const isValid = form.title.trim().length > 0 && form.difficulty !== "";
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle
-            className="font-[family-name:var(--font-display)]"
-          >
+          <DialogTitle className="font-[family-name:var(--font-display)]">
             Add Lesson
           </DialogTitle>
         </DialogHeader>
@@ -91,7 +93,10 @@ export function AddLessonDialog({ open, onOpenChange, onAdd }: AddLessonDialogPr
                 min={0}
                 value={form.xpReward}
                 onChange={(e) =>
-                  setForm({ ...form, xpReward: parseInt(e.target.value, 10) || 0 })
+                  setForm({
+                    ...form,
+                    xpReward: parseInt(e.target.value, 10) || 0,
+                  })
                 }
                 placeholder="10"
               />
@@ -119,7 +124,7 @@ export function AddLessonDialog({ open, onOpenChange, onAdd }: AddLessonDialogPr
             <Select
               value={form.difficulty}
               onValueChange={(val: string) =>
-                setForm({ ...form, difficulty: val as Lesson['difficulty'] })
+                setForm({ ...form, difficulty: val as Lesson["difficulty"] })
               }
             >
               <SelectTrigger>

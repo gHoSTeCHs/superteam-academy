@@ -4,11 +4,11 @@ import {
   ShareIcon,
   ZapIcon,
   TrendingUpIcon,
-} from 'lucide-react';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+} from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export interface Credential {
   id: string;
@@ -30,22 +30,25 @@ function truncateMint(mint: string): string {
   return `${mint.slice(0, 6)}...${mint.slice(-4)}`;
 }
 
-export function CredentialCards({ credentials, className }: CredentialCardsProps) {
+export function CredentialCards({
+  credentials,
+  className,
+}: CredentialCardsProps) {
   return (
-    <Card className={cn('px-6 py-5', className)}>
+    <Card className={cn("px-6 py-5", className)}>
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <AwardIcon className="size-4 text-primary" />
           <h3
             className="text-[14px] font-semibold text-foreground"
-            style={{ fontFamily: 'var(--font-display)' }}
+            style={{ fontFamily: "var(--font-display)" }}
           >
             Credentials
           </h3>
         </div>
         <span
           className="text-[12px] text-muted-foreground"
-          style={{ fontFamily: 'var(--font-body)' }}
+          style={{ fontFamily: "var(--font-body)" }}
         >
           {credentials.length} earned
         </span>
@@ -56,7 +59,7 @@ export function CredentialCards({ credentials, className }: CredentialCardsProps
           <AwardIcon className="mx-auto mb-2 size-6 text-muted-foreground" />
           <p
             className="text-[13px] text-muted-foreground"
-            style={{ fontFamily: 'var(--font-body)' }}
+            style={{ fontFamily: "var(--font-body)" }}
           >
             Complete a course to earn your first credential
           </p>
@@ -70,12 +73,15 @@ export function CredentialCards({ credentials, className }: CredentialCardsProps
             >
               <div
                 className="flex items-center justify-between px-4 py-3"
-                style={{ background: 'linear-gradient(135deg, #2f6b3f 0%, #008c4c 100%)' }}
+                style={{
+                  background:
+                    "linear-gradient(135deg, #2f6b3f 0%, #008c4c 100%)",
+                }}
               >
                 <div>
                   <p
                     className="text-[14px] font-semibold text-white"
-                    style={{ fontFamily: 'var(--font-display)' }}
+                    style={{ fontFamily: "var(--font-display)" }}
                   >
                     {cred.courseName}
                   </p>
@@ -87,7 +93,7 @@ export function CredentialCards({ credentials, className }: CredentialCardsProps
                   </Badge>
                 </div>
                 <div className="flex size-10 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm">
-                  <AwardIcon className="size-5" style={{ color: '#ffd23f' }} />
+                  <AwardIcon className="size-5" style={{ color: "#ffd23f" }} />
                 </div>
               </div>
 
@@ -95,25 +101,32 @@ export function CredentialCards({ credentials, className }: CredentialCardsProps
                 <div className="mb-3 flex items-center gap-4">
                   <div className="flex items-center gap-1">
                     <TrendingUpIcon className="size-3 text-primary" />
-                    <span className="text-[12px] font-semibold text-foreground" style={{ fontFamily: 'var(--font-body)' }}>
+                    <span
+                      className="text-[12px] font-semibold text-foreground"
+                      style={{ fontFamily: "var(--font-body)" }}
+                    >
                       Lv. {cred.level}
                     </span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <ZapIcon className="size-3" style={{ color: '#ffd23f' }} />
-                    <span className="text-[12px] font-semibold text-foreground" style={{ fontFamily: 'var(--font-body)' }}>
+                    <ZapIcon className="size-3" style={{ color: "#ffd23f" }} />
+                    <span
+                      className="text-[12px] font-semibold text-foreground"
+                      style={{ fontFamily: "var(--font-body)" }}
+                    >
                       {cred.totalXp.toLocaleString()} XP
                     </span>
                   </div>
-                  <span className="text-[11px] text-muted-foreground" style={{ fontFamily: 'var(--font-body)' }}>
+                  <span
+                    className="text-[11px] text-muted-foreground"
+                    style={{ fontFamily: "var(--font-body)" }}
+                  >
                     {cred.completedAt}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span
-                    className="font-mono text-[11px] text-muted-foreground"
-                  >
+                  <span className="font-mono text-[11px] text-muted-foreground">
                     {truncateMint(cred.mintAddress)}
                   </span>
                   <div className="flex gap-1">

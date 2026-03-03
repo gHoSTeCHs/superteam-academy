@@ -1,9 +1,9 @@
-import { Plus, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
-import type { FillBlankConfig } from '@/types/questions';
+import { Plus, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import type { FillBlankConfig } from "@/types/questions";
 
 interface Props {
   value: FillBlankConfig | null;
@@ -12,7 +12,7 @@ interface Props {
 
 function getDefaults(): FillBlankConfig {
   return {
-    blanks: [{ position: 1, correct_answers: [''] }],
+    blanks: [{ position: 1, correct_answers: [""] }],
     case_sensitive: false,
   };
 }
@@ -20,15 +20,19 @@ function getDefaults(): FillBlankConfig {
 export default function FillBlankBuilder({ value, onChange }: Props) {
   const config = value ?? getDefaults();
 
-  function updateBlanks(blanks: FillBlankConfig['blanks']) {
+  function updateBlanks(blanks: FillBlankConfig["blanks"]) {
     onChange({ ...config, blanks });
   }
 
   function addBlank() {
-    const nextPosition = config.blanks.length > 0
-      ? Math.max(...config.blanks.map((b) => b.position)) + 1
-      : 1;
-    updateBlanks([...config.blanks, { position: nextPosition, correct_answers: [''] }]);
+    const nextPosition =
+      config.blanks.length > 0
+        ? Math.max(...config.blanks.map((b) => b.position)) + 1
+        : 1;
+    updateBlanks([
+      ...config.blanks,
+      { position: nextPosition, correct_answers: [""] },
+    ]);
   }
 
   function removeBlank(index: number) {
@@ -44,15 +48,24 @@ export default function FillBlankBuilder({ value, onChange }: Props) {
   }
 
   function updateAnswers(index: number, raw: string) {
-    const correct_answers = raw.split(',').map((s) => s.trim()).filter(Boolean);
+    const correct_answers = raw
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
     const updated = config.blanks.map((blank, i) =>
-      i === index ? { ...blank, correct_answers: correct_answers.length > 0 ? correct_answers : [''] } : blank,
+      i === index
+        ? {
+            ...blank,
+            correct_answers:
+              correct_answers.length > 0 ? correct_answers : [""],
+          }
+        : blank,
     );
     updateBlanks(updated);
   }
 
   function getAnswersString(answers: string[]): string {
-    return answers.join(', ');
+    return answers.join(", ");
   }
 
   function toggleCaseSensitive(checked: boolean) {
@@ -70,7 +83,9 @@ export default function FillBlankBuilder({ value, onChange }: Props) {
               type="number"
               min={1}
               value={blank.position}
-              onChange={(e) => updatePosition(index, parseInt(e.target.value, 10) || 1)}
+              onChange={(e) =>
+                updatePosition(index, parseInt(e.target.value, 10) || 1)
+              }
               placeholder="Pos"
             />
           </div>

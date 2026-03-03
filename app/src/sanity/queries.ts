@@ -85,18 +85,19 @@ export const lessonBySlugQuery = groq`
           "language": coalesce(language, "typescript"),
           "starterCode": coalesce(starterCode, ""),
           "solutionCode": coalesce(solutionCode, ""),
-          "testCases": [],
+          "testCases": coalesce(testCases, []),
           "hints": coalesce(hints, []),
-          "maxAttempts": 3
+          "maxAttempts": coalesce(maxAttempts, 3)
         },
         blockType == "quiz" => {
           "type": "quiz",
-          "questionType": "mcq",
+          "questionType": coalesce(questionType, "mcq"),
           "content": coalesce(quizQuestion, ""),
           "responseConfig": {
-            "options": coalesce(quizOptions, [])
-              | order(@) []
-              { "label": string(@), "text": @, "is_correct": false }
+            "options": coalesce(quizOptions, []),
+            "correctAnswer": correctAnswer,
+            "correctAnswers": correctAnswers,
+            "responseConfigJson": responseConfigJson
           }
         },
         blockType == "callout" => {
@@ -185,12 +186,20 @@ export const adminLessonByIdQuery = groq`
       starterCode,
       solutionCode,
       hints,
+      testCases,
+      validationRules,
+      maxAttempts,
       quizQuestion,
       quizOptions,
+      correctAnswer,
+      correctAnswers,
+      responseConfigJson,
+      questionType,
       calloutType,
       calloutTitle,
       calloutContent,
       "imageUrl": image.asset->url,
+      "imageAssetId": image.asset._ref,
       alt,
       caption,
       videoUrl,

@@ -1,8 +1,8 @@
-import { Plus, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import type { MatrixMatchingConfig } from '@/types/questions';
+import { Plus, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import type { MatrixMatchingConfig } from "@/types/questions";
 
 interface Props {
   value: MatrixMatchingConfig | null;
@@ -11,8 +11,8 @@ interface Props {
 
 function getDefaults(): MatrixMatchingConfig {
   return {
-    left: ['', ''],
-    right: ['', ''],
+    left: ["", ""],
+    right: ["", ""],
     mapping: {},
   };
 }
@@ -43,17 +43,25 @@ export default function MatrixMatchingBuilder({ value, onChange }: Props) {
   const config = value ?? getDefaults();
 
   function updateLeft(items: string[]) {
-    const mapping = cleanMapping(config.mapping, items.length, config.right.length);
+    const mapping = cleanMapping(
+      config.mapping,
+      items.length,
+      config.right.length,
+    );
     onChange({ ...config, left: items, mapping });
   }
 
   function updateRight(items: string[]) {
-    const mapping = cleanMapping(config.mapping, config.left.length, items.length);
+    const mapping = cleanMapping(
+      config.mapping,
+      config.left.length,
+      items.length,
+    );
     onChange({ ...config, right: items, mapping });
   }
 
   function addLeftItem() {
-    updateLeft([...config.left, '']);
+    updateLeft([...config.left, ""]);
   }
 
   function removeLeftItem(index: number) {
@@ -68,7 +76,11 @@ export default function MatrixMatchingBuilder({ value, onChange }: Props) {
         remapped[oldIdx - 1] = values;
       }
     }
-    onChange({ ...config, left: items, mapping: cleanMapping(remapped, items.length, config.right.length) });
+    onChange({
+      ...config,
+      left: items,
+      mapping: cleanMapping(remapped, items.length, config.right.length),
+    });
   }
 
   function updateLeftText(index: number, text: string) {
@@ -77,7 +89,7 @@ export default function MatrixMatchingBuilder({ value, onChange }: Props) {
   }
 
   function addRightItem() {
-    updateRight([...config.right, '']);
+    updateRight([...config.right, ""]);
   }
 
   function removeRightItem(index: number) {
@@ -89,7 +101,11 @@ export default function MatrixMatchingBuilder({ value, onChange }: Props) {
         .filter((v) => v !== index)
         .map((v) => (v > index ? v - 1 : v));
     }
-    onChange({ ...config, right: items, mapping: cleanMapping(remapped, config.left.length, items.length) });
+    onChange({
+      ...config,
+      right: items,
+      mapping: cleanMapping(remapped, config.left.length, items.length),
+    });
   }
 
   function updateRightText(index: number, text: string) {
@@ -141,7 +157,12 @@ export default function MatrixMatchingBuilder({ value, onChange }: Props) {
               </Button>
             </div>
           ))}
-          <Button type="button" variant="outline" size="sm" onClick={addLeftItem}>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={addLeftItem}
+          >
             <Plus className="size-4" />
             Add Left
           </Button>
@@ -169,7 +190,12 @@ export default function MatrixMatchingBuilder({ value, onChange }: Props) {
               </Button>
             </div>
           ))}
-          <Button type="button" variant="outline" size="sm" onClick={addRightItem}>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={addRightItem}
+          >
             <Plus className="size-4" />
             Add Right
           </Button>
@@ -194,7 +220,9 @@ export default function MatrixMatchingBuilder({ value, onChange }: Props) {
               <tbody>
                 {config.left.map((item, leftIdx) => (
                   <tr key={leftIdx}>
-                    <td className="border p-2 font-medium">{item || `L${leftIdx + 1}`}</td>
+                    <td className="border p-2 font-medium">
+                      {item || `L${leftIdx + 1}`}
+                    </td>
                     {config.right.map((_, rightIdx) => (
                       <td key={rightIdx} className="border p-2 text-center">
                         <input

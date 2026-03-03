@@ -1,17 +1,36 @@
-import type { TiptapJSON } from './tiptap';
+import type { TiptapJSON } from "./tiptap";
 
 export type QuestionType =
-  | 'mcq' | 'multi_select_mcq' | 'theory' | 'short_answer' | 'essay'
-  | 'fill_blank' | 'cloze' | 'matching' | 'ordering' | 'true_false'
-  | 'diagram_label' | 'calculation' | 'assertion_reason' | 'matrix_matching'
-  | 'numeric_entry' | 'group';
+  | "mcq"
+  | "multi_select_mcq"
+  | "theory"
+  | "short_answer"
+  | "essay"
+  | "fill_blank"
+  | "cloze"
+  | "matching"
+  | "ordering"
+  | "true_false"
+  | "diagram_label"
+  | "calculation"
+  | "assertion_reason"
+  | "matrix_matching"
+  | "numeric_entry"
+  | "group";
 
 export type ContextType =
-  | 'passage' | 'diagram' | 'table' | 'case_study' | 'code_snippet'
-  | 'map' | 'graph' | 'word_bank' | 'equation_set';
+  | "passage"
+  | "diagram"
+  | "table"
+  | "case_study"
+  | "code_snippet"
+  | "map"
+  | "graph"
+  | "word_bank"
+  | "equation_set";
 
-export type QuestionStatus = 'draft' | 'in_review' | 'published' | 'archived';
-export type QuestionDifficulty = 'easy' | 'medium' | 'hard';
+export type QuestionStatus = "draft" | "in_review" | "published" | "archived";
+export type QuestionDifficulty = "easy" | "medium" | "hard";
 
 export interface McqConfig {
   options: { label: string; text: string; is_correct: boolean }[];
@@ -76,10 +95,19 @@ export interface AssertionReasonConfig {
 }
 
 export type ResponseConfig =
-  | McqConfig | MultiSelectMcqConfig | TrueFalseConfig | FillBlankConfig
-  | ClozeConfig | MatchingConfig | MatrixMatchingConfig | OrderingConfig
-  | DiagramLabelConfig | CalculationConfig | NumericEntryConfig
-  | AssertionReasonConfig | null;
+  | McqConfig
+  | MultiSelectMcqConfig
+  | TrueFalseConfig
+  | FillBlankConfig
+  | ClozeConfig
+  | MatchingConfig
+  | MatrixMatchingConfig
+  | OrderingConfig
+  | DiagramLabelConfig
+  | CalculationConfig
+  | NumericEntryConfig
+  | AssertionReasonConfig
+  | null;
 
 export interface QuestionContextData {
   id: string;
@@ -107,7 +135,11 @@ export interface QuestionNode {
   bloom_level?: string;
   status: string;
   context_links?: { context_id: string; sort_order: number; label?: string }[];
-  question_context_links?: { question_context_id: string; sort_order: number; label?: string }[];
+  question_context_links?: {
+    question_context_id: string;
+    sort_order: number;
+    label?: string;
+  }[];
   children: QuestionNode[];
 }
 
@@ -126,7 +158,7 @@ export interface QuestionSection {
  * Used by the question renderer for displaying worked solutions.
  */
 export interface AnswerDepthData {
-  depth_level: 'quick' | 'standard' | 'deep_dive';
+  depth_level: "quick" | "standard" | "deep_dive";
   label: string;
   description: string;
   answer: {

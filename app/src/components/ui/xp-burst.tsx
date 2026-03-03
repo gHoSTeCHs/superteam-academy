@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
-import { ZapIcon } from 'lucide-react';
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import { ZapIcon } from "lucide-react";
 
 interface XpBurstProps {
   xp: number;
@@ -35,16 +35,16 @@ export function XpBurst({ xp, visible, onComplete }: XpBurstProps) {
       <div
         className="flex items-center gap-3"
         style={{
-          animation: 'xpBurstRise 1.5s ease-out forwards',
+          animation: "xpBurstRise 1.5s ease-out forwards",
         }}
       >
-        <ZapIcon className="size-10 text-accent" style={{ color: '#ffd23f' }} />
+        <ZapIcon className="size-10 text-accent" style={{ color: "#ffd23f" }} />
         <span
           className="text-[48px] font-bold"
           style={{
-            fontFamily: 'var(--font-display)',
-            color: '#ffd23f',
-            textShadow: '0 2px 12px rgba(255, 210, 63, 0.4)',
+            fontFamily: "var(--font-display)",
+            color: "#ffd23f",
+            textShadow: "0 2px 12px rgba(255, 210, 63, 0.4)",
           }}
         >
           +{xp} XP

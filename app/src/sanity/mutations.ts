@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { writeClient } from "./client";
+import { writeClient } from "./server";
 import { getServerSession } from "@/lib/auth-server";
 
 async function requireAuth() {
@@ -116,9 +116,14 @@ export async function createModule(courseId: string, input: CreateModuleInput) {
   return { _id: doc._id };
 }
 
-export async function updateModule(id: string, patch: Record<string, unknown>) {
+export async function updateModule(
+  id: string,
+  patch: Record<string, unknown>,
+  courseId?: string,
+) {
   await requireAuth();
   await writeClient.patch(id).set(patch).commit();
+  if (courseId) revalidatePath(`/admin/courses/${courseId}/edit`);
 }
 
 export async function deleteModule(courseId: string, moduleId: string) {
@@ -148,7 +153,11 @@ export interface CreateLessonInput {
   difficulty?: string;
 }
 
-export async function createLesson(moduleId: string, input: CreateLessonInput) {
+export async function createLesson(
+  moduleId: string,
+  input: CreateLessonInput,
+  courseId?: string,
+) {
   await requireAuth();
   const slug = input.title
     .toLowerCase()
@@ -168,24 +177,61 @@ export async function createLesson(moduleId: string, input: CreateLessonInput) {
     .setIfMissing({ lessons: [] })
     .append("lessons", [{ _type: "reference", _ref: doc._id, _key: doc._id }])
     .commit();
+  if (courseId) revalidatePath(`/admin/courses/${courseId}/edit`);
   return { _id: doc._id };
 }
 
-export async function deleteLesson(moduleId: string, lessonId: string) {
+export async function deleteLesson(
+  moduleId: string,
+  lessonId: string,
+  courseId?: string,
+) {
   await requireAuth();
   await writeClient
     .patch(moduleId)
     .unset([`lessons[_ref == "${lessonId}"]`])
     .commit();
   await writeClient.delete(lessonId);
+  if (courseId) revalidatePath(`/admin/courses/${courseId}/edit`);
 }
 
 export async function updateLessonContentBlocks(
   lessonId: string,
   contentBlocks: Record<string, unknown>[],
+  courseId?: string,
 ) {
   await requireAuth();
   await writeClient.patch(lessonId).set({ contentBlocks }).commit();
+  if (courseId) {
+    revalidatePath(`/admin/courses/${courseId}/edit`);
+    revalidatePath(`/admin/courses/${courseId}/lessons/${lessonId}/edit`);
+  }
+}
+
+export async function reorderModules(courseId: string, moduleIds: string[]) {
+  await requireAuth();
+  const refs = moduleIds.map((id) => ({
+    _type: "reference" as const,
+    _ref: id,
+    _key: id,
+  }));
+  await writeClient.patch(courseId).set({ modules: refs }).commit();
+  revalidatePath(`/admin/courses/${courseId}/edit`);
+}
+
+export async function reorderLessons(
+  moduleId: string,
+  lessonIds: string[],
+  courseId?: string,
+) {
+  await requireAuth();
+  const refs = lessonIds.map((id) => ({
+    _type: "reference" as const,
+    _ref: id,
+    _key: id,
+  }));
+  await writeClient.patch(moduleId).set({ lessons: refs }).commit();
+  if (courseId) revalidatePath(`/admin/courses/${courseId}/edit`);
 }
 
 export async function uploadAsset(formData: FormData) {

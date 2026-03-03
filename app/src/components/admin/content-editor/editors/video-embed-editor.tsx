@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import type { VideoEmbedData } from '@/types/content';
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import type { VideoEmbedData } from "@/types/content";
 
 interface VideoEmbedEditorProps {
   data: VideoEmbedData;
@@ -32,7 +32,7 @@ export function VideoEmbedEditor({ data, onChange }: VideoEmbedEditorProps) {
       <div className="space-y-2">
         <Label className="text-muted-foreground">Title (optional)</Label>
         <Input
-          value={data.title ?? ''}
+          value={data.title ?? ""}
           onChange={(e) => handleTitleChange(e.target.value)}
           placeholder="Video title"
         />

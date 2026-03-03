@@ -1,29 +1,29 @@
-'use client';
+"use client";
 
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { Search } from 'lucide-react';
-import { Input } from '@/components/ui/input';
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 interface SearchInputProps {
   placeholder?: string;
 }
 
-export function SearchInput({ placeholder = 'Search...' }: SearchInputProps) {
+export function SearchInput({ placeholder = "Search..." }: SearchInputProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [value, setValue] = useState(searchParams.get('search') ?? '');
+  const [value, setValue] = useState(searchParams.get("search") ?? "");
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const pushSearch = useCallback(
     (search: string) => {
       const params = new URLSearchParams(searchParams.toString());
       if (search) {
-        params.set('search', search);
+        params.set("search", search);
       } else {
-        params.delete('search');
+        params.delete("search");
       }
-      params.delete('page');
+      params.delete("page");
       router.push(`?${params.toString()}`);
     },
     [router, searchParams],

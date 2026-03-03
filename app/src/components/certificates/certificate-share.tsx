@@ -1,15 +1,10 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import {
-  ShareIcon,
-  CopyIcon,
-  CheckIcon,
-  DownloadIcon,
-} from 'lucide-react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { useState } from "react";
+import { ShareIcon, CopyIcon, CheckIcon, DownloadIcon } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface CertificateShareProps {
   courseName: string;
@@ -28,7 +23,8 @@ export function CertificateShare({
 }: CertificateShareProps) {
   const [copied, setCopied] = useState(false);
 
-  const url = shareUrl ?? `https://academy.superteam.fun/certificates/${mintAddress}`;
+  const url =
+    shareUrl ?? `https://academy.superteam.fun/certificates/${mintAddress}`;
   const tweetText = encodeURIComponent(
     `I just earned my "${courseName}" credential on @SuperteamDAO Academy! 🎓\n\nVerify on-chain: ${url}`,
   );
@@ -42,12 +38,12 @@ export function CertificateShare({
   }
 
   return (
-    <Card className={cn('px-6 py-5', className)}>
+    <Card className={cn("px-6 py-5", className)}>
       <div className="mb-4 flex items-center gap-2">
         <ShareIcon className="size-4 text-primary" />
         <h3
           className="text-[14px] font-semibold text-foreground"
-          style={{ fontFamily: 'var(--font-display)' }}
+          style={{ fontFamily: "var(--font-display)" }}
         >
           Share Credential
         </h3>
@@ -68,13 +64,13 @@ export function CertificateShare({
           <div className="flex-1">
             <p
               className="text-[13px] font-semibold text-foreground"
-              style={{ fontFamily: 'var(--font-body)' }}
+              style={{ fontFamily: "var(--font-body)" }}
             >
               Share on X (Twitter)
             </p>
             <p
               className="text-[11px] text-muted-foreground"
-              style={{ fontFamily: 'var(--font-body)' }}
+              style={{ fontFamily: "var(--font-body)" }}
             >
               Post your achievement
             </p>
@@ -95,13 +91,13 @@ export function CertificateShare({
           <div className="flex-1">
             <p
               className="text-[13px] font-semibold text-foreground"
-              style={{ fontFamily: 'var(--font-body)' }}
+              style={{ fontFamily: "var(--font-body)" }}
             >
               Share on LinkedIn
             </p>
             <p
               className="text-[11px] text-muted-foreground"
-              style={{ fontFamily: 'var(--font-body)' }}
+              style={{ fontFamily: "var(--font-body)" }}
             >
               Add to your profile
             </p>

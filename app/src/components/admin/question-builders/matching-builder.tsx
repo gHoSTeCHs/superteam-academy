@@ -1,8 +1,8 @@
-import { Plus, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import type { MatchingConfig } from '@/types/questions';
+import { Plus, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import type { MatchingConfig } from "@/types/questions";
 
 const MIN_PAIRS = 2;
 
@@ -14,8 +14,8 @@ interface Props {
 function getDefaults(): MatchingConfig {
   return {
     pairs: [
-      { left: '', right: '' },
-      { left: '', right: '' },
+      { left: "", right: "" },
+      { left: "", right: "" },
     ],
     distractors: [],
   };
@@ -24,12 +24,12 @@ function getDefaults(): MatchingConfig {
 export default function MatchingBuilder({ value, onChange }: Props) {
   const config = value ?? getDefaults();
 
-  function updatePairs(pairs: MatchingConfig['pairs']) {
+  function updatePairs(pairs: MatchingConfig["pairs"]) {
     onChange({ ...config, pairs });
   }
 
   function addPair() {
-    updatePairs([...config.pairs, { left: '', right: '' }]);
+    updatePairs([...config.pairs, { left: "", right: "" }]);
   }
 
   function removePair(index: number) {
@@ -37,7 +37,11 @@ export default function MatchingBuilder({ value, onChange }: Props) {
     updatePairs(config.pairs.filter((_, i) => i !== index));
   }
 
-  function updatePairField(index: number, field: 'left' | 'right', text: string) {
+  function updatePairField(
+    index: number,
+    field: "left" | "right",
+    text: string,
+  ) {
     const updated = config.pairs.map((pair, i) =>
       i === index ? { ...pair, [field]: text } : pair,
     );
@@ -45,12 +49,15 @@ export default function MatchingBuilder({ value, onChange }: Props) {
   }
 
   function updateDistractors(raw: string) {
-    const distractors = raw.split(',').map((s) => s.trim()).filter(Boolean);
+    const distractors = raw
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
     onChange({ ...config, distractors });
   }
 
   function getDistractorsString(): string {
-    return (config.distractors ?? []).join(', ');
+    return (config.distractors ?? []).join(", ");
   }
 
   return (
@@ -61,7 +68,7 @@ export default function MatchingBuilder({ value, onChange }: Props) {
         <div key={index} className="flex items-center gap-3">
           <Input
             value={pair.left}
-            onChange={(e) => updatePairField(index, 'left', e.target.value)}
+            onChange={(e) => updatePairField(index, "left", e.target.value)}
             placeholder={`Left ${index + 1}`}
             className="flex-1"
           />
@@ -70,7 +77,7 @@ export default function MatchingBuilder({ value, onChange }: Props) {
 
           <Input
             value={pair.right}
-            onChange={(e) => updatePairField(index, 'right', e.target.value)}
+            onChange={(e) => updatePairField(index, "right", e.target.value)}
             placeholder={`Right ${index + 1}`}
             className="flex-1"
           />
@@ -95,7 +102,9 @@ export default function MatchingBuilder({ value, onChange }: Props) {
       </Button>
 
       <div className="space-y-2">
-        <Label htmlFor="distractors">Distractors (optional, comma-separated)</Label>
+        <Label htmlFor="distractors">
+          Distractors (optional, comma-separated)
+        </Label>
         <Input
           id="distractors"
           value={getDistractorsString()}

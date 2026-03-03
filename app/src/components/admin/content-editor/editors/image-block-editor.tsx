@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import type { ImageBlockData } from '@/types/content';
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import type { ImageBlockData } from "@/types/content";
 
 interface ImageBlockEditorProps {
   data: ImageBlockData;
@@ -45,7 +45,7 @@ export function ImageBlockEditor({ data, onChange }: ImageBlockEditorProps) {
       <div className="space-y-2">
         <Label className="text-muted-foreground">Caption (optional)</Label>
         <Input
-          value={data.caption ?? ''}
+          value={data.caption ?? ""}
           onChange={(e) => handleCaptionChange(e.target.value)}
           placeholder="Optional image caption"
         />
@@ -55,7 +55,7 @@ export function ImageBlockEditor({ data, onChange }: ImageBlockEditorProps) {
         <div className="overflow-hidden rounded-lg border border-border">
           <img
             src={data.src}
-            alt={data.alt || 'Preview'}
+            alt={data.alt || "Preview"}
             className="max-h-48 w-full object-contain bg-muted/20 p-2"
           />
         </div>

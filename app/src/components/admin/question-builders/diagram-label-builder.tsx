@@ -1,8 +1,8 @@
-import { Plus, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import type { DiagramLabelConfig } from '@/types/questions';
+import { Plus, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import type { DiagramLabelConfig } from "@/types/questions";
 
 interface Props {
   value: DiagramLabelConfig | null;
@@ -11,19 +11,19 @@ interface Props {
 
 function getDefaults(): DiagramLabelConfig {
   return {
-    labels: [{ label: '', answer: '' }],
+    labels: [{ label: "", answer: "" }],
   };
 }
 
 export default function DiagramLabelBuilder({ value, onChange }: Props) {
   const config = value ?? getDefaults();
 
-  function updateLabels(labels: DiagramLabelConfig['labels']) {
+  function updateLabels(labels: DiagramLabelConfig["labels"]) {
     onChange({ ...config, labels });
   }
 
   function addLabel() {
-    updateLabels([...config.labels, { label: '', answer: '' }]);
+    updateLabels([...config.labels, { label: "", answer: "" }]);
   }
 
   function removeLabel(index: number) {
@@ -31,7 +31,7 @@ export default function DiagramLabelBuilder({ value, onChange }: Props) {
     updateLabels(config.labels.filter((_, i) => i !== index));
   }
 
-  function updateField(index: number, field: 'label' | 'answer', text: string) {
+  function updateField(index: number, field: "label" | "answer", text: string) {
     const updated = config.labels.map((lbl, i) =>
       i === index ? { ...lbl, [field]: text } : lbl,
     );
@@ -46,14 +46,14 @@ export default function DiagramLabelBuilder({ value, onChange }: Props) {
         <div key={index} className="flex items-center gap-3">
           <Input
             value={lbl.label}
-            onChange={(e) => updateField(index, 'label', e.target.value)}
+            onChange={(e) => updateField(index, "label", e.target.value)}
             placeholder={`Label ${index + 1} (e.g. A, 1, i)`}
             className="w-40 shrink-0"
           />
 
           <Input
             value={lbl.answer}
-            onChange={(e) => updateField(index, 'answer', e.target.value)}
+            onChange={(e) => updateField(index, "answer", e.target.value)}
             placeholder="Answer text"
             className="flex-1"
           />

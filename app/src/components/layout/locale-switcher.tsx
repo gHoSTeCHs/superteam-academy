@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import { useLocale } from 'next-intl';
-import { GlobeIcon } from 'lucide-react';
-import { useRouter, usePathname } from '@/i18n/navigation';
+import { useLocale } from "next-intl";
+import { GlobeIcon } from "lucide-react";
+import { useRouter, usePathname } from "@/i18n/navigation";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
 
 const locales = [
-  { value: 'en', label: 'EN' },
-  { value: 'pt-BR', label: 'PT' },
-  { value: 'es', label: 'ES' },
+  { value: "en", label: "EN" },
+  { value: "pt-BR", label: "PT" },
+  { value: "es", label: "ES" },
 ] as const;
 
 export function LocaleSwitcher() {
@@ -35,7 +35,7 @@ export function LocaleSwitcher() {
       <SelectContent align="end">
         {locales.map((l) => (
           <SelectItem key={l.value} value={l.value}>
-            <span style={{ fontFamily: 'var(--font-body)' }}>{l.label}</span>
+            <span style={{ fontFamily: "var(--font-body)" }}>{l.label}</span>
           </SelectItem>
         ))}
       </SelectContent>

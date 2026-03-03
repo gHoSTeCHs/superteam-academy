@@ -22,12 +22,25 @@ interface RawBlock {
   starterCode?: string;
   solutionCode?: string;
   hints?: string[];
+  testCases?: {
+    name: string;
+    input?: string;
+    expectedOutput?: string;
+    assertionCode?: string;
+  }[];
+  validationRules?: { pattern: string; message: string }[];
+  maxAttempts?: number;
   quizQuestion?: string;
   quizOptions?: string[];
+  correctAnswer?: number;
+  correctAnswers?: number[];
+  responseConfigJson?: string;
+  questionType?: string;
   calloutType?: string;
   calloutTitle?: string;
   calloutContent?: string;
   imageUrl?: string;
+  imageAssetId?: string;
   alt?: string;
   caption?: string;
   videoUrl?: string;
@@ -77,25 +90,66 @@ function mapBlock(raw: RawBlock, index: number): ContentBlock {
         sortOrder: index,
         data: {
           type: "code_challenge",
-          language: (raw.language as "typescript" | "rust") ?? "typescript",
+          language: raw.language === "rust" ? "rust" : "typescript",
           starterCode: raw.starterCode ?? "",
           solutionCode: raw.solutionCode ?? "",
-          testCases: [],
+          testCases: (raw.testCases ?? []).map((tc) => ({
+            name: tc.name ?? "",
+            input: tc.input,
+            expectedOutput: tc.expectedOutput,
+            assertionCode: tc.assertionCode,
+          })),
+          validationRules: raw.validationRules,
           hints: raw.hints ?? [],
+          maxAttempts: raw.maxAttempts,
         },
       };
-    case "quiz":
+    case "quiz": {
+      const questionType = (raw.questionType ??
+        "mcq") as import("@/types/questions").QuestionType;
+      let responseConfig: import("@/types/questions").ResponseConfig = null;
+
+      if (raw.responseConfigJson) {
+        try {
+          responseConfig = JSON.parse(raw.responseConfigJson);
+        } catch {
+          /* fallback to MCQ reconstruction below */
+        }
+      }
+
+      if (
+        !responseConfig &&
+        (questionType === "mcq" || questionType === "multi_select_mcq") &&
+        raw.quizOptions?.length
+      ) {
+        const correctSet = new Set(
+          questionType === "multi_select_mcq" && raw.correctAnswers?.length
+            ? raw.correctAnswers
+            : raw.correctAnswer != null
+              ? [raw.correctAnswer]
+              : [],
+        );
+        responseConfig = {
+          options: raw.quizOptions.map((text, i) => ({
+            label: String.fromCharCode(65 + i),
+            text,
+            is_correct: correctSet.has(i),
+          })),
+        };
+      }
+
       return {
         id: raw._key,
         type,
         sortOrder: index,
         data: {
           type: "quiz",
-          questionType: "mcq",
+          questionType,
           content: raw.quizQuestion ?? "",
-          responseConfig: null,
+          responseConfig,
         },
       };
+    }
     case "callout":
       return {
         id: raw._key,
@@ -119,6 +173,7 @@ function mapBlock(raw: RawBlock, index: number): ContentBlock {
           src: raw.imageUrl ?? "",
           alt: raw.alt ?? "",
           caption: raw.caption,
+          assetId: raw.imageAssetId,
         },
       };
     case "video_embed":

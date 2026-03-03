@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 import {
   DndContext,
   closestCenter,
@@ -8,27 +8,27 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-} from '@dnd-kit/core';
-import type { DragEndEvent } from '@dnd-kit/core';
+} from "@dnd-kit/core";
+import type { DragEndEvent } from "@dnd-kit/core";
 import {
   SortableContext,
   useSortable,
   verticalListSortingStrategy,
   arrayMove,
   sortableKeyboardCoordinates,
-} from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import { GripVertical, Plus, Trash2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { BlockEditor } from './block-editor';
-import { BlockTypePicker } from './block-type-picker';
-import { cn } from '@/lib/utils';
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { GripVertical, Plus, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { BlockEditor } from "./block-editor";
+import { BlockTypePicker } from "./block-type-picker";
+import { cn } from "@/lib/utils";
 import type {
   ContentBlock,
   ContentBlockData,
   ContentBlockType,
-} from '@/types/content';
+} from "@/types/content";
 
 interface BlockListProps {
   blocks: ContentBlock[];
@@ -36,13 +36,13 @@ interface BlockListProps {
 }
 
 const BLOCK_TYPE_LABELS: Record<ContentBlockType, string> = {
-  text: 'Text',
-  code_example: 'Code Example',
-  code_challenge: 'Code Challenge',
-  quiz: 'Quiz',
-  callout: 'Callout',
-  image: 'Image',
-  video_embed: 'Video',
+  text: "Text",
+  code_example: "Code Example",
+  code_challenge: "Code Challenge",
+  quiz: "Quiz",
+  callout: "Callout",
+  image: "Image",
+  video_embed: "Video",
 };
 
 /**
@@ -50,32 +50,32 @@ const BLOCK_TYPE_LABELS: Record<ContentBlockType, string> = {
  */
 function createDefaultData(type: ContentBlockType): ContentBlockData {
   switch (type) {
-    case 'text':
-      return { type: 'text', content: null };
-    case 'code_example':
-      return { type: 'code_example', language: 'typescript', code: '' };
-    case 'code_challenge':
+    case "text":
+      return { type: "text", content: null };
+    case "code_example":
+      return { type: "code_example", language: "typescript", code: "" };
+    case "code_challenge":
       return {
-        type: 'code_challenge',
-        language: 'typescript',
-        starterCode: '',
-        solutionCode: '',
+        type: "code_challenge",
+        language: "typescript",
+        starterCode: "",
+        solutionCode: "",
         testCases: [],
         hints: [],
       };
-    case 'quiz':
+    case "quiz":
       return {
-        type: 'quiz',
-        questionType: 'mcq',
-        content: '',
+        type: "quiz",
+        questionType: "mcq",
+        content: "",
         responseConfig: null,
       };
-    case 'callout':
-      return { type: 'callout', calloutType: 'info', content: '' };
-    case 'image':
-      return { type: 'image', src: '', alt: '' };
-    case 'video_embed':
-      return { type: 'video_embed', url: '' };
+    case "callout":
+      return { type: "callout", calloutType: "info", content: "" };
+    case "image":
+      return { type: "image", src: "", alt: "" };
+    case "video_embed":
+      return { type: "video_embed", url: "" };
   }
 }
 
@@ -88,7 +88,7 @@ export function BlockList({ blocks, onChange }: BlockListProps) {
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   function handleDragEnd(event: DragEndEvent) {
@@ -101,7 +101,7 @@ export function BlockList({ blocks, onChange }: BlockListProps) {
     if (oldIndex === -1 || newIndex === -1) return;
 
     const reordered = arrayMove(blocks, oldIndex, newIndex).map(
-      (block, index) => ({ ...block, sortOrder: index })
+      (block, index) => ({ ...block, sortOrder: index }),
     );
     onChange(reordered);
   }
@@ -117,16 +117,14 @@ export function BlockList({ blocks, onChange }: BlockListProps) {
   }
 
   function handleUpdateBlock(blockId: string, data: ContentBlockData) {
-    onChange(
-      blocks.map((b) => (b.id === blockId ? { ...b, data } : b))
-    );
+    onChange(blocks.map((b) => (b.id === blockId ? { ...b, data } : b)));
   }
 
   function handleDeleteBlock(blockId: string) {
     onChange(
       blocks
         .filter((b) => b.id !== blockId)
-        .map((block, index) => ({ ...block, sortOrder: index }))
+        .map((block, index) => ({ ...block, sortOrder: index })),
     );
   }
 
@@ -190,7 +188,11 @@ interface SortableBlockItemProps {
   onDelete: () => void;
 }
 
-function SortableBlockItem({ block, onUpdate, onDelete }: SortableBlockItemProps) {
+function SortableBlockItem({
+  block,
+  onUpdate,
+  onDelete,
+}: SortableBlockItemProps) {
   const {
     attributes,
     listeners,
@@ -210,16 +212,16 @@ function SortableBlockItem({ block, onUpdate, onDelete }: SortableBlockItemProps
       ref={setNodeRef}
       style={style}
       className={cn(
-        'rounded-lg border border-border bg-card transition-shadow',
-        isDragging && 'shadow-lg opacity-90 z-50'
+        "rounded-lg border border-border bg-card transition-shadow",
+        isDragging && "shadow-lg opacity-90 z-50",
       )}
     >
       <div className="flex items-center gap-2 border-b border-border px-4 py-2.5">
         <button
           type="button"
           className={cn(
-            'flex size-7 shrink-0 cursor-grab items-center justify-center rounded-md text-muted-foreground transition-colors',
-            'hover:bg-muted hover:text-foreground active:cursor-grabbing'
+            "flex size-7 shrink-0 cursor-grab items-center justify-center rounded-md text-muted-foreground transition-colors",
+            "hover:bg-muted hover:text-foreground active:cursor-grabbing",
           )}
           {...attributes}
           {...listeners}

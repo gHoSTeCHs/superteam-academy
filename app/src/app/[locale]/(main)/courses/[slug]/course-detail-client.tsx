@@ -8,13 +8,18 @@ import type { Course } from "@/types/course";
 
 interface CourseDetailClientProps {
   course: Course;
+  lessonBasePath?: string;
 }
 
-export function CourseDetailClient({ course }: CourseDetailClientProps) {
+export function CourseDetailClient({
+  course,
+  lessonBasePath,
+}: CourseDetailClientProps) {
   const router = useRouter();
 
   const firstLesson = course.modules?.[0]?.lessons?.[0];
   const courseSlug = course.slug ?? course.id;
+  const basePath = lessonBasePath ?? `/courses/${courseSlug}/lessons`;
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-10">
@@ -28,7 +33,7 @@ export function CourseDetailClient({ course }: CourseDetailClientProps) {
               .flatMap((m) => m.lessons)
               .find((l) => l.id === lessonId);
             if (lesson?.slug) {
-              router.push(`/courses/${courseSlug}/lessons/${lesson.slug}`);
+              router.push(`${basePath}/${lesson.slug}`);
             }
           }}
         />
@@ -37,9 +42,7 @@ export function CourseDetailClient({ course }: CourseDetailClientProps) {
           <EnrollButton
             onContinue={() => {
               if (firstLesson?.slug) {
-                router.push(
-                  `/courses/${courseSlug}/lessons/${firstLesson.slug}`,
-                );
+                router.push(`${basePath}/${firstLesson.slug}`);
               }
             }}
           />
