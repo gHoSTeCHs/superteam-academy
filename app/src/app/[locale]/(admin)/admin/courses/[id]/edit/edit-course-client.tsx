@@ -121,10 +121,7 @@ export function EditCourseClient({
     const finalModuleIds = current.modules.map(
       (m) => newModuleIdMap.get(m.id) ?? m.id,
     );
-    const initialOrder = initial.modules
-      .filter((m) => currentModuleIds.has(m.id))
-      .map((m) => m.id);
-    if (JSON.stringify(finalModuleIds) !== JSON.stringify(initialOrder)) {
+    if (finalModuleIds.length > 0) {
       await reorderModules(courseId, finalModuleIds);
     }
   }

@@ -6,6 +6,7 @@ export interface Course {
   title: string;
   description: string;
   language: "pt-BR" | "es" | "en";
+  difficulty?: "beginner" | "intermediate" | "advanced";
   thumbnail?: string;
   tags: string[];
   modules: Module[];

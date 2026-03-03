@@ -3,9 +3,6 @@ import type { TiptapJSON } from "./tiptap";
 export type QuestionType =
   | "mcq"
   | "multi_select_mcq"
-  | "theory"
-  | "short_answer"
-  | "essay"
   | "fill_blank"
   | "cloze"
   | "matching"
@@ -15,8 +12,7 @@ export type QuestionType =
   | "calculation"
   | "assertion_reason"
   | "matrix_matching"
-  | "numeric_entry"
-  | "group";
+  | "numeric_entry";
 
 export type ContextType =
   | "passage"

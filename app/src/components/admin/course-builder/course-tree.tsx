@@ -128,7 +128,7 @@ export function CourseTree({ course, courseId, onChange }: CourseTreeProps) {
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           <div className="space-y-2">
             <Label className="text-muted-foreground">Language</Label>
             <Select
@@ -144,6 +144,25 @@ export function CourseTree({ course, courseId, onChange }: CourseTreeProps) {
                 <SelectItem value="pt-BR">Portuguese</SelectItem>
                 <SelectItem value="es">Spanish</SelectItem>
                 <SelectItem value="en">English</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label className="text-muted-foreground">Difficulty</Label>
+            <Select
+              value={course.difficulty ?? "beginner"}
+              onValueChange={(val: string) =>
+                updateField("difficulty", val as Course["difficulty"])
+              }
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select difficulty" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="beginner">Beginner</SelectItem>
+                <SelectItem value="intermediate">Intermediate</SelectItem>
+                <SelectItem value="advanced">Advanced</SelectItem>
               </SelectContent>
             </Select>
           </div>

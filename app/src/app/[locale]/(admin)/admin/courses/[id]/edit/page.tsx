@@ -16,6 +16,7 @@ interface SanityCourse {
   language: string;
   difficulty: string;
   isPublished: boolean;
+  publishedAt: string | null;
   thumbnail: string | null;
   tags: string[];
   modules:
@@ -49,7 +50,7 @@ function mapSanityCourse(
     thumbnail: raw.thumbnail ?? undefined,
     tags: raw.tags ?? [],
     isPublished: raw.isPublished ?? false,
-    difficulty: raw.difficulty ?? "beginner",
+    difficulty: (raw.difficulty ?? "beginner") as Course["difficulty"],
     modules: (raw.modules ?? []).map(
       (m, mi): Module => ({
         id: m._id,

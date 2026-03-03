@@ -7,12 +7,8 @@ const QUESTION_TYPE_META: Record<
     variant: "primary" | "danger" | "reward" | "neutral" | "solid";
   }
 > = {
-  group: { label: "group", variant: "neutral" },
   mcq: { label: "MCQ", variant: "solid" },
   multi_select_mcq: { label: "multi-select", variant: "solid" },
-  theory: { label: "theory", variant: "primary" },
-  short_answer: { label: "short answer", variant: "primary" },
-  essay: { label: "essay", variant: "primary" },
   fill_blank: { label: "fill blank", variant: "reward" },
   cloze: { label: "cloze", variant: "reward" },
   matching: { label: "matching", variant: "reward" },
