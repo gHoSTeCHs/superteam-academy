@@ -120,3 +120,81 @@ export const lessonBySlugQuery = groq`
     }
   }
 `;
+
+export const adminCoursesQuery = groq`
+  *[_type == "course"] | order(_createdAt desc) {
+    "_id": _id,
+    title,
+    "slug": slug.current,
+    description,
+    isPublished,
+    publishedAt,
+    difficulty,
+    language,
+    _createdAt,
+    "moduleCount": count(modules),
+    "lessonCount": count(modules[]->lessons[])
+  }
+`;
+
+export const adminCourseByIdQuery = groq`
+  *[_type == "course" && _id == $id][0] {
+    "_id": _id,
+    title,
+    "slug": slug.current,
+    description,
+    language,
+    difficulty,
+    isPublished,
+    publishedAt,
+    "thumbnail": thumbnail.asset->url,
+    tags,
+    modules[]-> {
+      "_id": _id,
+      title,
+      description,
+      type,
+      "order": order,
+      lessons[]-> {
+        "_id": _id,
+        title,
+        "slug": slug.current,
+        "xp": coalesce(xp, 0),
+        estimatedMinutes,
+        difficulty
+      }
+    }
+  }
+`;
+
+export const adminLessonByIdQuery = groq`
+  *[_type == "lesson" && _id == $id][0] {
+    "_id": _id,
+    title,
+    "slug": slug.current,
+    "xp": coalesce(xp, 0),
+    estimatedMinutes,
+    difficulty,
+    contentBlocks[] {
+      _key,
+      blockType,
+      textContent,
+      language,
+      code,
+      filename,
+      starterCode,
+      solutionCode,
+      hints,
+      quizQuestion,
+      quizOptions,
+      calloutType,
+      calloutTitle,
+      calloutContent,
+      "imageUrl": image.asset->url,
+      alt,
+      caption,
+      videoUrl,
+      videoTitle
+    }
+  }
+`;
