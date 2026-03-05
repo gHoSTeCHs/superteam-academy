@@ -1,13 +1,15 @@
 "use client";
 
 import { useMemo } from "react";
+import { useTranslations } from "next-intl";
 import { useAuth } from "@/providers/auth-provider";
 import { XpLevelCard } from "@/components/dashboard/xp-level-card";
 import { StreakCalendar } from "@/components/dashboard/streak-calendar";
 import { ActiveCourses } from "@/components/dashboard/active-courses";
 import { RecentAchievements } from "@/components/dashboard/recent-achievements";
 import { ActivityFeed } from "@/components/dashboard/activity-feed";
-import { getStreak, getCalendarData } from "@/lib/streaks";
+import { useStreak } from "@/hooks/use-streak";
+import { ACHIEVEMENTS } from "@/lib/achievements";
 
 interface DashboardClientProps {
   userId: string;
@@ -15,10 +17,23 @@ interface DashboardClientProps {
 }
 
 export function DashboardClient({ userId, displayName }: DashboardClientProps) {
+  const t = useTranslations("Dashboard");
   const { walletAddress } = useAuth();
   const wallet = walletAddress ?? userId;
-  const streak = useMemo(() => getStreak(wallet), [wallet]);
-  const calendarDays = useMemo(() => getCalendarData(wallet), [wallet]);
+  const { currentStreak, longestStreak, calendarDays } = useStreak(wallet);
+
+  const achievementDisplay = useMemo(
+    () =>
+      ACHIEVEMENTS.map((a) => ({
+        id: a.id,
+        name: a.name,
+        description: a.description,
+        category: a.category,
+        xpReward: a.xpReward,
+        earned: false,
+      })),
+    [],
+  );
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-10">
@@ -30,13 +45,15 @@ export function DashboardClient({ userId, displayName }: DashboardClientProps) {
             letterSpacing: "-0.02em",
           }}
         >
-          {displayName ? `Welcome back, ${displayName}` : "Dashboard"}
+          {displayName
+            ? t("welcomeBack", { name: displayName })
+            : t("dashboardTitle")}
         </h1>
         <p
           className="mt-1 text-[15px] text-muted-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          Track your learning progress and achievements.
+          {t("dashboardDescription")}
         </p>
       </div>
 
@@ -44,8 +61,8 @@ export function DashboardClient({ userId, displayName }: DashboardClientProps) {
         <XpLevelCard xp={0} />
         <StreakCalendar
           days={calendarDays}
-          currentStreak={streak.currentStreak}
-          longestStreak={streak.longestStreak}
+          currentStreak={currentStreak}
+          longestStreak={longestStreak}
         />
       </div>
 
@@ -54,7 +71,7 @@ export function DashboardClient({ userId, displayName }: DashboardClientProps) {
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
-        <RecentAchievements achievements={[]} />
+        <RecentAchievements achievements={achievementDisplay} />
         <ActivityFeed activities={[]} />
       </div>
     </div>

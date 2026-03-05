@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { useTranslations } from "next-intl";
 import {
   CheckCircle2Icon,
   Loader2Icon,
@@ -10,11 +11,19 @@ import {
 import { Button } from "@/components/ui/button";
 import { XpBurst } from "@/components/ui/xp-burst";
 import { cn } from "@/lib/utils";
+import { useStreak } from "@/hooks/use-streak";
+import {
+  getNewStreakAchievements,
+  getAchievementById,
+} from "@/lib/achievements";
+import { showAchievementToast } from "@/lib/achievement-toast";
 
 interface LessonCompleteButtonProps {
   xpReward: number;
   isCompleted?: boolean;
   isLastLesson?: boolean;
+  isFirstLesson?: boolean;
+  walletAddress?: string;
   onComplete?: () => Promise<void> | void;
   onFinalizeCourse?: () => Promise<void> | void;
   className?: string;
@@ -24,10 +33,14 @@ export function LessonCompleteButton({
   xpReward,
   isCompleted: initialCompleted = false,
   isLastLesson = false,
+  isFirstLesson = false,
+  walletAddress,
   onComplete,
   onFinalizeCourse,
   className,
 }: LessonCompleteButtonProps) {
+  const t = useTranslations("Lessons");
+  const { recordActivity } = useStreak(walletAddress ?? "");
   const [isCompleted, setIsCompleted] = useState(initialCompleted);
   const [loading, setLoading] = useState(false);
   const [showXpBurst, setShowXpBurst] = useState(false);
@@ -39,13 +52,27 @@ export function LessonCompleteButton({
       await onComplete?.();
       setIsCompleted(true);
       setShowXpBurst(true);
+
+      if (walletAddress) {
+        const { previousStreak, newStreak } = recordActivity();
+        const crossed = getNewStreakAchievements(previousStreak, newStreak);
+        crossed.forEach(showAchievementToast);
+      }
+
+      if (isFirstLesson) {
+        const firstSteps = getAchievementById("first-steps");
+        if (firstSteps) showAchievementToast(firstSteps);
+      }
+
       if (isLastLesson) {
+        const completer = getAchievementById("course-completer");
+        if (completer) showAchievementToast(completer);
         setShowFinalize(true);
       }
     } finally {
       setLoading(false);
     }
-  }, [onComplete, isLastLesson]);
+  }, [onComplete, isLastLesson, isFirstLesson, walletAddress, recordActivity]);
 
   const handleFinalize = useCallback(async () => {
     setLoading(true);
@@ -65,7 +92,7 @@ export function LessonCompleteButton({
             className="text-[14px] font-semibold text-primary"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            All lessons completed!
+            {t("allLessonsCompleted")}
           </span>
         </div>
         <Button
@@ -81,7 +108,7 @@ export function LessonCompleteButton({
             <TrophyIcon className="size-4" />
           )}
           <span style={{ fontFamily: "var(--font-body)" }}>
-            {loading ? "Finalizing..." : "Claim Course Credential"}
+            {loading ? t("finalizing") : t("claimCourseCredential")}
           </span>
         </Button>
         <XpBurst
@@ -101,7 +128,7 @@ export function LessonCompleteButton({
           className="text-[14px] font-medium text-primary"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          Lesson completed
+          {t("lessonCompleted")}
         </span>
         <span
           className="ml-auto flex items-center gap-1 text-[13px] font-semibold"
@@ -133,7 +160,7 @@ export function LessonCompleteButton({
           <CheckCircle2Icon className="size-4" />
         )}
         <span style={{ fontFamily: "var(--font-body)" }}>
-          {loading ? "Completing..." : "Mark as Complete"}
+          {loading ? t("completing") : t("markAsComplete")}
         </span>
         <span className="ml-1 flex items-center gap-1 rounded-full bg-white/20 px-2 py-0.5 text-[11px]">
           <ZapIcon className="size-3" />

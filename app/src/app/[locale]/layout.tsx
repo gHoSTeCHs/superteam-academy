@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { routing } from "@/i18n/routing";
+import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SolanaProvider } from "@/providers/solana-provider";
 import { AuthProvider } from "@/providers/auth-provider";
@@ -25,7 +26,15 @@ export default async function LocaleLayout({
     <NextIntlClientProvider locale={locale} messages={messages}>
       <SolanaProvider>
         <AuthProvider>
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider>
+            {children}
+            <Toaster
+              position="top-center"
+              toastOptions={{
+                style: { fontFamily: "var(--font-body)" },
+              }}
+            />
+          </ThemeProvider>
         </AuthProvider>
       </SolanaProvider>
     </NextIntlClientProvider>

@@ -1,6 +1,8 @@
 "use client";
 
 import { useRouter } from "@/i18n/navigation";
+import { useAuth } from "@/hooks/use-auth";
+import { useStreak } from "@/hooks/use-streak";
 import { LessonContent } from "@/components/lessons/lesson-content";
 import { LessonNavigation } from "@/components/lessons/lesson-navigation";
 import { LessonCompleteButton } from "@/components/lessons/lesson-complete-button";
@@ -28,6 +30,16 @@ export function LessonViewClient({
   lessonBasePath,
 }: LessonViewClientProps) {
   const router = useRouter();
+  const { walletAddress } = useAuth();
+  const { recordActivity } = useStreak(walletAddress ?? "");
+
+  const isFirstLesson = currentLesson === 1 && !previousLessonSlug;
+
+  function handleChallengeComplete(_blockId: string, passed: boolean) {
+    if (passed && walletAddress) {
+      recordActivity();
+    }
+  }
 
   function navigateLesson(lessonSlug: string) {
     const basePath = lessonBasePath ?? `/courses/${courseSlug}/lessons`;
@@ -52,6 +64,7 @@ export function LessonViewClient({
       <LessonContent
         blocks={lesson.contentBlocks ?? []}
         lessonSlug={lesson.slug}
+        onChallengeComplete={handleChallengeComplete}
         className="mt-6"
       />
 
@@ -59,6 +72,8 @@ export function LessonViewClient({
         <LessonCompleteButton
           xpReward={lesson.xpReward}
           isLastLesson={currentLesson === totalLessons}
+          isFirstLesson={isFirstLesson}
+          walletAddress={walletAddress ?? undefined}
         />
       </div>
     </div>

@@ -73,6 +73,7 @@
     "react-player": "^3.4.0",
     "sanity": "^5.12.0",
     "server-only": "^0.0.1",
+    "sonner": "^2.0.7",
     "tailwind-merge": "^3.5.0",
     "tweetnacl": "^1.0.3"
   },
