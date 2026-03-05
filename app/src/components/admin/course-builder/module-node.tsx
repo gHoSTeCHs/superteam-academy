@@ -8,6 +8,7 @@ import {
   Trash2,
   Plus,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import {
   DndContext,
   closestCenter,
@@ -52,6 +53,7 @@ export function ModuleNode({
   onChange,
   onDelete,
 }: ModuleNodeProps) {
+  const t = useTranslations("AdminCourse");
   const [expanded, setExpanded] = useState(true);
   const [lessonDialogOpen, setLessonDialogOpen] = useState(false);
 
@@ -141,7 +143,7 @@ export function ModuleNode({
         </span>
 
         <span className="shrink-0 text-[12px] text-muted-foreground">
-          {module.lessons.length} lesson{module.lessons.length !== 1 ? "s" : ""}
+          {t("nLessons", { n: module.lessons.length })}
         </span>
 
         <Button
@@ -157,7 +159,7 @@ export function ModuleNode({
             <ChevronRight className="size-4" />
           )}
           <span className="sr-only">
-            {expanded ? "Collapse" : "Expand"} module
+            {expanded ? t("collapseModule") : t("expandModule")}
           </span>
         </Button>
 
@@ -169,7 +171,7 @@ export function ModuleNode({
           onClick={onDelete}
         >
           <Trash2 className="size-4" />
-          <span className="sr-only">Delete module {module.title}</span>
+          <span className="sr-only">{t("deleteModule")}</span>
         </Button>
       </div>
 
@@ -210,7 +212,7 @@ export function ModuleNode({
             onClick={() => setLessonDialogOpen(true)}
           >
             <Plus className="size-4" />
-            Add Lesson
+            {t("addLesson")}
           </Button>
 
           <AddLessonDialog

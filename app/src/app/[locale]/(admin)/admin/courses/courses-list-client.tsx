@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { BookOpenIcon, Pencil, Eye, Rocket, Trash2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -41,6 +42,8 @@ interface CoursesListClientProps {
 }
 
 export function CoursesListClient({ courses }: CoursesListClientProps) {
+  const t = useTranslations("AdminCourse");
+  const tCommon = useTranslations("AdminCommon");
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
@@ -67,7 +70,7 @@ export function CoursesListClient({ courses }: CoursesListClientProps) {
   }
 
   function handleDelete(id: string) {
-    if (!confirm("Delete this course and all its modules/lessons?")) return;
+    if (!confirm(t("deleteConfirm"))) return;
     startTransition(async () => {
       await deleteCourse(id);
       router.refresh();
@@ -77,24 +80,24 @@ export function CoursesListClient({ courses }: CoursesListClientProps) {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Courses"
-        action={{ label: "New Course", href: "/admin/courses/new" }}
+        title={t("pageTitle")}
+        action={{ label: t("newCourse"), href: "/admin/courses/new" }}
       />
 
       <Card>
         <div className="border-b border-border px-4 py-3">
-          <SearchInput placeholder="Search courses..." />
+          <SearchInput />
         </div>
 
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Title</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="text-center">Modules</TableHead>
-              <TableHead className="text-center">Lessons</TableHead>
-              <TableHead>Created</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead>{t("colTitle")}</TableHead>
+              <TableHead>{t("colStatus")}</TableHead>
+              <TableHead className="text-center">{t("colModules")}</TableHead>
+              <TableHead className="text-center">{t("colLessons")}</TableHead>
+              <TableHead>{t("colCreated")}</TableHead>
+              <TableHead className="text-right">{t("colActions")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -103,8 +106,8 @@ export function CoursesListClient({ courses }: CoursesListClientProps) {
                 <TableCell colSpan={6} className="h-48">
                   <EmptyState
                     icon={BookOpenIcon}
-                    title="No courses found"
-                    description="Create your first course to get started."
+                    title={t("noCoursesFound")}
+                    description={t("noCoursesDescription")}
                   />
                 </TableCell>
               </TableRow>
@@ -117,7 +120,9 @@ export function CoursesListClient({ courses }: CoursesListClientProps) {
                   <TableCell className="font-medium">{course.title}</TableCell>
                   <TableCell>
                     <Badge variant={course.isPublished ? "primary" : "neutral"}>
-                      {course.isPublished ? "Published" : "Draft"}
+                      {course.isPublished
+                        ? tCommon("statusPublished")
+                        : tCommon("statusDraft")}
                     </Badge>
                   </TableCell>
                   <TableCell className="text-center">

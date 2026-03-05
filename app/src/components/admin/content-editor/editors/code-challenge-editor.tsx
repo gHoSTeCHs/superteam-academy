@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Plus, X, ChevronDown, ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { CodeEditor } from "@/components/code-editor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,6 +28,7 @@ export function CodeChallengeEditor({
   data,
   onChange,
 }: CodeChallengeEditorProps) {
+  const t = useTranslations("AdminContent");
   const [showSolution, setShowSolution] = useState(false);
 
   function handleLanguageChange(language: string) {
@@ -94,7 +96,7 @@ export function CodeChallengeEditor({
     <div className="space-y-6">
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label className="text-muted-foreground">Language</Label>
+          <Label className="text-muted-foreground">{t("fieldLanguage")}</Label>
           <Select value={data.language} onValueChange={handleLanguageChange}>
             <SelectTrigger>
               <SelectValue />
@@ -108,20 +110,20 @@ export function CodeChallengeEditor({
 
         <div className="space-y-2">
           <Label className="text-muted-foreground">
-            Max Attempts (optional)
+            {t("fieldMaxAttempts")}
           </Label>
           <Input
             type="number"
             min={1}
             value={data.maxAttempts ?? ""}
             onChange={(e) => handleMaxAttemptsChange(e.target.value)}
-            placeholder="Unlimited"
+            placeholder={t("maxAttemptsPlaceholder")}
           />
         </div>
       </div>
 
       <div className="space-y-2">
-        <Label className="text-muted-foreground">Starter Code</Label>
+        <Label className="text-muted-foreground">{t("fieldStarterCode")}</Label>
         <CodeEditor
           value={data.starterCode}
           onChange={handleStarterCodeChange}
@@ -143,7 +145,7 @@ export function CodeChallengeEditor({
           ) : (
             <ChevronRight className="size-4" />
           )}
-          Solution Code
+          {t("solutionCode")}
         </button>
         {showSolution && (
           <CodeEditor
@@ -159,7 +161,7 @@ export function CodeChallengeEditor({
 
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <Label className="text-muted-foreground">Test Cases</Label>
+          <Label className="text-muted-foreground">{t("fieldTestCases")}</Label>
           <Button
             type="button"
             variant="outline"
@@ -167,7 +169,7 @@ export function CodeChallengeEditor({
             onClick={addTestCase}
           >
             <Plus className="size-4" />
-            Add Test Case
+            {t("addTestCase")}
           </Button>
         </div>
 
@@ -183,14 +185,14 @@ export function CodeChallengeEditor({
                   onChange={(e) =>
                     updateTestCase(index, { name: e.target.value })
                   }
-                  placeholder="Test case name"
+                  placeholder={t("testCaseNamePlaceholder")}
                 />
                 <Textarea
                   value={testCase.assertionCode ?? ""}
                   onChange={(e) =>
                     updateTestCase(index, { assertionCode: e.target.value })
                   }
-                  placeholder="Assertion code"
+                  placeholder={t("testCaseAssertionPlaceholder")}
                   rows={3}
                   className="font-mono text-[13px]"
                 />
@@ -210,7 +212,7 @@ export function CodeChallengeEditor({
 
         {data.testCases.length === 0 && (
           <p className="py-4 text-center text-sm text-muted-foreground">
-            No test cases added yet.
+            {t("noTestCasesYet")}
           </p>
         )}
       </div>
@@ -219,10 +221,10 @@ export function CodeChallengeEditor({
 
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <Label className="text-muted-foreground">Hints</Label>
+          <Label className="text-muted-foreground">{t("fieldHints")}</Label>
           <Button type="button" variant="outline" size="sm" onClick={addHint}>
             <Plus className="size-4" />
-            Add Hint
+            {t("addHint")}
           </Button>
         </div>
 
@@ -231,7 +233,7 @@ export function CodeChallengeEditor({
             <Input
               value={hint}
               onChange={(e) => updateHint(index, e.target.value)}
-              placeholder={`Hint ${index + 1}`}
+              placeholder={t("hintNPlaceholder", { n: index + 1 })}
               className="flex-1"
             />
             <Button
@@ -248,7 +250,7 @@ export function CodeChallengeEditor({
 
         {data.hints.length === 0 && (
           <p className="py-4 text-center text-sm text-muted-foreground">
-            No hints added yet.
+            {t("noHintsYet")}
           </p>
         )}
       </div>

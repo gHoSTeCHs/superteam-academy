@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import type { PaginationLinks, PaginationMeta } from "@/types/models";
@@ -57,6 +60,8 @@ function getPageNumbers(currentPage: number, lastPage: number): number[] {
 }
 
 export function Pagination({ meta, links }: PaginationProps) {
+  const t = useTranslations("AdminCommon");
+
   if (meta.last_page <= 1) {
     return null;
   }
@@ -71,8 +76,12 @@ export function Pagination({ meta, links }: PaginationProps) {
         style={{ fontFamily: "var(--font-body)" }}
       >
         {meta.from !== null && meta.to !== null
-          ? `Showing ${meta.from} to ${meta.to} of ${meta.total} results`
-          : `${meta.total} results`}
+          ? t("showingResults", {
+              from: meta.from,
+              to: meta.to,
+              total: meta.total,
+            })
+          : t("totalResults", { total: meta.total })}
       </p>
 
       <div className="flex items-center gap-1">
@@ -80,13 +89,13 @@ export function Pagination({ meta, links }: PaginationProps) {
           <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
             <Link href={buildPageUrl(referenceUrl, meta.current_page - 1)}>
               <ChevronLeft className="h-4 w-4" />
-              <span className="sr-only">Previous page</span>
+              <span className="sr-only">{t("previousPage")}</span>
             </Link>
           </Button>
         ) : (
           <Button variant="ghost" size="icon" className="h-8 w-8" disabled>
             <ChevronLeft className="h-4 w-4" />
-            <span className="sr-only">Previous page</span>
+            <span className="sr-only">{t("previousPage")}</span>
           </Button>
         )}
 
@@ -125,13 +134,13 @@ export function Pagination({ meta, links }: PaginationProps) {
           <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
             <Link href={buildPageUrl(referenceUrl, meta.current_page + 1)}>
               <ChevronRight className="h-4 w-4" />
-              <span className="sr-only">Next page</span>
+              <span className="sr-only">{t("nextPage")}</span>
             </Link>
           </Button>
         ) : (
           <Button variant="ghost" size="icon" className="h-8 w-8" disabled>
             <ChevronRight className="h-4 w-4" />
-            <span className="sr-only">Next page</span>
+            <span className="sr-only">{t("nextPage")}</span>
           </Button>
         )}
       </div>

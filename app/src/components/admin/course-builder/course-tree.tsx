@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Plus } from "lucide-react";
 import {
   DndContext,
@@ -39,6 +40,7 @@ interface CourseTreeProps {
 }
 
 export function CourseTree({ course, courseId, onChange }: CourseTreeProps) {
+  const t = useTranslations("AdminCourse");
   const [moduleDialogOpen, setModuleDialogOpen] = useState(false);
 
   const sensors = useSensors(
@@ -55,8 +57,8 @@ export function CourseTree({ course, courseId, onChange }: CourseTreeProps) {
   function handleTagsChange(raw: string) {
     const tags = raw
       .split(",")
-      .map((t) => t.trim())
-      .filter((t) => t.length > 0);
+      .map((tag) => tag.trim())
+      .filter((tag) => tag.length > 0);
     updateField("tags", tags);
   }
 
@@ -106,31 +108,35 @@ export function CourseTree({ course, courseId, onChange }: CourseTreeProps) {
     <div className="space-y-8">
       <section className="space-y-5 rounded-lg border border-border bg-card p-6">
         <h2 className="text-lg font-semibold font-[family-name:var(--font-display)]">
-          Course Details
+          {t("courseDetails")}
         </h2>
 
         <div className="space-y-2">
-          <Label className="text-muted-foreground">Title</Label>
+          <Label className="text-muted-foreground">{t("fieldTitle")}</Label>
           <Input
             value={course.title}
             onChange={(e) => updateField("title", e.target.value)}
-            placeholder="Course title"
+            placeholder={t("titlePlaceholder")}
           />
         </div>
 
         <div className="space-y-2">
-          <Label className="text-muted-foreground">Description</Label>
+          <Label className="text-muted-foreground">
+            {t("fieldDescription")}
+          </Label>
           <Textarea
             value={course.description}
             onChange={(e) => updateField("description", e.target.value)}
-            placeholder="What will students learn?"
+            placeholder={t("descriptionPlaceholder")}
             rows={3}
           />
         </div>
 
         <div className="grid grid-cols-3 gap-4">
           <div className="space-y-2">
-            <Label className="text-muted-foreground">Language</Label>
+            <Label className="text-muted-foreground">
+              {t("fieldLanguage")}
+            </Label>
             <Select
               value={course.language}
               onValueChange={(val: string) =>
@@ -138,18 +144,20 @@ export function CourseTree({ course, courseId, onChange }: CourseTreeProps) {
               }
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select language" />
+                <SelectValue placeholder={t("selectLanguage")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="pt-BR">Portuguese</SelectItem>
-                <SelectItem value="es">Spanish</SelectItem>
-                <SelectItem value="en">English</SelectItem>
+                <SelectItem value="pt-BR">{t("langPortuguese")}</SelectItem>
+                <SelectItem value="es">{t("langSpanish")}</SelectItem>
+                <SelectItem value="en">{t("langEnglish")}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="space-y-2">
-            <Label className="text-muted-foreground">Difficulty</Label>
+            <Label className="text-muted-foreground">
+              {t("fieldDifficulty")}
+            </Label>
             <Select
               value={course.difficulty ?? "beginner"}
               onValueChange={(val: string) =>
@@ -157,22 +165,24 @@ export function CourseTree({ course, courseId, onChange }: CourseTreeProps) {
               }
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select difficulty" />
+                <SelectValue placeholder={t("selectDifficulty")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="beginner">Beginner</SelectItem>
-                <SelectItem value="intermediate">Intermediate</SelectItem>
-                <SelectItem value="advanced">Advanced</SelectItem>
+                <SelectItem value="beginner">{t("diffBeginner")}</SelectItem>
+                <SelectItem value="intermediate">
+                  {t("diffIntermediate")}
+                </SelectItem>
+                <SelectItem value="advanced">{t("diffAdvanced")}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="space-y-2">
-            <Label className="text-muted-foreground">Tags</Label>
+            <Label className="text-muted-foreground">{t("fieldTags")}</Label>
             <Input
               value={course.tags.join(", ")}
               onChange={(e) => handleTagsChange(e.target.value)}
-              placeholder="solana, web3, defi"
+              placeholder={t("tagsPlaceholder")}
             />
           </div>
         </div>
@@ -180,7 +190,7 @@ export function CourseTree({ course, courseId, onChange }: CourseTreeProps) {
 
       <section className="space-y-4">
         <h2 className="text-lg font-semibold font-[family-name:var(--font-display)]">
-          Modules
+          {t("modulesSection")}
         </h2>
 
         <DndContext
@@ -209,7 +219,7 @@ export function CourseTree({ course, courseId, onChange }: CourseTreeProps) {
         {course.modules.length === 0 && (
           <div className="rounded-lg border border-dashed border-border px-6 py-10 text-center">
             <p className="text-[14px] text-muted-foreground font-[family-name:var(--font-body)]">
-              No modules yet. Add one to get started.
+              {t("noModulesYet")}
             </p>
           </div>
         )}
@@ -220,7 +230,7 @@ export function CourseTree({ course, courseId, onChange }: CourseTreeProps) {
           onClick={() => setModuleDialogOpen(true)}
         >
           <Plus className="size-4" />
-          Add Module
+          {t("addModule")}
         </Button>
 
         <AddModuleDialog

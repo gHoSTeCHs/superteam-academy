@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,6 +25,7 @@ function getDefaults(): MatchingConfig {
 }
 
 export default function MatchingBuilder({ value, onChange }: Props) {
+  const t = useTranslations("AdminContent");
   const config = value ?? getDefaults();
 
   function updatePairs(pairs: MatchingConfig["pairs"]) {
@@ -62,7 +66,7 @@ export default function MatchingBuilder({ value, onChange }: Props) {
 
   return (
     <div className="space-y-4">
-      <Label>Pairs</Label>
+      <Label>{t("qbPairs")}</Label>
 
       {config.pairs.map((pair, index) => (
         <div key={index} className="flex items-center gap-3">
@@ -91,25 +95,25 @@ export default function MatchingBuilder({ value, onChange }: Props) {
             disabled={config.pairs.length <= MIN_PAIRS}
           >
             <X className="size-4" />
-            <span className="sr-only">Remove pair {index + 1}</span>
+            <span className="sr-only">
+              {t("qbRemovePair", { n: index + 1 })}
+            </span>
           </Button>
         </div>
       ))}
 
       <Button type="button" variant="outline" size="sm" onClick={addPair}>
         <Plus className="size-4" />
-        Add Pair
+        {t("qbAddPair")}
       </Button>
 
       <div className="space-y-2">
-        <Label htmlFor="distractors">
-          Distractors (optional, comma-separated)
-        </Label>
+        <Label htmlFor="distractors">{t("qbDistractors")}</Label>
         <Input
           id="distractors"
           value={getDistractorsString()}
           onChange={(e) => updateDistractors(e.target.value)}
-          placeholder="Extra items that don't match anything"
+          placeholder={t("qbDistractorsPlaceholder")}
         />
       </div>
     </div>

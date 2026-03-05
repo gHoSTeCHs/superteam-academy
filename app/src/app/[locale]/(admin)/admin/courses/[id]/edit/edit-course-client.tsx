@@ -2,6 +2,7 @@
 
 import { useState, useRef, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Save, Eye, Rocket, ArrowLeft, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -31,6 +32,8 @@ export function EditCourseClient({
   initialCourse,
   courseId,
 }: EditCourseClientProps) {
+  const t = useTranslations("AdminCourse");
+  const tCommon = useTranslations("AdminCommon");
   const router = useRouter();
   const [course, setCourse] = useState<CourseState>(initialCourse);
   const [isPending, startTransition] = useTransition();
@@ -167,17 +170,19 @@ export function EditCourseClient({
             className="text-[22px] font-bold tracking-tight"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Edit Course
+            {t("courseDetails")}
           </h1>
           <Badge variant={course.isPublished ? "primary" : "neutral"}>
-            {course.isPublished ? "Published" : "Draft"}
+            {course.isPublished
+              ? tCommon("statusPublished")
+              : tCommon("statusDraft")}
           </Badge>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" asChild>
             <Link href={`/admin/courses/${courseId}/preview`}>
               <Eye className="size-4" />
-              Preview
+              {t("actionPreview")}
             </Link>
           </Button>
           <Button
@@ -191,11 +196,11 @@ export function EditCourseClient({
             ) : (
               <Rocket className="size-4" />
             )}
-            {course.isPublished ? "Unpublish" : "Publish"}
+            {course.isPublished ? t("actionUnpublish") : t("actionPublish")}
           </Button>
           <Button onClick={handleSave} disabled={isPending}>
             <Save className="size-4" />
-            {isPending ? "Saving..." : "Save"}
+            {isPending ? t("saving") : t("actionEdit")}
           </Button>
         </div>
       </div>

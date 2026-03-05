@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -38,6 +39,7 @@ export function AddModuleDialog({
   onOpenChange,
   onAdd,
 }: AddModuleDialogProps) {
+  const t = useTranslations("AdminCourse");
   const [form, setForm] = useState(INITIAL_STATE);
 
   function resetForm() {
@@ -70,34 +72,40 @@ export function AddModuleDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="font-[family-name:var(--font-display)]">
-            Add Module
+            {t("addModuleDialogTitle")}
           </DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label className="text-muted-foreground">Title</Label>
+            <Label className="text-muted-foreground">
+              {t("moduleFieldTitle")}
+            </Label>
             <Input
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
-              placeholder="Module title"
+              placeholder={t("moduleTitlePlaceholder")}
             />
           </div>
 
           <div className="space-y-2">
-            <Label className="text-muted-foreground">Description</Label>
+            <Label className="text-muted-foreground">
+              {t("moduleFieldDescription")}
+            </Label>
             <Textarea
               value={form.description}
               onChange={(e) =>
                 setForm({ ...form, description: e.target.value })
               }
-              placeholder="Brief description of this module"
+              placeholder={t("moduleDescPlaceholder")}
               rows={3}
             />
           </div>
 
           <div className="space-y-2">
-            <Label className="text-muted-foreground">Type</Label>
+            <Label className="text-muted-foreground">
+              {t("moduleFieldType")}
+            </Label>
             <Select
               value={form.type}
               onValueChange={(val: string) =>
@@ -105,12 +113,14 @@ export function AddModuleDialog({
               }
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select type" />
+                <SelectValue placeholder={t("selectType")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="text">Text</SelectItem>
-                <SelectItem value="video">Video</SelectItem>
-                <SelectItem value="assessment">Assessment</SelectItem>
+                <SelectItem value="text">{t("typeText")}</SelectItem>
+                <SelectItem value="video">{t("typeVideo")}</SelectItem>
+                <SelectItem value="assessment">
+                  {t("typeAssessment")}
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -124,7 +134,7 @@ export function AddModuleDialog({
               Cancel
             </Button>
             <Button type="submit" disabled={!isValid}>
-              Add Module
+              {t("addModule")}
             </Button>
           </DialogFooter>
         </form>

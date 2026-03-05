@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,6 +43,7 @@ function cleanMapping(
 }
 
 export default function MatrixMatchingBuilder({ value, onChange }: Props) {
+  const t = useTranslations("AdminContent");
   const config = value ?? getDefaults();
 
   function updateLeft(items: string[]) {
@@ -136,7 +140,7 @@ export default function MatrixMatchingBuilder({ value, onChange }: Props) {
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label>Left Items</Label>
+          <Label>{t("qbLeftItems")}</Label>
           {config.left.map((item, index) => (
             <div key={index} className="flex items-center gap-2">
               <Input
@@ -164,12 +168,12 @@ export default function MatrixMatchingBuilder({ value, onChange }: Props) {
             onClick={addLeftItem}
           >
             <Plus className="size-4" />
-            Add Left
+            {t("qbAddLeft")}
           </Button>
         </div>
 
         <div className="space-y-2">
-          <Label>Right Items</Label>
+          <Label>{t("qbRightItems")}</Label>
           {config.right.map((item, index) => (
             <div key={index} className="flex items-center gap-2">
               <Input
@@ -197,14 +201,14 @@ export default function MatrixMatchingBuilder({ value, onChange }: Props) {
             onClick={addRightItem}
           >
             <Plus className="size-4" />
-            Add Right
+            {t("qbAddRight")}
           </Button>
         </div>
       </div>
 
       {config.left.length > 0 && config.right.length > 0 && (
         <div className="space-y-2">
-          <Label>Mapping Grid</Label>
+          <Label>{t("qbMappingGrid")}</Label>
           <div className="overflow-x-auto">
             <table className="border-collapse text-sm">
               <thead>

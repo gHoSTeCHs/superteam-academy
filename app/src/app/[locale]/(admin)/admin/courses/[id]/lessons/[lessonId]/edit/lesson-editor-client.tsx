@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Save, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BlockList } from "@/components/admin/content-editor";
@@ -38,8 +39,13 @@ function blocksToSanity(blocks: ContentBlock[]): Record<string, unknown>[] {
         base.starterCode = block.data.starterCode;
         base.solutionCode = block.data.solutionCode;
         base.hints = block.data.hints;
-        base.testCases = (block.data.testCases ?? []).map((tc, i) => ({ _key: `tc-${i}`, ...tc }));
-        base.validationRules = (block.data.validationRules ?? []).map((vr, i) => ({ _key: `vr-${i}`, ...vr }));
+        base.testCases = (block.data.testCases ?? []).map((tc, i) => ({
+          _key: `tc-${i}`,
+          ...tc,
+        }));
+        base.validationRules = (block.data.validationRules ?? []).map(
+          (vr, i) => ({ _key: `vr-${i}`, ...vr }),
+        );
         base.maxAttempts = block.data.maxAttempts;
         break;
       case "quiz": {
@@ -101,6 +107,7 @@ export function LessonEditorClient({
   lessonTitle,
   initialBlocks,
 }: LessonEditorClientProps) {
+  const t = useTranslations("AdminCourse");
   const router = useRouter();
   const [blocks, setBlocks] = useState(initialBlocks);
   const [isPending, startTransition] = useTransition();
@@ -134,7 +141,7 @@ export function LessonEditorClient({
         </div>
         <Button onClick={handleSave} disabled={isPending}>
           <Save className="size-4" />
-          {isPending ? "Saving..." : "Save"}
+          {isPending ? t("saving") : t("actionEdit")}
         </Button>
       </div>
       <BlockList blocks={blocks} onChange={setBlocks} />

@@ -19,6 +19,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical, Plus, Trash2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BlockEditor } from "./block-editor";
@@ -34,16 +35,6 @@ interface BlockListProps {
   blocks: ContentBlock[];
   onChange: (blocks: ContentBlock[]) => void;
 }
-
-const BLOCK_TYPE_LABELS: Record<ContentBlockType, string> = {
-  text: "Text",
-  code_example: "Code Example",
-  code_challenge: "Code Challenge",
-  quiz: "Quiz",
-  callout: "Callout",
-  image: "Image",
-  video_embed: "Video",
-};
 
 /**
  * Creates the default data payload for a given content block type.
@@ -80,7 +71,18 @@ function createDefaultData(type: ContentBlockType): ContentBlockData {
 }
 
 export function BlockList({ blocks, onChange }: BlockListProps) {
+  const t = useTranslations("AdminContent");
   const [showPicker, setShowPicker] = useState(false);
+
+  const blockTypeLabels: Record<ContentBlockType, string> = {
+    text: t("blockTypeText"),
+    code_example: t("blockTypeCodeExample"),
+    code_challenge: t("blockTypeCodeChallenge"),
+    quiz: t("blockTypeQuiz"),
+    callout: t("blockTypeCallout"),
+    image: t("blockTypeImage"),
+    video_embed: t("blockTypeVideo"),
+  };
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -143,6 +145,7 @@ export function BlockList({ blocks, onChange }: BlockListProps) {
             <SortableBlockItem
               key={block.id}
               block={block}
+              label={blockTypeLabels[block.type]}
               onUpdate={(data) => handleUpdateBlock(block.id, data)}
               onDelete={() => handleDeleteBlock(block.id)}
             />
@@ -152,9 +155,7 @@ export function BlockList({ blocks, onChange }: BlockListProps) {
 
       {blocks.length === 0 && (
         <div className="rounded-lg border border-dashed border-border py-12 text-center">
-          <p className="text-sm text-muted-foreground">
-            No content blocks yet. Add your first block to get started.
-          </p>
+          <p className="text-sm text-muted-foreground">{t("noBlocksYet")}</p>
         </div>
       )}
 
@@ -166,7 +167,7 @@ export function BlockList({ blocks, onChange }: BlockListProps) {
           className="w-full border-dashed"
         >
           <Plus className="size-4" />
-          Add Block
+          {t("addBlock")}
         </Button>
 
         {showPicker && (
@@ -184,12 +185,14 @@ export function BlockList({ blocks, onChange }: BlockListProps) {
 
 interface SortableBlockItemProps {
   block: ContentBlock;
+  label: string;
   onUpdate: (data: ContentBlockData) => void;
   onDelete: () => void;
 }
 
 function SortableBlockItem({
   block,
+  label,
   onUpdate,
   onDelete,
 }: SortableBlockItemProps) {
@@ -230,7 +233,7 @@ function SortableBlockItem({
         </button>
 
         <Badge variant="neutral" className="text-[11px]">
-          {BLOCK_TYPE_LABELS[block.type]}
+          {label}
         </Badge>
 
         <div className="flex-1" />

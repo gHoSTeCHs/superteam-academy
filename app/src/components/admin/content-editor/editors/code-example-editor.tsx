@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { CodeEditor } from "@/components/code-editor";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -31,6 +32,8 @@ const LANGUAGE_OPTIONS = [
 ] as const;
 
 export function CodeExampleEditor({ data, onChange }: CodeExampleEditorProps) {
+  const t = useTranslations("AdminContent");
+
   function handleLanguageChange(language: string) {
     onChange({ ...data, language });
   }
@@ -47,7 +50,7 @@ export function CodeExampleEditor({ data, onChange }: CodeExampleEditorProps) {
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label className="text-muted-foreground">Language</Label>
+          <Label className="text-muted-foreground">{t("fieldLanguage")}</Label>
           <Select value={data.language} onValueChange={handleLanguageChange}>
             <SelectTrigger>
               <SelectValue placeholder="Select language" />
@@ -63,17 +66,17 @@ export function CodeExampleEditor({ data, onChange }: CodeExampleEditorProps) {
         </div>
 
         <div className="space-y-2">
-          <Label className="text-muted-foreground">Filename (optional)</Label>
+          <Label className="text-muted-foreground">{t("fieldFilename")}</Label>
           <Input
             value={data.filename ?? ""}
             onChange={(e) => handleFilenameChange(e.target.value)}
-            placeholder="e.g. index.ts"
+            placeholder={t("filenamePlaceholder")}
           />
         </div>
       </div>
 
       <div className="space-y-2">
-        <Label className="text-muted-foreground">Code</Label>
+        <Label className="text-muted-foreground">{t("fieldCode")}</Label>
         <CodeEditor
           value={data.code}
           onChange={handleCodeChange}

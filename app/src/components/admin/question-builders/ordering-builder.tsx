@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,6 +20,7 @@ function getDefaults(): OrderingConfig {
 }
 
 export default function OrderingBuilder({ value, onChange }: Props) {
+  const t = useTranslations("AdminContent");
   const config = value ?? getDefaults();
 
   function addItem() {
@@ -49,7 +53,7 @@ export default function OrderingBuilder({ value, onChange }: Props) {
 
   return (
     <div className="space-y-4">
-      <Label>Items &amp; Correct Order</Label>
+      <Label>{t("qbItemsAndOrder")}</Label>
 
       {config.items.map((item, index) => (
         <div key={index} className="flex items-center gap-3">
@@ -60,7 +64,7 @@ export default function OrderingBuilder({ value, onChange }: Props) {
           <Input
             value={item}
             onChange={(e) => updateText(index, e.target.value)}
-            placeholder={`Item ${index + 1}`}
+            placeholder={t("qbItemPlaceholder", { n: index + 1 })}
             className="flex-1"
           />
 
@@ -86,14 +90,16 @@ export default function OrderingBuilder({ value, onChange }: Props) {
             disabled={config.items.length <= 2}
           >
             <X className="size-4" />
-            <span className="sr-only">Remove item {index + 1}</span>
+            <span className="sr-only">
+              {t("qbRemoveItem", { n: index + 1 })}
+            </span>
           </Button>
         </div>
       ))}
 
       <Button type="button" variant="outline" size="sm" onClick={addItem}>
         <Plus className="size-4" />
-        Add Item
+        {t("qbAddItem")}
       </Button>
     </div>
   );

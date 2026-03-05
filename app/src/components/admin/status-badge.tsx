@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
 
 interface StatusBadgeProps {
@@ -5,9 +8,10 @@ interface StatusBadgeProps {
 }
 
 export function StatusBadge({ isActive }: StatusBadgeProps) {
+  const t = useTranslations("AdminCommon");
   return (
     <Badge variant={isActive ? "primary" : "neutral"}>
-      {isActive ? "Active" : "Inactive"}
+      {isActive ? t("statusActive") : t("statusInactive")}
     </Badge>
   );
 }

@@ -10,6 +10,7 @@ import {
   ImageIcon,
   Video,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import type { ContentBlockType } from "@/types/content";
 import type { LucideIcon } from "lucide-react";
@@ -22,51 +23,57 @@ interface BlockTypePickerProps {
 interface BlockTypeOption {
   type: ContentBlockType;
   icon: LucideIcon;
-  label: string;
-  description: string;
+  labelKey: string;
+  descKey: string;
 }
 
 const BLOCK_TYPE_OPTIONS: BlockTypeOption[] = [
-  { type: "text", icon: Type, label: "Text", description: "Rich text content" },
+  {
+    type: "text",
+    icon: Type,
+    labelKey: "blockTypeText",
+    descKey: "blockTypeTextDesc",
+  },
   {
     type: "code_example",
     icon: Code,
-    label: "Code Example",
-    description: "Code snippet with syntax highlighting",
+    labelKey: "blockTypeCodeExample",
+    descKey: "blockTypeCodeExampleDesc",
   },
   {
     type: "code_challenge",
     icon: Terminal,
-    label: "Code Challenge",
-    description: "Interactive coding exercise",
+    labelKey: "blockTypeCodeChallenge",
+    descKey: "blockTypeCodeChallengeDesc",
   },
   {
     type: "quiz",
     icon: HelpCircle,
-    label: "Quiz",
-    description: "Assessment question",
+    labelKey: "blockTypeQuiz",
+    descKey: "blockTypeQuizDesc",
   },
   {
     type: "callout",
     icon: AlertCircle,
-    label: "Callout",
-    description: "Info, warning, or tip box",
+    labelKey: "blockTypeCallout",
+    descKey: "blockTypeCalloutDesc",
   },
   {
     type: "image",
     icon: ImageIcon,
-    label: "Image",
-    description: "Image with alt text and caption",
+    labelKey: "blockTypeImage",
+    descKey: "blockTypeImageDesc",
   },
   {
     type: "video_embed",
     icon: Video,
-    label: "Video",
-    description: "Embedded video player",
+    labelKey: "blockTypeVideo",
+    descKey: "blockTypeVideoDesc",
   },
 ];
 
 export function BlockTypePicker({ onSelect, onClose }: BlockTypePickerProps) {
+  const t = useTranslations("AdminContent");
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -107,7 +114,7 @@ export function BlockTypePicker({ onSelect, onClose }: BlockTypePickerProps) {
     >
       <div className="px-3 py-2.5 border-b border-border">
         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-          Add Block
+          {t("addBlock")}
         </p>
       </div>
 
@@ -127,10 +134,10 @@ export function BlockTypePicker({ onSelect, onClose }: BlockTypePickerProps) {
             </div>
             <div className="min-w-0 flex-1">
               <p className="text-sm font-medium text-foreground">
-                {option.label}
+                {t(option.labelKey as Parameters<typeof t>[0])}
               </p>
               <p className="text-xs text-muted-foreground truncate">
-                {option.description}
+                {t(option.descKey as Parameters<typeof t>[0])}
               </p>
             </div>
           </button>

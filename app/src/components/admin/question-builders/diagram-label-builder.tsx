@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +19,7 @@ function getDefaults(): DiagramLabelConfig {
 }
 
 export default function DiagramLabelBuilder({ value, onChange }: Props) {
+  const t = useTranslations("AdminContent");
   const config = value ?? getDefaults();
 
   function updateLabels(labels: DiagramLabelConfig["labels"]) {
@@ -40,21 +44,21 @@ export default function DiagramLabelBuilder({ value, onChange }: Props) {
 
   return (
     <div className="space-y-4">
-      <Label>Labels</Label>
+      <Label>{t("qbLabels")}</Label>
 
       {config.labels.map((lbl, index) => (
         <div key={index} className="flex items-center gap-3">
           <Input
             value={lbl.label}
             onChange={(e) => updateField(index, "label", e.target.value)}
-            placeholder={`Label ${index + 1} (e.g. A, 1, i)`}
+            placeholder={t("qbLabelPlaceholder", { n: index + 1 })}
             className="w-40 shrink-0"
           />
 
           <Input
             value={lbl.answer}
             onChange={(e) => updateField(index, "answer", e.target.value)}
-            placeholder="Answer text"
+            placeholder={t("qbAnswerTextPlaceholder")}
             className="flex-1"
           />
 
@@ -67,14 +71,16 @@ export default function DiagramLabelBuilder({ value, onChange }: Props) {
             disabled={config.labels.length <= 1}
           >
             <X className="size-4" />
-            <span className="sr-only">Remove label {index + 1}</span>
+            <span className="sr-only">
+              {t("qbRemoveLabel", { n: index + 1 })}
+            </span>
           </Button>
         </div>
       ))}
 
       <Button type="button" variant="outline" size="sm" onClick={addLabel}>
         <Plus className="size-4" />
-        Add Label
+        {t("qbAddLabel")}
       </Button>
     </div>
   );

@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,6 +26,7 @@ function getDefaults(): ClozeConfig {
 }
 
 export default function ClozeBuilder({ value, onChange }: Props) {
+  const t = useTranslations("AdminContent");
   const config = value ?? getDefaults();
 
   function updateGaps(gaps: ClozeConfig["gaps"]) {
@@ -76,7 +80,7 @@ export default function ClozeBuilder({ value, onChange }: Props) {
 
   return (
     <div className="space-y-4">
-      <Label>Gaps</Label>
+      <Label>{t("qbGaps")}</Label>
 
       {config.gaps.map((gap, index) => (
         <div key={index} className="space-y-2 rounded-md border p-3">
@@ -96,7 +100,7 @@ export default function ClozeBuilder({ value, onChange }: Props) {
             <Input
               value={getOptionsString(gap.options)}
               onChange={(e) => updateGapOptions(index, e.target.value)}
-              placeholder="Options (comma-separated)"
+              placeholder={t("qbGapOptionsPlaceholder")}
               className="flex-1"
             />
 
@@ -109,12 +113,14 @@ export default function ClozeBuilder({ value, onChange }: Props) {
               disabled={config.gaps.length <= 1}
             >
               <X className="size-4" />
-              <span className="sr-only">Remove gap {index + 1}</span>
+              <span className="sr-only">
+                {t("qbRemoveGap", { n: index + 1 })}
+              </span>
             </Button>
           </div>
 
           <div className="flex items-center gap-2">
-            <Label className="shrink-0 text-xs">Correct:</Label>
+            <Label className="shrink-0 text-xs">{t("qbCorrectLabel")}</Label>
             <Select
               value={String(gap.correct)}
               onValueChange={(v) => updateCorrect(index, parseInt(v, 10))}
@@ -136,7 +142,7 @@ export default function ClozeBuilder({ value, onChange }: Props) {
 
       <Button type="button" variant="outline" size="sm" onClick={addGap}>
         <Plus className="size-4" />
-        Add Gap
+        {t("qbAddGap")}
       </Button>
     </div>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronRightIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
 import { UserMenu } from "@/components/layout/user-menu";
@@ -17,10 +18,13 @@ interface AdminHeaderProps {
 }
 
 export function AdminHeader({
-  breadcrumbs = [{ label: "Dashboard" }],
+  breadcrumbs,
   title,
   className,
 }: AdminHeaderProps) {
+  const t = useTranslations("AdminCommon");
+  const crumbs = breadcrumbs ?? [{ label: t("breadcrumbDefault") }];
+
   return (
     <header
       className={cn(
@@ -29,7 +33,7 @@ export function AdminHeader({
       )}
     >
       <div className="flex items-center gap-2">
-        {breadcrumbs.map((crumb, i) => (
+        {crumbs.map((crumb, i) => (
           <span key={crumb.label} className="flex items-center gap-2">
             {i > 0 && (
               <ChevronRightIcon className="size-3.5 text-muted-foreground" />

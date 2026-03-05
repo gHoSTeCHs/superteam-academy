@@ -1,3 +1,5 @@
+"use client";
+
 import {
   BookOpenIcon,
   UsersIcon,
@@ -7,6 +9,7 @@ import {
   CheckCircle2Icon,
   ClockIcon,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Card } from "@/components/ui/card";
 import { StatCard } from "@/components/admin/stat-card";
 import { cn } from "@/lib/utils";
@@ -76,30 +79,32 @@ export function AdminDashboard({
   recentActivity = DEFAULT_ACTIVITY,
   className,
 }: AdminDashboardProps) {
+  const t = useTranslations("AdminCommon");
+
   return (
     <div className={cn("space-y-6", className)}>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           icon={BookOpenIcon}
-          title="Total Courses"
+          title={t("statTotalCourses")}
           value={stats.totalCourses}
           description="+2 this month"
         />
         <StatCard
           icon={UsersIcon}
-          title="Total Users"
+          title={t("statTotalUsers")}
           value={stats.totalUsers}
           description="+48 this week"
         />
         <StatCard
           icon={GraduationCapIcon}
-          title="Enrollments"
+          title={t("statEnrollments")}
           value={stats.totalEnrollments}
           description="+32 this week"
         />
         <StatCard
           icon={ZapIcon}
-          title="XP Awarded"
+          title={t("statXpAwarded")}
           value={stats.totalXpAwarded.toLocaleString()}
           description="+1,250 this week"
         />
@@ -111,7 +116,7 @@ export function AdminDashboard({
             className="mb-3 text-[14px] font-semibold text-foreground"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Course Status
+            {t("courseStatus")}
           </h3>
           <div className="space-y-3">
             <div className="flex items-center justify-between">
@@ -121,7 +126,7 @@ export function AdminDashboard({
                   className="text-[13px] text-foreground"
                   style={{ fontFamily: "var(--font-body)" }}
                 >
-                  Published
+                  {t("statusPublished")}
                 </span>
               </div>
               <div className="flex items-center gap-2">
@@ -148,7 +153,7 @@ export function AdminDashboard({
                   className="text-[13px] text-foreground"
                   style={{ fontFamily: "var(--font-body)" }}
                 >
-                  Draft
+                  {t("statusDraft")}
                 </span>
               </div>
               <div className="flex items-center gap-2">
@@ -176,7 +181,7 @@ export function AdminDashboard({
             className="mb-3 text-[14px] font-semibold text-foreground"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Recent Activity
+            {t("recentActivity")}
           </h3>
           <div className="space-y-2.5">
             {recentActivity.map((item) => (

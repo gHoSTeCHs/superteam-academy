@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
@@ -9,7 +10,8 @@ interface SearchInputProps {
   placeholder?: string;
 }
 
-export function SearchInput({ placeholder = "Search..." }: SearchInputProps) {
+export function SearchInput({ placeholder }: SearchInputProps) {
+  const t = useTranslations("AdminCommon");
   const router = useRouter();
   const searchParams = useSearchParams();
   const [value, setValue] = useState(searchParams.get("search") ?? "");
@@ -55,7 +57,7 @@ export function SearchInput({ placeholder = "Search..." }: SearchInputProps) {
       <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
       <Input
         type="search"
-        placeholder={placeholder}
+        placeholder={placeholder ?? t("searchPlaceholder")}
         value={value}
         onChange={handleChange}
         className="pl-9"

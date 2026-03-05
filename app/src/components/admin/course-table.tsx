@@ -8,6 +8,7 @@ import {
   ArrowUpCircleIcon,
   ArrowDownCircleIcon,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -29,6 +30,9 @@ interface CourseTableProps {
 }
 
 export function CourseTable({ courses, className }: CourseTableProps) {
+  const t = useTranslations("AdminCourse");
+  const tCommon = useTranslations("AdminCommon");
+
   return (
     <Card className={cn("overflow-hidden", className)}>
       <div className="overflow-x-auto">
@@ -36,16 +40,16 @@ export function CourseTable({ courses, className }: CourseTableProps) {
           <thead>
             <tr className="border-b border-border bg-muted/40">
               {[
-                "Course",
-                "Status",
-                "Modules",
-                "Lessons",
-                "Enrolled",
-                "Created",
+                t("colTitle"),
+                t("colStatus"),
+                t("colModules"),
+                t("colLessons"),
+                t("colEnrolled"),
+                t("colCreated"),
                 "",
-              ].map((h) => (
+              ].map((h, idx) => (
                 <th
-                  key={h || "actions"}
+                  key={h || `actions-${String(idx)}`}
                   className="px-4 py-3 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground"
                   style={{ fontFamily: "var(--font-body)" }}
                 >
@@ -80,7 +84,9 @@ export function CourseTable({ courses, className }: CourseTableProps) {
                     }
                     className="text-[10px]"
                   >
-                    {course.status === "published" ? "Published" : "Draft"}
+                    {course.status === "published"
+                      ? tCommon("statusPublished")
+                      : tCommon("statusDraft")}
                   </Badge>
                 </td>
                 <td
@@ -113,7 +119,7 @@ export function CourseTable({ courses, className }: CourseTableProps) {
                       variant="ghost"
                       size="icon"
                       className="size-7"
-                      title="Edit"
+                      title={t("actionEdit")}
                     >
                       <EditIcon className="size-3.5" />
                     </Button>
@@ -121,7 +127,7 @@ export function CourseTable({ courses, className }: CourseTableProps) {
                       variant="ghost"
                       size="icon"
                       className="size-7"
-                      title="Preview"
+                      title={t("actionPreview")}
                     >
                       <EyeIcon className="size-3.5" />
                     </Button>
@@ -130,7 +136,9 @@ export function CourseTable({ courses, className }: CourseTableProps) {
                       size="icon"
                       className="size-7"
                       title={
-                        course.status === "published" ? "Unpublish" : "Publish"
+                        course.status === "published"
+                          ? t("actionUnpublish")
+                          : t("actionPublish")
                       }
                     >
                       {course.status === "published" ? (
@@ -143,7 +151,7 @@ export function CourseTable({ courses, className }: CourseTableProps) {
                       variant="ghost"
                       size="icon"
                       className="size-7 text-red-500 hover:text-red-600"
-                      title="Delete"
+                      title={t("actionDelete")}
                     >
                       <TrashIcon className="size-3.5" />
                     </Button>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { TiptapEditor } from "@/components/tiptap-editor";
 import type { TextBlockData } from "@/types/content";
 import type { TiptapJSON } from "@/types/tiptap";
@@ -10,6 +11,8 @@ interface TextBlockEditorProps {
 }
 
 export function TextBlockEditor({ data, onChange }: TextBlockEditorProps) {
+  const t = useTranslations("AdminContent");
+
   function handleChange(json: TiptapJSON, _plainText: string) {
     onChange({ ...data, content: json });
   }
@@ -19,7 +22,7 @@ export function TextBlockEditor({ data, onChange }: TextBlockEditorProps) {
       <TiptapEditor
         value={Array.isArray(data.content) ? null : data.content}
         onChange={handleChange}
-        placeholder="Start writing content..."
+        placeholder={t("textBlockPlaceholder")}
       />
     </div>
   );

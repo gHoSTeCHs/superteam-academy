@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -18,6 +21,7 @@ function getDefaults(): CalculationConfig {
 }
 
 export default function CalculationBuilder({ value, onChange }: Props) {
+  const t = useTranslations("AdminContent");
   const config = value ?? getDefaults();
 
   function update(partial: Partial<CalculationConfig>) {
@@ -27,28 +31,28 @@ export default function CalculationBuilder({ value, onChange }: Props) {
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="calc_answer">Answer</Label>
+        <Label htmlFor="calc_answer">{t("qbCalcAnswer")}</Label>
         <Input
           id="calc_answer"
           value={config.answer}
           onChange={(e) => update({ answer: e.target.value })}
-          placeholder="Expected answer"
+          placeholder={t("qbCalcAnswerPlaceholder")}
         />
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="calc_unit">Unit (optional)</Label>
+          <Label htmlFor="calc_unit">{t("qbCalcUnit")}</Label>
           <Input
             id="calc_unit"
             value={config.unit ?? ""}
             onChange={(e) => update({ unit: e.target.value || undefined })}
-            placeholder="e.g. m/s, kg, N"
+            placeholder={t("qbCalcUnitPlaceholder")}
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="calc_tolerance">Tolerance (optional)</Label>
+          <Label htmlFor="calc_tolerance">{t("qbCalcTolerance")}</Label>
           <Input
             id="calc_tolerance"
             type="number"
@@ -62,7 +66,7 @@ export default function CalculationBuilder({ value, onChange }: Props) {
                   : undefined,
               })
             }
-            placeholder="e.g. 0.01"
+            placeholder={t("qbCalcTolerancePlaceholder")}
           />
         </div>
       </div>
@@ -73,7 +77,7 @@ export default function CalculationBuilder({ value, onChange }: Props) {
           checked={config.requires_working ?? false}
           onCheckedChange={(checked) => update({ requires_working: checked })}
         />
-        <Label htmlFor="requires_working">Requires working/steps</Label>
+        <Label htmlFor="requires_working">{t("qbRequiresWorking")}</Label>
       </div>
     </div>
   );

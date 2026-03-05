@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -38,6 +39,7 @@ export function AddLessonDialog({
   onOpenChange,
   onAdd,
 }: AddLessonDialogProps) {
+  const t = useTranslations("AdminCourse");
   const [form, setForm] = useState(INITIAL_STATE);
 
   function resetForm() {
@@ -71,23 +73,27 @@ export function AddLessonDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="font-[family-name:var(--font-display)]">
-            Add Lesson
+            {t("addLessonDialogTitle")}
           </DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label className="text-muted-foreground">Title</Label>
+            <Label className="text-muted-foreground">
+              {t("lessonFieldTitle")}
+            </Label>
             <Input
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
-              placeholder="Lesson title"
+              placeholder={t("lessonTitlePlaceholder")}
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label className="text-muted-foreground">XP Reward</Label>
+              <Label className="text-muted-foreground">
+                {t("lessonFieldXp")}
+              </Label>
               <Input
                 type="number"
                 min={0}
@@ -103,7 +109,9 @@ export function AddLessonDialog({
             </div>
 
             <div className="space-y-2">
-              <Label className="text-muted-foreground">Est. Minutes</Label>
+              <Label className="text-muted-foreground">
+                {t("lessonFieldMinutes")}
+              </Label>
               <Input
                 type="number"
                 min={1}
@@ -120,7 +128,9 @@ export function AddLessonDialog({
           </div>
 
           <div className="space-y-2">
-            <Label className="text-muted-foreground">Difficulty</Label>
+            <Label className="text-muted-foreground">
+              {t("lessonFieldDifficulty")}
+            </Label>
             <Select
               value={form.difficulty}
               onValueChange={(val: string) =>
@@ -128,12 +138,14 @@ export function AddLessonDialog({
               }
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select difficulty" />
+                <SelectValue placeholder={t("selectDifficulty")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="beginner">Beginner</SelectItem>
-                <SelectItem value="intermediate">Intermediate</SelectItem>
-                <SelectItem value="advanced">Advanced</SelectItem>
+                <SelectItem value="beginner">{t("diffBeginner")}</SelectItem>
+                <SelectItem value="intermediate">
+                  {t("diffIntermediate")}
+                </SelectItem>
+                <SelectItem value="advanced">{t("diffAdvanced")}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -147,7 +159,7 @@ export function AddLessonDialog({
               Cancel
             </Button>
             <Button type="submit" disabled={!isValid}>
-              Add Lesson
+              {t("addLesson")}
             </Button>
           </DialogFooter>
         </form>

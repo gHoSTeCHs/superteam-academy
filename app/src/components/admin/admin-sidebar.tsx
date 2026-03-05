@@ -9,24 +9,27 @@ import {
   BarChart3Icon,
   ChevronLeftIcon,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { Link, usePathname } from "@/i18n/navigation";
-
-const sidebarNav = [
-  { href: "/admin", label: "Dashboard", icon: LayoutDashboardIcon },
-  { href: "/admin/courses", label: "Courses", icon: BookOpenIcon },
-  { href: "/admin/content", label: "Content", icon: FileTextIcon },
-  { href: "/admin/students", label: "Students", icon: UsersIcon },
-  { href: "/admin/analytics", label: "Analytics", icon: BarChart3Icon },
-  { href: "/admin/preview", label: "Preview", icon: EyeIcon },
-];
 
 interface AdminSidebarProps {
   className?: string;
 }
 
 export function AdminSidebar({ className }: AdminSidebarProps) {
+  const t = useTranslations("AdminCommon");
   const pathname = usePathname();
+
+  const sidebarNav = [
+    { href: "/admin", label: t("navDashboard"), icon: LayoutDashboardIcon },
+    { href: "/admin/courses", label: t("navCourses"), icon: BookOpenIcon },
+    { href: "/admin/content", label: t("navContent"), icon: FileTextIcon },
+    { href: "/admin/students", label: t("navStudents"), icon: UsersIcon },
+    { href: "/admin/analytics", label: t("navAnalytics"), icon: BarChart3Icon },
+    { href: "/admin/preview", label: t("navPreview"), icon: EyeIcon },
+  ];
+
   return (
     <aside
       className={cn(
@@ -39,7 +42,7 @@ export function AdminSidebar({ className }: AdminSidebarProps) {
           className="text-[14px] font-semibold text-foreground"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          Admin Panel
+          {t("adminPanel")}
         </span>
         <Link
           href="/"
@@ -47,7 +50,7 @@ export function AdminSidebar({ className }: AdminSidebarProps) {
           style={{ fontFamily: "var(--font-body)" }}
         >
           <ChevronLeftIcon className="size-3.5" />
-          Back to site
+          {t("backToSite")}
         </Link>
       </div>
 
@@ -78,7 +81,7 @@ export function AdminSidebar({ className }: AdminSidebarProps) {
           className="text-[11px] text-muted-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          Superteam Academy v0.1.0
+          {t("version")}
         </p>
       </div>
     </aside>

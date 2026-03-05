@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -45,21 +46,6 @@ interface QuizBlockEditorProps {
   data: QuizBlockData;
   onChange: (data: QuizBlockData) => void;
 }
-
-const QUESTION_TYPE_OPTIONS: { label: string; value: QuestionType }[] = [
-  { label: "Multiple Choice", value: "mcq" },
-  { label: "Multi-Select", value: "multi_select_mcq" },
-  { label: "True / False", value: "true_false" },
-  { label: "Fill in the Blank", value: "fill_blank" },
-  { label: "Cloze", value: "cloze" },
-  { label: "Matching", value: "matching" },
-  { label: "Ordering", value: "ordering" },
-  { label: "Diagram Label", value: "diagram_label" },
-  { label: "Calculation", value: "calculation" },
-  { label: "Assertion & Reason", value: "assertion_reason" },
-  { label: "Matrix Matching", value: "matrix_matching" },
-  { label: "Numeric Entry", value: "numeric_entry" },
-];
 
 function ResponseConfigEditor({
   questionType,
@@ -158,6 +144,23 @@ function ResponseConfigEditor({
 }
 
 export function QuizBlockEditor({ data, onChange }: QuizBlockEditorProps) {
+  const t = useTranslations("AdminContent");
+
+  const questionTypeOptions: { label: string; value: QuestionType }[] = [
+    { label: t("qtMultipleChoice"), value: "mcq" },
+    { label: t("qtMultiSelect"), value: "multi_select_mcq" },
+    { label: t("qtTrueFalse"), value: "true_false" },
+    { label: t("qtFillBlank"), value: "fill_blank" },
+    { label: t("qtCloze"), value: "cloze" },
+    { label: t("qtMatching"), value: "matching" },
+    { label: t("qtOrdering"), value: "ordering" },
+    { label: t("qtDiagramLabel"), value: "diagram_label" },
+    { label: t("qtCalculation"), value: "calculation" },
+    { label: t("qtAssertionReason"), value: "assertion_reason" },
+    { label: t("qtMatrixMatching"), value: "matrix_matching" },
+    { label: t("qtNumericEntry"), value: "numeric_entry" },
+  ];
+
   function handleTypeChange(questionType: string) {
     onChange({
       ...data,
@@ -177,13 +180,15 @@ export function QuizBlockEditor({ data, onChange }: QuizBlockEditorProps) {
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <Label className="text-muted-foreground">Question Type</Label>
+        <Label className="text-muted-foreground">
+          {t("fieldQuestionType")}
+        </Label>
         <Select value={data.questionType} onValueChange={handleTypeChange}>
           <SelectTrigger>
-            <SelectValue placeholder="Select question type" />
+            <SelectValue placeholder={t("selectQuestionType")} />
           </SelectTrigger>
           <SelectContent>
-            {QUESTION_TYPE_OPTIONS.map((opt) => (
+            {questionTypeOptions.map((opt) => (
               <SelectItem key={opt.value} value={opt.value}>
                 {opt.label}
               </SelectItem>
@@ -193,11 +198,13 @@ export function QuizBlockEditor({ data, onChange }: QuizBlockEditorProps) {
       </div>
 
       <div className="space-y-2">
-        <Label className="text-muted-foreground">Question Content</Label>
+        <Label className="text-muted-foreground">
+          {t("fieldQuestionContent")}
+        </Label>
         <Textarea
           value={data.content}
           onChange={(e) => handleContentChange(e.target.value)}
-          placeholder="Enter the question text..."
+          placeholder={t("questionPlaceholder")}
           rows={4}
         />
       </div>

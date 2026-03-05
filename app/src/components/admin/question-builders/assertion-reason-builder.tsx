@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -38,6 +41,7 @@ function getDefaults(): AssertionReasonConfig {
 }
 
 export default function AssertionReasonBuilder({ value, onChange }: Props) {
+  const t = useTranslations("AdminContent");
   const config = value ?? getDefaults();
 
   function update(partial: Partial<AssertionReasonConfig>) {
@@ -80,29 +84,29 @@ export default function AssertionReasonBuilder({ value, onChange }: Props) {
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="assertion">Assertion</Label>
+        <Label htmlFor="assertion">{t("qbAssertion")}</Label>
         <Textarea
           id="assertion"
           value={config.assertion}
           onChange={(e) => update({ assertion: e.target.value })}
-          placeholder="Enter the assertion statement"
+          placeholder={t("qbAssertionPlaceholder")}
           rows={3}
         />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="reason">Reason</Label>
+        <Label htmlFor="reason">{t("qbReason")}</Label>
         <Textarea
           id="reason"
           value={config.reason}
           onChange={(e) => update({ reason: e.target.value })}
-          placeholder="Enter the reason statement"
+          placeholder={t("qbReasonPlaceholder")}
           rows={3}
         />
       </div>
 
       <div className="space-y-3">
-        <Label>Answer Options</Label>
+        <Label>{t("qbAnswerOptions")}</Label>
 
         {config.options.map((option, index) => (
           <div key={index} className="flex items-center gap-3">
@@ -129,7 +133,9 @@ export default function AssertionReasonBuilder({ value, onChange }: Props) {
             <Input
               value={option.text}
               onChange={(e) => updateOptionText(index, e.target.value)}
-              placeholder={`Option ${OPTION_LABELS[index]}`}
+              placeholder={t("qbOptionPlaceholder", {
+                letter: OPTION_LABELS[index] ?? "",
+              })}
               className="flex-1"
             />
 
@@ -143,7 +149,7 @@ export default function AssertionReasonBuilder({ value, onChange }: Props) {
             >
               <X className="size-4" />
               <span className="sr-only">
-                Remove option {OPTION_LABELS[index]}
+                {t("qbRemoveOption", { letter: OPTION_LABELS[index] ?? "" })}
               </span>
             </Button>
           </div>
@@ -157,7 +163,7 @@ export default function AssertionReasonBuilder({ value, onChange }: Props) {
           disabled={config.options.length >= MAX_OPTIONS}
         >
           <Plus className="size-4" />
-          Add Option
+          {t("qbAddOption")}
         </Button>
       </div>
     </div>

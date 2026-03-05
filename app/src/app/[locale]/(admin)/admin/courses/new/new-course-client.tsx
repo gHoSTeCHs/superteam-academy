@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Save, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CourseTree } from "@/components/admin/course-builder";
@@ -19,6 +20,7 @@ const EMPTY_COURSE: Course = {
 };
 
 export function NewCourseClient() {
+  const t = useTranslations("AdminCourse");
   const router = useRouter();
   const [course, setCourse] = useState<Course>(EMPTY_COURSE);
   const [isPending, startTransition] = useTransition();
@@ -68,7 +70,7 @@ export function NewCourseClient() {
             className="text-[22px] font-bold tracking-tight"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            New Course
+            {t("courseDetails")}
           </h1>
         </div>
         <Button
@@ -76,7 +78,7 @@ export function NewCourseClient() {
           disabled={isPending || !course.title.trim()}
         >
           <Save className="size-4" />
-          {isPending ? "Creating..." : "Create Course"}
+          {isPending ? t("creating") : t("createCourse")}
         </Button>
       </div>
       <CourseTree course={course} onChange={setCourse} />

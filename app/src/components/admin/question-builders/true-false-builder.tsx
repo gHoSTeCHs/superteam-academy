@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
@@ -16,6 +19,7 @@ function getDefaults(): TrueFalseConfig {
 }
 
 export default function TrueFalseBuilder({ value, onChange }: Props) {
+  const t = useTranslations("AdminContent");
   const config = value ?? getDefaults();
 
   function setCorrectAnswer(answer: boolean) {
@@ -29,7 +33,7 @@ export default function TrueFalseBuilder({ value, onChange }: Props) {
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <Label>Correct Answer</Label>
+        <Label>{t("qbCorrectAnswer")}</Label>
         <div className="flex gap-3">
           {[true, false].map((answer) => (
             <label
@@ -62,7 +66,9 @@ export default function TrueFalseBuilder({ value, onChange }: Props) {
           checked={config.requires_justification ?? false}
           onCheckedChange={toggleJustification}
         />
-        <Label htmlFor="requires_justification">Requires justification</Label>
+        <Label htmlFor="requires_justification">
+          {t("qbRequiresJustification")}
+        </Label>
       </div>
     </div>
   );

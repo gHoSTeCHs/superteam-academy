@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,6 +27,7 @@ function getDefaults(): McqConfig {
 }
 
 export default function McqBuilder({ value, onChange }: Props) {
+  const t = useTranslations("AdminContent");
   const config = value ?? getDefaults();
 
   function updateOptions(options: McqConfig["options"]) {
@@ -61,7 +65,7 @@ export default function McqBuilder({ value, onChange }: Props) {
 
   return (
     <div className="space-y-3">
-      <Label>Options</Label>
+      <Label>{t("qbOptions")}</Label>
 
       {config.options.map((option, index) => (
         <div key={index} className="flex items-center gap-3">
@@ -88,7 +92,9 @@ export default function McqBuilder({ value, onChange }: Props) {
           <Input
             value={option.text}
             onChange={(e) => updateText(index, e.target.value)}
-            placeholder={`Option ${OPTION_LABELS[index]}`}
+            placeholder={t("qbOptionPlaceholder", {
+              letter: OPTION_LABELS[index] ?? "",
+            })}
             className="flex-1"
           />
 
@@ -102,7 +108,7 @@ export default function McqBuilder({ value, onChange }: Props) {
           >
             <X className="size-4" />
             <span className="sr-only">
-              Remove option {OPTION_LABELS[index]}
+              {t("qbRemoveOption", { letter: OPTION_LABELS[index] ?? "" })}
             </span>
           </Button>
         </div>
@@ -116,7 +122,7 @@ export default function McqBuilder({ value, onChange }: Props) {
         disabled={config.options.length >= MAX_OPTIONS}
       >
         <Plus className="size-4" />
-        Add Option
+        {t("qbAddOption")}
       </Button>
     </div>
   );

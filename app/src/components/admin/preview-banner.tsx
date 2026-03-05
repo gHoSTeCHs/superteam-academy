@@ -1,4 +1,7 @@
+"use client";
+
 import { EyeIcon, XIcon, RocketIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -10,11 +13,13 @@ interface PreviewBannerProps {
 }
 
 export function PreviewBanner({
-  courseName = "Untitled Course",
+  courseName,
   onExitPreview,
   onPublish,
   className,
 }: PreviewBannerProps) {
+  const t = useTranslations("AdminCommon");
+
   return (
     <div
       className={cn("flex items-center justify-between px-4 py-2.5", className)}
@@ -26,13 +31,13 @@ export function PreviewBanner({
           className="text-[13px] font-semibold"
           style={{ fontFamily: "var(--font-body)", color: "#1b231d" }}
         >
-          Preview Mode
+          {t("previewMode")}
         </span>
         <span
           className="text-[12px]"
           style={{ color: "rgba(27, 35, 29, 0.6)" }}
         >
-          — Viewing draft of &ldquo;{courseName}&rdquo;
+          {t("viewingDraft", { name: courseName ?? "Untitled Course" })}
         </span>
       </div>
       <div className="flex items-center gap-2">
@@ -43,7 +48,7 @@ export function PreviewBanner({
           onClick={onExitPreview}
         >
           <XIcon className="size-3" />
-          Exit Preview
+          {t("exitPreview")}
         </Button>
         <Button
           variant="primary"
@@ -52,7 +57,7 @@ export function PreviewBanner({
           onClick={onPublish}
         >
           <RocketIcon className="size-3" />
-          Publish Course
+          {t("publishCourse")}
         </Button>
       </div>
     </div>

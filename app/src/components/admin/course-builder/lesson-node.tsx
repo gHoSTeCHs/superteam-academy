@@ -1,4 +1,7 @@
+"use client";
+
 import { GripVertical, Trash2, Clock, Pencil } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Button } from "@/components/ui/button";
@@ -15,6 +18,7 @@ interface LessonNodeProps {
 }
 
 export function LessonNode({ lesson, courseId, onDelete }: LessonNodeProps) {
+  const t = useTranslations("AdminCourse");
   const {
     attributes,
     listeners,
@@ -53,14 +57,14 @@ export function LessonNode({ lesson, courseId, onDelete }: LessonNodeProps) {
       </span>
 
       <Badge variant="reward" className="shrink-0">
-        {lesson.xpReward} XP
+        {t("lessonXpBadge", { n: lesson.xpReward })}
       </Badge>
 
       <DifficultyBadge level={lesson.difficulty} />
 
       <span className="flex shrink-0 items-center gap-1 text-[12px] text-muted-foreground">
         <Clock className="size-3.5" />
-        {lesson.estimatedMinutes}m
+        {t("lessonTimeBadge", { n: lesson.estimatedMinutes })}
       </span>
 
       {courseId && (
@@ -73,7 +77,9 @@ export function LessonNode({ lesson, courseId, onDelete }: LessonNodeProps) {
         >
           <Link href={`/admin/courses/${courseId}/lessons/${lesson.id}/edit`}>
             <Pencil className="size-4" />
-            <span className="sr-only">Edit lesson {lesson.title}</span>
+            <span className="sr-only">
+              {t("editLesson", { title: lesson.title })}
+            </span>
           </Link>
         </Button>
       )}
@@ -86,7 +92,9 @@ export function LessonNode({ lesson, courseId, onDelete }: LessonNodeProps) {
         onClick={onDelete}
       >
         <Trash2 className="size-4" />
-        <span className="sr-only">Delete lesson {lesson.title}</span>
+        <span className="sr-only">
+          {t("deleteLesson", { title: lesson.title })}
+        </span>
       </Button>
     </div>
   );

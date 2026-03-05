@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,6 +21,7 @@ function getDefaults(): FillBlankConfig {
 }
 
 export default function FillBlankBuilder({ value, onChange }: Props) {
+  const t = useTranslations("AdminContent");
   const config = value ?? getDefaults();
 
   function updateBlanks(blanks: FillBlankConfig["blanks"]) {
@@ -74,7 +78,7 @@ export default function FillBlankBuilder({ value, onChange }: Props) {
 
   return (
     <div className="space-y-4">
-      <Label>Blanks</Label>
+      <Label>{t("qbBlanks")}</Label>
 
       {config.blanks.map((blank, index) => (
         <div key={index} className="flex items-center gap-3">
@@ -93,7 +97,7 @@ export default function FillBlankBuilder({ value, onChange }: Props) {
           <Input
             value={getAnswersString(blank.correct_answers)}
             onChange={(e) => updateAnswers(index, e.target.value)}
-            placeholder="Correct answers (comma-separated)"
+            placeholder={t("qbAnswersPlaceholder")}
             className="flex-1"
           />
 
@@ -106,14 +110,16 @@ export default function FillBlankBuilder({ value, onChange }: Props) {
             disabled={config.blanks.length <= 1}
           >
             <X className="size-4" />
-            <span className="sr-only">Remove blank {index + 1}</span>
+            <span className="sr-only">
+              {t("qbRemoveBlank", { n: index + 1 })}
+            </span>
           </Button>
         </div>
       ))}
 
       <Button type="button" variant="outline" size="sm" onClick={addBlank}>
         <Plus className="size-4" />
-        Add Blank
+        {t("qbAddBlank")}
       </Button>
 
       <div className="flex items-center gap-3">
@@ -122,7 +128,7 @@ export default function FillBlankBuilder({ value, onChange }: Props) {
           checked={config.case_sensitive ?? false}
           onCheckedChange={toggleCaseSensitive}
         />
-        <Label htmlFor="case_sensitive">Case sensitive</Label>
+        <Label htmlFor="case_sensitive">{t("qbCaseSensitive")}</Label>
       </div>
     </div>
   );
