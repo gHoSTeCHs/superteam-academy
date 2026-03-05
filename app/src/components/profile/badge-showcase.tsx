@@ -1,3 +1,5 @@
+"use client";
+
 import {
   TrophyIcon,
   FlameIcon,
@@ -5,6 +7,7 @@ import {
   CodeIcon,
   StarIcon,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import type { LucideIcon } from "lucide-react";
@@ -45,6 +48,7 @@ const categoryConfig: Record<
 };
 
 export function BadgeShowcase({ badges, className }: BadgeShowcaseProps) {
+  const t = useTranslations("Profile");
   return (
     <Card className={cn("px-6 py-5", className)}>
       <div className="mb-4 flex items-center justify-between">
@@ -52,13 +56,13 @@ export function BadgeShowcase({ badges, className }: BadgeShowcaseProps) {
           className="text-[14px] font-semibold text-foreground"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          Badges
+          {t("badges")}
         </h3>
         <span
           className="text-[12px] text-muted-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          {badges.length} earned
+          {t("credentialsEarnedCount", { n: badges.length })}
         </span>
       </div>
 
@@ -69,7 +73,7 @@ export function BadgeShowcase({ badges, className }: BadgeShowcaseProps) {
             className="text-[13px] text-muted-foreground"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            No badges earned yet
+            {t("noBadgesYet")}
           </p>
         </div>
       ) : (

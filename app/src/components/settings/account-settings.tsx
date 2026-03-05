@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { UserIcon, MailIcon, CameraIcon } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -20,6 +21,7 @@ export function AccountSettings({
   onSave,
   className,
 }: AccountSettingsProps) {
+  const t = useTranslations("Settings");
   const [displayName, setDisplayName] = useState(nameProp);
   const [email, setEmail] = useState(emailProp);
   const [saved, setSaved] = useState(false);
@@ -38,13 +40,13 @@ export function AccountSettings({
         className="mb-1 text-[14px] font-semibold text-foreground"
         style={{ fontFamily: "var(--font-display)" }}
       >
-        Account
+        {t("account")}
       </h3>
       <p
         className="mb-5 text-[13px] text-muted-foreground"
         style={{ fontFamily: "var(--font-body)" }}
       >
-        Manage your profile information.
+        {t("manageProfile")}
       </p>
 
       <div className="mb-6 flex items-center gap-4">
@@ -70,13 +72,13 @@ export function AccountSettings({
             className="text-[13px] font-semibold text-foreground"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            Profile Photo
+            {t("profilePhoto")}
           </p>
           <p
             className="text-[11px] text-muted-foreground"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            Click to upload a new avatar
+            {t("uploadAvatar")}
           </p>
         </div>
       </div>
@@ -88,12 +90,12 @@ export function AccountSettings({
             style={{ fontFamily: "var(--font-body)" }}
           >
             <UserIcon className="size-3.5" />
-            Display Name
+            {t("displayName")}
           </label>
           <Input
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
-            placeholder="Enter your display name"
+            placeholder={t("displayNamePlaceholder")}
           />
         </div>
 
@@ -103,26 +105,26 @@ export function AccountSettings({
             style={{ fontFamily: "var(--font-body)" }}
           >
             <MailIcon className="size-3.5" />
-            Email
+            {t("email")}
           </label>
           <Input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="your@email.com"
+            placeholder={t("emailPlaceholder")}
           />
         </div>
 
         <div className="flex items-center gap-3 pt-2">
           <Button variant="primary" size="sm" onClick={handleSave}>
-            {saved ? "Saved!" : "Save Changes"}
+            {saved ? t("saved") : t("saveChanges")}
           </Button>
           {saved && (
             <span
               className="text-[12px] font-medium text-primary"
               style={{ fontFamily: "var(--font-body)" }}
             >
-              Changes saved successfully
+              {t("changesSaved")}
             </span>
           )}
         </div>

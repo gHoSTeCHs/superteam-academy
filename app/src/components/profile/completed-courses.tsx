@@ -1,9 +1,12 @@
+"use client";
+
 import {
   CheckCircle2Icon,
   BookOpenIcon,
   ZapIcon,
   ClockIcon,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Card } from "@/components/ui/card";
 import DifficultyBadge from "@/components/difficulty-badge";
 import { cn } from "@/lib/utils";
@@ -27,6 +30,7 @@ export function CompletedCourses({
   courses,
   className,
 }: CompletedCoursesProps) {
+  const t = useTranslations("Profile");
   return (
     <Card className={cn("px-6 py-5", className)}>
       <div className="mb-4 flex items-center justify-between">
@@ -36,14 +40,14 @@ export function CompletedCourses({
             className="text-[14px] font-semibold text-foreground"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Completed Courses
+            {t("completedCourses")}
           </h3>
         </div>
         <span
           className="text-[12px] text-muted-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          {courses.length} completed
+          {t("coursesCompletedCount", { n: courses.length })}
         </span>
       </div>
 
@@ -54,7 +58,7 @@ export function CompletedCourses({
             className="text-[13px] text-muted-foreground"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            No completed courses yet
+            {t("noCompletedCoursesYet")}
           </p>
         </div>
       ) : (

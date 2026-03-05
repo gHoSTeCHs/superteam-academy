@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { PlayIcon, BookOpenIcon } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,9 @@ interface ActiveCoursesProps {
 }
 
 export function ActiveCourses({ courses, className }: ActiveCoursesProps) {
+  const t = useTranslations("Dashboard");
+  const tCourses = useTranslations("Courses");
+
   if (courses.length === 0) {
     return (
       <Card className={cn("px-6 py-8 text-center", className)}>
@@ -33,16 +37,16 @@ export function ActiveCourses({ courses, className }: ActiveCoursesProps) {
           className="text-[14px] font-medium text-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          No active courses
+          {t("noActiveCourses")}
         </p>
         <p
           className="mt-1 text-[13px] text-muted-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          Enroll in a course to start learning
+          {t("enrollPrompt")}
         </p>
         <Button variant="primary" size="sm" className="mt-4" asChild>
-          <Link href="/courses">Browse Courses</Link>
+          <Link href="/courses">{t("browseCourses")}</Link>
         </Button>
       </Card>
     );
@@ -69,7 +73,10 @@ export function ActiveCourses({ courses, className }: ActiveCoursesProps) {
                 </div>
                 <ProgressBar
                   value={progress}
-                  label={`${course.completedLessons} of ${course.totalLessons} lessons`}
+                  label={tCourses("lessonsProgress", {
+                    completed: course.completedLessons,
+                    total: course.totalLessons,
+                  })}
                   size="sm"
                   className="mb-3"
                 />
@@ -78,7 +85,7 @@ export function ActiveCourses({ courses, className }: ActiveCoursesProps) {
                     className="text-[12px] text-muted-foreground"
                     style={{ fontFamily: "var(--font-body)" }}
                   >
-                    Next: {course.nextLessonTitle}
+                    {t("nextLesson", { title: course.nextLessonTitle })}
                   </span>
                 </div>
               </div>
@@ -92,7 +99,7 @@ export function ActiveCourses({ courses, className }: ActiveCoursesProps) {
                   href={`/courses/${course.slug}/lessons/${course.nextLessonSlug}`}
                 >
                   <PlayIcon className="size-3.5" />
-                  Continue
+                  {t("continue")}
                 </Link>
               </Button>
             </div>

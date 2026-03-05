@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations, useLocale } from "next-intl";
 import { FlameIcon } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -13,26 +14,33 @@ interface StreakCalendarProps {
   className?: string;
 }
 
-const WEEKDAY_LABELS = ["S", "M", "T", "W", "T", "F", "S"];
-
-const MILESTONES = [
-  { days: 7, label: "Week Warrior", icon: "🔥" },
-  { days: 30, label: "Monthly Master", icon: "⭐" },
-  { days: 100, label: "Century Scholar", icon: "🏆" },
-];
-
 export function StreakCalendar({
   days,
   currentStreak,
   longestStreak,
   className,
 }: StreakCalendarProps) {
+  const t = useTranslations("Dashboard");
+  const tCommon = useTranslations("Common");
+  const locale = useLocale();
+
+  const weekdayFmt = new Intl.DateTimeFormat(locale, { weekday: "narrow" });
+  const WEEKDAY_LABELS = Array.from({ length: 7 }, (_, i) =>
+    weekdayFmt.format(new Date(2024, 0, 7 + i)),
+  );
+
+  const MILESTONES = [
+    { days: 7, label: t("weekWarrior"), icon: "🔥" },
+    { days: 30, label: t("monthlyMaster"), icon: "⭐" },
+    { days: 100, label: t("centuryScholar"), icon: "🏆" },
+  ];
+
   const weeks: CalendarDay[][] = [];
   for (let i = 0; i < days.length; i += 7) {
     weeks.push(days.slice(i, i + 7));
   }
 
-  const months = getMonthLabels(days);
+  const months = getMonthLabels(days, locale);
 
   return (
     <Card className={cn("px-6 py-5", className)}>
@@ -50,7 +58,7 @@ export function StreakCalendar({
               className="text-[13px] text-muted-foreground"
               style={{ fontFamily: "var(--font-body)" }}
             >
-              day streak
+              {t("dayStreak")}
             </span>
           </div>
           <span className="text-border">|</span>
@@ -58,7 +66,7 @@ export function StreakCalendar({
             className="text-[12px] text-muted-foreground"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            Longest:{" "}
+            {t("longest")}{" "}
             <span className="font-semibold text-foreground">
               {longestStreak}
             </span>
@@ -71,7 +79,7 @@ export function StreakCalendar({
               variant={currentStreak >= m.days ? "reward" : "neutral"}
               className="text-[10px]"
             >
-              {m.icon} {m.days}d
+              {m.icon} {tCommon("streakDays", { n: m.days })}
             </Badge>
           ))}
         </div>
@@ -130,14 +138,14 @@ export function StreakCalendar({
       </div>
 
       <div className="mt-3 flex items-center justify-end gap-2 text-[10px] text-muted-foreground">
-        <span style={{ fontFamily: "var(--font-body)" }}>Less</span>
+        <span style={{ fontFamily: "var(--font-body)" }}>{t("less")}</span>
         <div className="flex gap-[2px]">
           <div className="size-[10px] rounded-[2px] bg-muted" />
           <div className="size-[10px] rounded-[2px] bg-primary/30" />
           <div className="size-[10px] rounded-[2px] bg-primary/60" />
           <div className="size-[10px] rounded-[2px] bg-primary" />
         </div>
-        <span style={{ fontFamily: "var(--font-body)" }}>More</span>
+        <span style={{ fontFamily: "var(--font-body)" }}>{t("more")}</span>
       </div>
     </Card>
   );
@@ -145,29 +153,17 @@ export function StreakCalendar({
 
 function getMonthLabels(
   days: CalendarDay[],
+  locale: string,
 ): { label: string; offset: number }[] {
   const labels: { label: string; offset: number }[] = [];
-  const monthNames = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
+  const fmt = new Intl.DateTimeFormat(locale, { month: "short" });
   let lastMonth = -1;
 
   for (let i = 0; i < days.length; i += 7) {
     const d = new Date(days[i]!.date);
     const month = d.getMonth();
     if (month !== lastMonth) {
-      labels.push({ label: monthNames[month]!, offset: Math.floor(i / 7) });
+      labels.push({ label: fmt.format(d), offset: Math.floor(i / 7) });
       lastMonth = month;
     }
   }

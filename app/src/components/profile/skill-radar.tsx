@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
@@ -33,6 +36,7 @@ export function SkillRadar({
   maxValue = 100,
   className,
 }: SkillRadarProps) {
+  const t = useTranslations("Profile");
   const angleStep = 360 / skills.length;
 
   const ringPaths = Array.from({ length: RINGS }, (_, ring) => {
@@ -56,7 +60,7 @@ export function SkillRadar({
         className="mb-4 text-[14px] font-semibold text-foreground"
         style={{ fontFamily: "var(--font-display)" }}
       >
-        Skill Radar
+        {t("skillRadar")}
       </h3>
 
       <div className="flex justify-center">

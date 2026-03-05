@@ -1,3 +1,5 @@
+"use client";
+
 import {
   CheckCircle2Icon,
   TrophyIcon,
@@ -5,6 +7,7 @@ import {
   ZapIcon,
   FlameIcon,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import type { LucideIcon } from "lucide-react";
@@ -57,13 +60,16 @@ const activityConfig: Record<
 };
 
 export function ActivityFeed({ activities, className }: ActivityFeedProps) {
+  const t = useTranslations("Dashboard");
+  const tCommon = useTranslations("Common");
+
   return (
     <Card className={cn("px-6 py-5", className)}>
       <h3
         className="mb-4 text-[14px] font-semibold text-foreground"
         style={{ fontFamily: "var(--font-display)" }}
       >
-        Recent Activity
+        {t("recentActivity")}
       </h3>
 
       {activities.length === 0 ? (
@@ -73,7 +79,7 @@ export function ActivityFeed({ activities, className }: ActivityFeedProps) {
             className="text-[13px] text-muted-foreground"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            No activity yet. Start a lesson to begin!
+            {t("noActivityYet")}
           </p>
         </div>
       ) : (
@@ -120,7 +126,8 @@ export function ActivityFeed({ activities, className }: ActivityFeedProps) {
                         className="flex items-center gap-0.5 text-[11px] font-semibold"
                         style={{ color: "#ffd23f" }}
                       >
-                        <ZapIcon className="size-3" />+{activity.xp} XP
+                        <ZapIcon className="size-3" />
+                        {tCommon("xpGained", { n: activity.xp })}
                       </span>
                     )}
                   </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -27,6 +28,8 @@ export function LessonNavigation({
   hasNext = false,
   className,
 }: LessonNavigationProps) {
+  const t = useTranslations("Lessons");
+
   return (
     <div className={cn("space-y-4", className)}>
       <div className="flex items-center gap-2 text-[12px] text-muted-foreground">
@@ -36,7 +39,7 @@ export function LessonNavigation({
           className="font-medium text-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          Lesson {currentLesson} of {totalLessons}
+          {t("lessonOf", { current: currentLesson, total: totalLessons })}
         </span>
       </div>
 
@@ -56,7 +59,9 @@ export function LessonNavigation({
           className="gap-1"
         >
           <ChevronLeftIcon className="size-4" />
-          <span style={{ fontFamily: "var(--font-body)" }}>Previous</span>
+          <span style={{ fontFamily: "var(--font-body)" }}>
+            {t("previous")}
+          </span>
         </Button>
 
         <span
@@ -73,7 +78,7 @@ export function LessonNavigation({
           onClick={onNext}
           className="gap-1"
         >
-          <span style={{ fontFamily: "var(--font-body)" }}>Next</span>
+          <span style={{ fontFamily: "var(--font-body)" }}>{t("next")}</span>
           <ChevronRightIcon className="size-4" />
         </Button>
       </div>

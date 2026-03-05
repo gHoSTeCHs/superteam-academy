@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { ZapIcon, FlameIcon, TrendingUpIcon } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -37,6 +38,9 @@ export function LeaderboardTable({
   currentWallet,
   className,
 }: LeaderboardTableProps) {
+  const t = useTranslations("Leaderboard");
+  const tCommon = useTranslations("Common");
+
   return (
     <Card className={cn("overflow-hidden", className)}>
       <div className="overflow-x-auto">
@@ -47,31 +51,31 @@ export function LeaderboardTable({
                 className="w-16 px-4 py-3 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground"
                 style={{ fontFamily: "var(--font-body)" }}
               >
-                Rank
+                {t("rank")}
               </th>
               <th
                 className="px-4 py-3 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground"
                 style={{ fontFamily: "var(--font-body)" }}
               >
-                Learner
+                {t("learner")}
               </th>
               <th
                 className="px-4 py-3 text-right text-[11px] font-semibold uppercase tracking-widest text-muted-foreground"
                 style={{ fontFamily: "var(--font-body)" }}
               >
-                XP
+                {t("xpEarned")}
               </th>
               <th
                 className="px-4 py-3 text-center text-[11px] font-semibold uppercase tracking-widest text-muted-foreground"
                 style={{ fontFamily: "var(--font-body)" }}
               >
-                Level
+                {t("level")}
               </th>
               <th
                 className="px-4 py-3 text-center text-[11px] font-semibold uppercase tracking-widest text-muted-foreground"
                 style={{ fontFamily: "var(--font-body)" }}
               >
-                Streak
+                {t("streak")}
               </th>
             </tr>
           </thead>
@@ -138,7 +142,7 @@ export function LeaderboardTable({
                             variant="primary"
                             className="mt-0.5 text-[9px]"
                           >
-                            You
+                            {t("you")}
                           </Badge>
                         )}
                       </div>
@@ -163,7 +167,7 @@ export function LeaderboardTable({
                   <td className="px-4 py-3 text-center">
                     <Badge variant="neutral" className="text-[10px]">
                       <TrendingUpIcon className="mr-0.5 size-3" />
-                      Lv. {entry.level}
+                      {tCommon("levelShort", { n: entry.level })}
                     </Badge>
                   </td>
 
@@ -184,7 +188,7 @@ export function LeaderboardTable({
                         )}
                         style={{ fontFamily: "var(--font-body)" }}
                       >
-                        {entry.streak}d
+                        {tCommon("streakDays", { n: entry.streak })}
                       </span>
                     </span>
                   </td>

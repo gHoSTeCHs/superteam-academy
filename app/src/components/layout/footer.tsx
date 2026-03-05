@@ -1,47 +1,65 @@
+"use client";
+
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
-
-const footerNav = [
-  {
-    title: "Learn",
-    links: [
-      { href: "/courses", label: "Courses" },
-      { href: "/leaderboard", label: "Leaderboard" },
-      { href: "/dashboard", label: "Dashboard" },
-    ],
-  },
-  {
-    title: "Community",
-    links: [
-      {
-        href: "https://twitter.com/superteambr",
-        label: "Twitter",
-        external: true,
-      },
-      {
-        href: "https://discord.gg/superteam",
-        label: "Discord",
-        external: true,
-      },
-      { href: "https://github.com/solanabr", label: "GitHub", external: true },
-    ],
-  },
-  {
-    title: "Resources",
-    links: [
-      { href: "https://solana.com/docs", label: "Solana Docs", external: true },
-      { href: "https://www.anchor-lang.com", label: "Anchor", external: true },
-      { href: "/studio", label: "Content Studio" },
-    ],
-  },
-];
 
 interface FooterProps {
   className?: string;
 }
 
 export function Footer({ className }: FooterProps) {
+  const t = useTranslations("Footer");
+  const tNav = useTranslations("Navigation");
+
+  const footerNav = [
+    {
+      title: t("learn"),
+      links: [
+        { href: "/courses", label: tNav("courses") },
+        { href: "/leaderboard", label: tNav("leaderboard") },
+        { href: "/dashboard", label: tNav("dashboard") },
+      ],
+    },
+    {
+      title: t("community"),
+      links: [
+        {
+          href: "https://twitter.com/superteambr",
+          label: t("twitter"),
+          external: true,
+        },
+        {
+          href: "https://discord.gg/superteam",
+          label: t("discord"),
+          external: true,
+        },
+        {
+          href: "https://github.com/solanabr",
+          label: "GitHub",
+          external: true,
+        },
+      ],
+    },
+    {
+      title: t("resources"),
+      links: [
+        {
+          href: "https://solana.com/docs",
+          label: t("solanaDocs"),
+          external: true,
+        },
+        {
+          href: "https://www.anchor-lang.com",
+          label: t("anchor"),
+          external: true,
+        },
+        { href: "/studio", label: t("contentStudio") },
+      ],
+    },
+  ];
+
   return (
     <footer className={cn("border-t border-border bg-card", className)}>
       <div className="mx-auto max-w-6xl px-6 py-12">
@@ -65,8 +83,7 @@ export function Footer({ className }: FooterProps) {
               className="max-w-[200px] text-sm text-muted-foreground"
               style={{ fontFamily: "var(--font-body)" }}
             >
-              Learn Solana development with interactive courses and on-chain
-              credentials.
+              {t("tagline")}
             </p>
           </div>
 
@@ -119,7 +136,8 @@ export function Footer({ className }: FooterProps) {
             className="text-xs text-muted-foreground"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            &copy; {new Date().getFullYear()} Superteam Brasil. Built on Solana.
+            &copy; {new Date().getFullYear()} Superteam Brasil.{" "}
+            {t("builtOnSolana")}.
           </p>
           <div className="flex items-center gap-4">
             <Link

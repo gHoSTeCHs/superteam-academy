@@ -4,6 +4,7 @@ import bs58 from "bs58";
 import { eq, and } from "drizzle-orm";
 import { db } from "@/db";
 import { user, account, session } from "@/db/schema/auth";
+import { siwsNonce } from "@/db/schema/custom";
 
 interface SiwsPayload {
   publicKey: string;
@@ -70,6 +71,11 @@ async function findOrCreateWalletUser(publicKey: string): Promise<string> {
   return userId;
 }
 
+function extractMessageField(message: string, pattern: RegExp): string | null {
+  const match = pattern.exec(message);
+  return match?.[1] ?? null;
+}
+
 export async function handleSiwsSignIn(
   req: NextRequest,
 ): Promise<NextResponse> {
@@ -88,10 +94,60 @@ export async function handleSiwsSignIn(
       return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
     }
 
+    const domain = extractMessageField(
+      body.message,
+      /^(.+) wants you to sign in/m,
+    );
+    const nonce = extractMessageField(body.message, /^Nonce: (.+)$/m);
+    const issuedAtStr = extractMessageField(body.message, /^Issued At: (.+)$/m);
+
+    const expectedHost = new URL(
+      process.env.BETTER_AUTH_URL ?? "http://localhost:3000",
+    ).host;
+    if (!domain || domain !== expectedHost) {
+      return NextResponse.json({ error: "Invalid domain" }, { status: 400 });
+    }
+
+    if (!nonce) {
+      return NextResponse.json({ error: "Missing nonce" }, { status: 400 });
+    }
+
+    const now = new Date();
+
+    const [nonceRow] = await db
+      .select()
+      .from(siwsNonce)
+      .where(eq(siwsNonce.nonce, nonce))
+      .limit(1);
+
+    if (!nonceRow) {
+      return NextResponse.json({ error: "Invalid nonce" }, { status: 400 });
+    }
+    if (nonceRow.usedAt !== null) {
+      return NextResponse.json(
+        { error: "Nonce already used" },
+        { status: 400 },
+      );
+    }
+    if (nonceRow.expiresAt < now) {
+      return NextResponse.json({ error: "Nonce expired" }, { status: 400 });
+    }
+
+    if (issuedAtStr) {
+      const issuedAt = new Date(issuedAtStr);
+      if (now.getTime() - issuedAt.getTime() > 10 * 60 * 1000) {
+        return NextResponse.json({ error: "Message too old" }, { status: 400 });
+      }
+    }
+
+    await db
+      .update(siwsNonce)
+      .set({ usedAt: now })
+      .where(eq(siwsNonce.nonce, nonce));
+
     const userId = await findOrCreateWalletUser(verified);
 
     const token = crypto.randomUUID();
-    const now = new Date();
     const expiresAt = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
 
     await db.insert(session).values({

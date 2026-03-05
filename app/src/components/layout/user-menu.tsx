@@ -15,6 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { useAuth } from "@/hooks/use-auth";
 
@@ -24,6 +25,8 @@ function truncateAddress(address: string): string {
 
 export function UserMenu() {
   const { user, walletAddress, signOut } = useAuth();
+  const t = useTranslations("Navigation");
+  const tAuth = useTranslations("Auth");
 
   const userName = (user?.name as string) || "Student";
   const avatarUrl = user?.image as string | undefined;
@@ -60,19 +63,19 @@ export function UserMenu() {
           <DropdownMenuItem asChild style={{ fontFamily: "var(--font-body)" }}>
             <Link href="/dashboard">
               <LayoutDashboardIcon className="size-4" />
-              Dashboard
+              {t("dashboard")}
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild style={{ fontFamily: "var(--font-body)" }}>
             <Link href="/profile">
               <UserIcon className="size-4" />
-              Profile
+              {t("profile")}
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild style={{ fontFamily: "var(--font-body)" }}>
             <Link href="/settings">
               <SettingsIcon className="size-4" />
-              Settings
+              {t("settings")}
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
@@ -83,7 +86,7 @@ export function UserMenu() {
           onClick={() => signOut()}
         >
           <LogOutIcon className="size-4" />
-          Sign Out
+          {tAuth("signOut")}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

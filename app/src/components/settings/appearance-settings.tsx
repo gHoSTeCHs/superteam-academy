@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { SunIcon, MoonIcon, MonitorIcon, CheckIcon } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -21,12 +22,6 @@ interface AppearanceSettingsProps {
   className?: string;
 }
 
-const THEME_OPTIONS: { value: ThemeMode; label: string; icon: LucideIcon }[] = [
-  { value: "light", label: "Light", icon: SunIcon },
-  { value: "dark", label: "Dark", icon: MoonIcon },
-  { value: "system", label: "System", icon: MonitorIcon },
-];
-
 const ACCENT_OPTIONS: AccentOption[] = [
   { name: "Emerald", color: "#008c4c" },
   { name: "Forest", color: "#2f6b3f" },
@@ -43,8 +38,16 @@ export function AppearanceSettings({
   onAccentChange,
   className,
 }: AppearanceSettingsProps) {
+  const t = useTranslations("Settings");
   const [theme, setTheme] = useState<ThemeMode>(themeProp ?? "system");
   const [accent, setAccent] = useState(accentProp ?? "#008c4c");
+
+  const THEME_OPTIONS: { value: ThemeMode; label: string; icon: LucideIcon }[] =
+    [
+      { value: "light", label: t("light"), icon: SunIcon },
+      { value: "dark", label: t("dark"), icon: MoonIcon },
+      { value: "system", label: t("system"), icon: MonitorIcon },
+    ];
 
   function handleThemeChange(value: ThemeMode) {
     setTheme(value);
@@ -62,13 +65,13 @@ export function AppearanceSettings({
         className="mb-1 text-[14px] font-semibold text-foreground"
         style={{ fontFamily: "var(--font-display)" }}
       >
-        Appearance
+        {t("appearance")}
       </h3>
       <p
         className="mb-5 text-[13px] text-muted-foreground"
         style={{ fontFamily: "var(--font-body)" }}
       >
-        Customize how Superteam Academy looks for you.
+        {t("appearanceDescription")}
       </p>
 
       <div className="mb-6">
@@ -76,7 +79,7 @@ export function AppearanceSettings({
           className="mb-2 block text-[12px] font-semibold uppercase tracking-widest text-muted-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          Theme
+          {t("theme")}
         </label>
         <div className="flex gap-3">
           {THEME_OPTIONS.map((opt) => {
@@ -120,7 +123,7 @@ export function AppearanceSettings({
           className="mb-2 block text-[12px] font-semibold uppercase tracking-widest text-muted-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          Accent Color
+          {t("accentColor")}
         </label>
         <div className="flex flex-wrap gap-3">
           {ACCENT_OPTIONS.map((opt) => {

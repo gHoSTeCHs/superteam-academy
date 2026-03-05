@@ -1,3 +1,5 @@
+"use client";
+
 import {
   TrophyIcon,
   FlameIcon,
@@ -6,6 +8,7 @@ import {
   StarIcon,
   ZapIcon,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -44,6 +47,9 @@ export function RecentAchievements({
   achievements,
   className,
 }: RecentAchievementsProps) {
+  const t = useTranslations("Dashboard");
+  const tCommon = useTranslations("Common");
+
   return (
     <Card className={cn("px-6 py-5", className)}>
       <div className="mb-4 flex items-center justify-between">
@@ -51,14 +57,16 @@ export function RecentAchievements({
           className="text-[14px] font-semibold text-foreground"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          Achievements
+          {t("achievements")}
         </h3>
         <span
           className="text-[12px] text-muted-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          {achievements.filter((a) => a.earned).length}/{achievements.length}{" "}
-          earned
+          {t("achievementsEarned", {
+            earned: achievements.filter((a) => a.earned).length,
+            total: achievements.length,
+          })}
         </span>
       </div>
 
@@ -100,12 +108,12 @@ export function RecentAchievements({
               </p>
               {achievement.earned ? (
                 <Badge variant="reward" className="text-[9px]">
-                  <ZapIcon className="mr-0.5 size-2.5" />+{achievement.xpReward}{" "}
-                  XP
+                  <ZapIcon className="mr-0.5 size-2.5" />
+                  {tCommon("xpGained", { n: achievement.xpReward })}
                 </Badge>
               ) : (
                 <Badge variant="neutral" className="text-[9px]">
-                  Locked
+                  {t("locked")}
                 </Badge>
               )}
             </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { GlobeIcon, CheckIcon } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -34,6 +35,7 @@ export function LanguageSettings({
   onLocaleChange,
   className,
 }: LanguageSettingsProps) {
+  const t = useTranslations("Settings");
   const [locale, setLocale] = useState(localeProp ?? "en");
 
   function handleChange(code: string) {
@@ -49,15 +51,14 @@ export function LanguageSettings({
           className="text-[14px] font-semibold text-foreground"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          Language
+          {t("language")}
         </h3>
       </div>
       <p
         className="mb-5 text-[13px] text-muted-foreground"
         style={{ fontFamily: "var(--font-body)" }}
       >
-        Choose the language for the Superteam Academy interface. Course content
-        availability may vary.
+        {t("languageDescription")}
       </p>
 
       <div className="space-y-2">

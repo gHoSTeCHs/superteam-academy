@@ -1,4 +1,7 @@
+"use client";
+
 import { ArrowRightIcon, AwardIcon, ZapIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -8,6 +11,8 @@ interface CtaProps {
 }
 
 export function Cta({ onGetStarted, className }: CtaProps) {
+  const t = useTranslations("Landing");
+
   return (
     <section className={cn("px-6 py-16 md:px-12 md:py-20", className)}>
       <div
@@ -44,7 +49,7 @@ export function Cta({ onGetStarted, className }: CtaProps) {
               letterSpacing: "-0.02em",
             }}
           >
-            Ready to build on Solana?
+            {t("ctaTitle")}
           </h2>
 
           <p
@@ -54,8 +59,7 @@ export function Cta({ onGetStarted, className }: CtaProps) {
               color: "rgba(247, 234, 203, 0.7)",
             }}
           >
-            Join hundreds of developers earning on-chain credentials. Start with
-            a free course and earn your first XP today.
+            {t("ctaDescription")}
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-3">
@@ -67,7 +71,7 @@ export function Cta({ onGetStarted, className }: CtaProps) {
             >
               <ZapIcon className="size-4" style={{ color: "#ffd23f" }} />
               <span style={{ fontFamily: "var(--font-body)" }}>
-                Start Learning for Free
+                {t("ctaButton")}
               </span>
               <ArrowRightIcon className="size-4" />
             </Button>
@@ -80,7 +84,7 @@ export function Cta({ onGetStarted, className }: CtaProps) {
               color: "rgba(247, 234, 203, 0.4)",
             }}
           >
-            No credit card required. Connect a wallet to earn credentials.
+            {t("ctaDisclaimer")}
           </p>
         </div>
       </div>

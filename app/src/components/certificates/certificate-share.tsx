@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { ShareIcon, CopyIcon, CheckIcon, DownloadIcon } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -21,6 +22,7 @@ export function CertificateShare({
   onDownload,
   className,
 }: CertificateShareProps) {
+  const t = useTranslations("Certificates");
   const [copied, setCopied] = useState(false);
 
   const url =
@@ -45,7 +47,7 @@ export function CertificateShare({
           className="text-[14px] font-semibold text-foreground"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          Share Credential
+          {t("shareCredential")}
         </h3>
       </div>
 
@@ -66,13 +68,13 @@ export function CertificateShare({
               className="text-[13px] font-semibold text-foreground"
               style={{ fontFamily: "var(--font-body)" }}
             >
-              Share on X (Twitter)
+              {t("shareOnTwitter")}
             </p>
             <p
               className="text-[11px] text-muted-foreground"
               style={{ fontFamily: "var(--font-body)" }}
             >
-              Post your achievement
+              {t("postAchievement")}
             </p>
           </div>
         </a>
@@ -93,13 +95,13 @@ export function CertificateShare({
               className="text-[13px] font-semibold text-foreground"
               style={{ fontFamily: "var(--font-body)" }}
             >
-              Share on LinkedIn
+              {t("shareOnLinkedIn")}
             </p>
             <p
               className="text-[11px] text-muted-foreground"
               style={{ fontFamily: "var(--font-body)" }}
             >
-              Add to your profile
+              {t("addToProfile")}
             </p>
           </div>
         </a>
@@ -114,12 +116,12 @@ export function CertificateShare({
             {copied ? (
               <>
                 <CheckIcon className="size-3.5 text-primary" />
-                Copied!
+                {t("copied")}
               </>
             ) : (
               <>
                 <CopyIcon className="size-3.5" />
-                Copy Link
+                {t("copyLink")}
               </>
             )}
           </Button>
@@ -130,7 +132,7 @@ export function CertificateShare({
             className="flex-1 gap-1.5 text-[12px]"
           >
             <DownloadIcon className="size-3.5" />
-            Download Image
+            {t("downloadImage")}
           </Button>
         </div>
       </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   ChevronDownIcon,
   PlayCircleIcon,
@@ -37,6 +38,7 @@ export function ModuleList({
   onLessonClick,
   className,
 }: ModuleListProps) {
+  const t = useTranslations("Courses");
   const [expandedModules, setExpandedModules] = useState<Set<string>>(() => {
     const first = modules[0]?.id;
     return first ? new Set([first]) : new Set();
@@ -89,7 +91,7 @@ export function ModuleList({
                     className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground"
                     style={{ fontFamily: "var(--font-body)" }}
                   >
-                    Module {index + 1}
+                    {t("moduleLabel", { n: index + 1 })}
                   </span>
                   {allComplete && (
                     <CheckCircle2Icon className="size-3.5 text-primary" />

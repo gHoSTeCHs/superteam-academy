@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { useAuth } from "@/providers/auth-provider";
 import { AccountSettings } from "@/components/settings/account-settings";
 import { AppearanceSettings } from "@/components/settings/appearance-settings";
@@ -8,8 +9,7 @@ import { LanguageSettings } from "@/components/settings/language-settings";
 import { LinkedAccounts } from "@/components/settings/linked-accounts";
 import { cn } from "@/lib/utils";
 
-const TABS = ["Account", "Appearance", "Language", "Linked Accounts"] as const;
-type Tab = (typeof TABS)[number];
+type TabKey = "Account" | "Appearance" | "Language" | "Linked Accounts";
 
 interface SettingsClientProps {
   displayName?: string;
@@ -17,8 +17,16 @@ interface SettingsClientProps {
 }
 
 export function SettingsClient({ displayName, email }: SettingsClientProps) {
+  const t = useTranslations("Settings");
   const { walletAddress } = useAuth();
-  const [activeTab, setActiveTab] = useState<Tab>("Account");
+  const [activeTab, setActiveTab] = useState<TabKey>("Account");
+
+  const TABS: { key: TabKey; label: string }[] = [
+    { key: "Account", label: t("tabAccount") },
+    { key: "Appearance", label: t("tabAppearance") },
+    { key: "Language", label: t("tabLanguage") },
+    { key: "Linked Accounts", label: t("tabLinkedAccounts") },
+  ];
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-10">
@@ -30,30 +38,30 @@ export function SettingsClient({ displayName, email }: SettingsClientProps) {
             letterSpacing: "-0.02em",
           }}
         >
-          Settings
+          {t("settingsTitle")}
         </h1>
         <p
           className="mt-1 text-[15px] text-muted-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          Manage your account, appearance, and preferences.
+          {t("settingsDescription")}
         </p>
       </div>
 
       <div className="mb-6 flex gap-1 overflow-x-auto border-b border-border">
         {TABS.map((tab) => (
           <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
+            key={tab.key}
+            onClick={() => setActiveTab(tab.key)}
             className={cn(
               "shrink-0 border-b-2 px-4 py-2.5 text-[13px] font-medium transition-colors",
-              activeTab === tab
+              activeTab === tab.key
                 ? "border-primary text-primary"
                 : "border-transparent text-muted-foreground hover:text-foreground",
             )}
             style={{ fontFamily: "var(--font-body)" }}
           >
-            {tab}
+            {tab.label}
           </button>
         ))}
       </div>

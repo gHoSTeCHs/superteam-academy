@@ -1,4 +1,7 @@
+"use client";
+
 import { CalendarIcon, ZapIcon, TrendingUpIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -27,6 +30,7 @@ export function ProfileHeader({
   isOwnProfile,
   className,
 }: ProfileHeaderProps) {
+  const t = useTranslations("Profile");
   const initials = displayName
     ? displayName.slice(0, 2).toUpperCase()
     : walletAddress.slice(0, 2).toUpperCase();
@@ -62,7 +66,7 @@ export function ProfileHeader({
                   variant="reward"
                   className="border-0 bg-white/15 text-[9px] text-white backdrop-blur-sm"
                 >
-                  You
+                  {t("you")}
                 </Badge>
               )}
             </div>
@@ -79,7 +83,7 @@ export function ProfileHeader({
               >
                 <CalendarIcon className="size-3" />
                 <span style={{ fontFamily: "var(--font-body)" }}>
-                  Joined {joinDate}
+                  {t("joined", { date: joinDate })}
                 </span>
               </span>
             </div>
@@ -106,7 +110,7 @@ export function ProfileHeader({
         <div className="h-5 w-px bg-border" />
         <Badge variant="neutral" className="text-[10px]">
           <TrendingUpIcon className="mr-0.5 size-3" />
-          Level {level}
+          {t("level", { n: level })}
         </Badge>
       </div>
     </Card>

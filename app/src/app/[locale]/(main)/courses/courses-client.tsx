@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { useTranslations } from "next-intl";
 import { CourseCard } from "@/components/courses/course-card";
 import { CourseFilters } from "@/components/courses/course-filters";
 import type { Course } from "@/types/course";
@@ -10,6 +11,7 @@ interface CoursesClientProps {
 }
 
 export function CoursesClient({ courses }: CoursesClientProps) {
+  const t = useTranslations("Courses");
   const [search, setSearch] = useState("");
   const [difficulty, setDifficulty] = useState("all");
   const [track, setTrack] = useState("all");
@@ -48,13 +50,13 @@ export function CoursesClient({ courses }: CoursesClientProps) {
             letterSpacing: "-0.02em",
           }}
         >
-          Courses
+          {t("coursesTitle")}
         </h1>
         <p
           className="mt-1 text-[15px] text-muted-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          Browse all available courses and start learning.
+          {t("coursesDescription")}
         </p>
       </div>
 
@@ -71,7 +73,7 @@ export function CoursesClient({ courses }: CoursesClientProps) {
             className="text-[15px] text-muted-foreground"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            No courses found matching your filters.
+            {t("noCoursesFound")}
           </p>
         </div>
       ) : (

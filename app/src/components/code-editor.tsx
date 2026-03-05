@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import Editor, { type BeforeMount, type OnMount } from "@monaco-editor/react";
 import { cn } from "@/lib/utils";
 
@@ -74,6 +75,7 @@ export function CodeEditor({
   height = "400px",
   className,
 }: CodeEditorProps) {
+  const t = useTranslations("Interactive");
   const [selectedLanguage, setSelectedLanguage] = useState(language);
 
   const handleBeforeMount: BeforeMount = (monaco) => {
@@ -121,7 +123,7 @@ export function CodeEditor({
         onChange={(val) => onChange(val ?? "")}
         loading={
           <div className="flex h-full w-full items-center justify-center text-sm text-muted-foreground">
-            Loading editor...
+            {t("loadingEditor")}
           </div>
         }
         options={{

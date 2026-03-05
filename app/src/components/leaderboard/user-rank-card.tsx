@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { ZapIcon, FlameIcon, TrendingUpIcon, HashIcon } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -28,6 +31,8 @@ export function UserRankCard({
   streak,
   className,
 }: UserRankCardProps) {
+  const t = useTranslations("Leaderboard");
+  const tCommon = useTranslations("Common");
   const percentile = Math.round(
     ((totalParticipants - rank) / totalParticipants) * 100,
   );
@@ -64,7 +69,7 @@ export function UserRankCard({
                   color: "rgba(247, 234, 203, 0.7)",
                 }}
               >
-                Your Ranking
+                {t("yourRanking")}
               </p>
             </div>
           </div>
@@ -73,7 +78,7 @@ export function UserRankCard({
             variant="reward"
             className="border-0 bg-white/15 text-[11px] text-white backdrop-blur-sm"
           >
-            Top {percentile > 0 ? percentile : 1}%
+            {t("topPercent", { n: percentile > 0 ? percentile : 1 })}
           </Badge>
         </div>
       </div>
@@ -92,7 +97,7 @@ export function UserRankCard({
               className="text-[11px] text-muted-foreground"
               style={{ fontFamily: "var(--font-body)" }}
             >
-              of {totalParticipants.toLocaleString()}
+              {t("ofTotal", { total: totalParticipants.toLocaleString() })}
             </span>
           </div>
 
@@ -118,7 +123,7 @@ export function UserRankCard({
 
           <Badge variant="neutral" className="text-[10px]">
             <TrendingUpIcon className="mr-0.5 size-3" />
-            Lv. {level}
+            {tCommon("levelShort", { n: level })}
           </Badge>
 
           <div className="flex items-center gap-1">
@@ -127,7 +132,7 @@ export function UserRankCard({
               className="text-[13px] font-semibold text-foreground"
               style={{ fontFamily: "var(--font-body)" }}
             >
-              {streak}d
+              {tCommon("streakDays", { n: streak })}
             </span>
           </div>
         </div>

@@ -1,3 +1,5 @@
+"use client";
+
 import {
   AwardIcon,
   ExternalLinkIcon,
@@ -5,6 +7,7 @@ import {
   ZapIcon,
   TrendingUpIcon,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -34,6 +37,8 @@ export function CredentialCards({
   credentials,
   className,
 }: CredentialCardsProps) {
+  const t = useTranslations("Profile");
+  const tCommon = useTranslations("Common");
   return (
     <Card className={cn("px-6 py-5", className)}>
       <div className="mb-4 flex items-center justify-between">
@@ -43,14 +48,14 @@ export function CredentialCards({
             className="text-[14px] font-semibold text-foreground"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Credentials
+            {t("credentials")}
           </h3>
         </div>
         <span
           className="text-[12px] text-muted-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          {credentials.length} earned
+          {t("credentialsEarnedCount", { n: credentials.length })}
         </span>
       </div>
 
@@ -61,7 +66,7 @@ export function CredentialCards({
             className="text-[13px] text-muted-foreground"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            Complete a course to earn your first credential
+            {t("earnFirstCredential")}
           </p>
         </div>
       ) : (
@@ -105,7 +110,7 @@ export function CredentialCards({
                       className="text-[12px] font-semibold text-foreground"
                       style={{ fontFamily: "var(--font-body)" }}
                     >
-                      Lv. {cred.level}
+                      {tCommon("levelShort", { n: cred.level })}
                     </span>
                   </div>
                   <div className="flex items-center gap-1">
@@ -114,7 +119,9 @@ export function CredentialCards({
                       className="text-[12px] font-semibold text-foreground"
                       style={{ fontFamily: "var(--font-body)" }}
                     >
-                      {cred.totalXp.toLocaleString()} XP
+                      {tCommon("xpGained", {
+                        n: cred.totalXp.toLocaleString(),
+                      })}
                     </span>
                   </div>
                   <span

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { SearchIcon, XIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,7 @@ export function CourseFilters({
   onTrackChange,
   className,
 }: CourseFiltersProps) {
+  const t = useTranslations("Courses");
   const [search, setSearch] = useState("");
   const [difficulty, setDifficulty] = useState<Difficulty>("all");
   const [track, setTrack] = useState<Track>("all");
@@ -51,7 +53,7 @@ export function CourseFilters({
         <Input
           value={search}
           onChange={(e) => handleSearch(e.target.value)}
-          placeholder="Search courses..."
+          placeholder={t("searchPlaceholder")}
           className="pl-9 pr-9"
         />
         {search && (
@@ -70,7 +72,7 @@ export function CourseFilters({
             className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            Difficulty
+            {t("difficulty")}
           </p>
           <div className="flex flex-wrap gap-1.5">
             {DIFFICULTIES.map((d) => (
@@ -81,7 +83,7 @@ export function CourseFilters({
                 className="h-7 px-2.5 text-[11px] capitalize"
                 onClick={() => handleDifficulty(d)}
               >
-                {d}
+                {d === "all" ? t("all") : d}
               </Button>
             ))}
           </div>
@@ -92,18 +94,18 @@ export function CourseFilters({
             className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            Track
+            {t("track")}
           </p>
           <div className="flex flex-wrap gap-1.5">
-            {TRACKS.map((t) => (
+            {TRACKS.map((tr) => (
               <Button
-                key={t}
-                variant={track === t ? "primary" : "ghost"}
+                key={tr}
+                variant={track === tr ? "primary" : "ghost"}
                 size="sm"
                 className="h-7 px-2.5 text-[11px] capitalize"
-                onClick={() => handleTrack(t)}
+                onClick={() => handleTrack(tr)}
               >
-                {t}
+                {tr === "all" ? t("all") : tr}
               </Button>
             ))}
           </div>

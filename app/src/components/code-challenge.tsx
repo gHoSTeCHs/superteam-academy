@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { createCodeRunner } from "@/lib/code-runner";
 import { Button } from "@/components/ui/button";
@@ -28,6 +29,7 @@ const DEFAULT_MAX_ATTEMPTS = 10;
 const HINT_UNLOCK_THRESHOLD = 3;
 
 export function CodeChallenge({ challenge, onComplete }: CodeChallengeProps) {
+  const t = useTranslations("Interactive");
   const [code, setCode] = useState(challenge.starterCode);
   const [results, setResults] = useState<RunResult | null>(null);
   const [running, setRunning] = useState(false);
@@ -120,7 +122,7 @@ export function CodeChallenge({ challenge, onComplete }: CodeChallengeProps) {
             ) : (
               <Play className="h-4 w-4" />
             )}
-            {running ? "Running..." : "Run"}
+            {running ? t("running") : t("run")}
           </Button>
 
           <Button
@@ -130,13 +132,13 @@ export function CodeChallenge({ challenge, onComplete }: CodeChallengeProps) {
             onClick={handleReset}
           >
             <RotateCcw className="h-4 w-4" />
-            Reset
+            {t("reset")}
           </Button>
 
           {canShowSolution && (
             <Button variant="ghost" size="sm" onClick={handleShowSolution}>
               <Eye className="h-4 w-4" />
-              Show Solution
+              {t("showSolution")}
             </Button>
           )}
         </div>
@@ -186,13 +188,16 @@ function TestResultsPanel({
   passCount,
   failCount,
 }: TestResultsPanelProps) {
+  const t = useTranslations("Interactive");
   return (
     <div className="rounded-lg border border-border bg-bg-surface p-4">
       <div className="mb-3 flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-foreground">Test Results</h3>
+        <h3 className="text-sm font-semibold text-foreground">
+          {t("testResults")}
+        </h3>
         {results && (
           <span className="text-xs text-muted-foreground">
-            {passCount} passed / {failCount} failed
+            {t("testSummary", { passed: passCount, failed: failCount })}
             {results.executionTimeMs !== undefined && (
               <span className="ml-2">({results.executionTimeMs}ms)</span>
             )}
@@ -201,9 +206,7 @@ function TestResultsPanel({
       </div>
 
       {!results && (
-        <p className="text-sm text-muted-foreground">
-          Run your code to see test results
-        </p>
+        <p className="text-sm text-muted-foreground">{t("runToSeeResults")}</p>
       )}
 
       {results?.error && (
@@ -260,11 +263,12 @@ function HintsSection({
   canShowMore,
   onRevealHint,
 }: HintsSectionProps) {
+  const t = useTranslations("Interactive");
   return (
     <div className="rounded-lg border border-border bg-bg-surface p-4">
       <div className="mb-2 flex items-center gap-2">
         <Lightbulb className="h-4 w-4 text-yellow-500" />
-        <h3 className="text-sm font-semibold text-foreground">Hints</h3>
+        <h3 className="text-sm font-semibold text-foreground">{t("hints")}</h3>
       </div>
 
       {hintsShown > 0 && (
@@ -283,7 +287,7 @@ function HintsSection({
       {canShowMore && (
         <Button variant="ghost" size="sm" onClick={onRevealHint}>
           <Lightbulb className="h-4 w-4" />
-          Need a hint?
+          {t("needAHint")}
         </Button>
       )}
     </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { useTranslations } from "next-intl";
 import {
   Trophy,
   SkipForward,
@@ -29,6 +30,7 @@ export function VideoCheckpointOverlay({
   onComplete,
   onSkip,
 }: VideoCheckpointOverlayProps) {
+  const t = useTranslations("Interactive");
   const [attempts, setAttempts] = useState(0);
   const [showHint, setShowHint] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -78,14 +80,14 @@ export function VideoCheckpointOverlay({
         <CardHeader className="flex flex-row items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-2">
             <Badge variant="primary">
-              {checkpoint.type === "quiz" ? "Quiz" : "Code Challenge"}
+              {checkpoint.type === "quiz" ? t("quiz") : t("codeChallenge")}
             </Badge>
             <Badge variant="reward">
               <Trophy className="h-3 w-3" />+{checkpoint.xpReward} XP
             </Badge>
           </div>
           <span className="text-xs text-muted-foreground">
-            Attempt {attempts} of {checkpoint.maxAttempts}
+            {t("attemptOf", { n: attempts, max: checkpoint.maxAttempts })}
           </span>
         </CardHeader>
 
@@ -162,7 +164,7 @@ export function VideoCheckpointOverlay({
           <div className="px-6 pb-4 flex items-center justify-end">
             <Button variant="ghost" size="sm" onClick={onSkip}>
               <SkipForward className="h-4 w-4" />
-              Skip
+              {t("skip")}
             </Button>
           </div>
         )}

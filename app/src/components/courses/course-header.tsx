@@ -1,3 +1,5 @@
+"use client";
+
 import {
   BookOpenIcon,
   ClockIcon,
@@ -5,6 +7,7 @@ import {
   ZapIcon,
   LayersIcon,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import DifficultyBadge from "@/components/difficulty-badge";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -23,6 +26,7 @@ export function CourseHeader({
   enrollmentCount = 0,
   className,
 }: CourseHeaderProps) {
+  const t = useTranslations("Courses");
   const lessons = course.modules.flatMap((m) => m.lessons);
   const totalXp = lessons.reduce((sum, l) => sum + l.xpReward, 0);
   const totalMinutes = lessons.reduce((sum, l) => sum + l.estimatedMinutes, 0);
@@ -69,16 +73,24 @@ export function CourseHeader({
         <StatCard
           icon={LayersIcon}
           value={course.modules.length}
-          label="Modules"
+          label={t("modules")}
         />
-        <StatCard icon={BookOpenIcon} value={lessons.length} label="Lessons" />
+        <StatCard
+          icon={BookOpenIcon}
+          value={lessons.length}
+          label={t("lessons")}
+        />
         <StatCard
           icon={ClockIcon}
           value={`${totalMinutes}m`}
-          label="Total Time"
+          label={t("totalTime")}
         />
-        <StatCard icon={ZapIcon} value={totalXp} label="Total XP" />
-        <StatCard icon={UsersIcon} value={enrollmentCount} label="Enrolled" />
+        <StatCard icon={ZapIcon} value={totalXp} label={t("xp")} />
+        <StatCard
+          icon={UsersIcon}
+          value={enrollmentCount}
+          label={t("enrolled")}
+        />
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import { groq } from "next-sanity";
 
 export const allCoursesQuery = groq`
-  *[_type == "course"] | order(_createdAt desc) {
+  *[_type == "course" && isPublished == true] | order(_createdAt desc) {
     "id": _id,
     title,
     "slug": slug.current,
@@ -29,7 +29,7 @@ export const allCoursesQuery = groq`
 `;
 
 export const courseBySlugQuery = groq`
-  *[_type == "course" && slug.current == $slug][0] {
+  *[_type == "course" && isPublished == true && slug.current == $slug][0] {
     "id": _id,
     title,
     "slug": slug.current,

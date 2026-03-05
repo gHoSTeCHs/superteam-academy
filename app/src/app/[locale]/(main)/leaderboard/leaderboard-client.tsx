@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { useAuth } from "@/providers/auth-provider";
 import { LeaderboardTable } from "@/components/leaderboard/leaderboard-table";
 import {
@@ -10,6 +11,7 @@ import {
 import { UserRankCard } from "@/components/leaderboard/user-rank-card";
 
 export function LeaderboardClient() {
+  const t = useTranslations("Leaderboard");
   const { walletAddress } = useAuth();
   const [timeframe, setTimeframe] = useState<Timeframe>("all-time");
   const [courseFilter, setCourseFilter] = useState("all");
@@ -24,13 +26,13 @@ export function LeaderboardClient() {
             letterSpacing: "-0.02em",
           }}
         >
-          Leaderboard
+          {t("leaderboardTitle")}
         </h1>
         <p
           className="mt-1 text-[15px] text-muted-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          See how you rank against other learners.
+          {t("leaderboardDescription")}
         </p>
       </div>
 

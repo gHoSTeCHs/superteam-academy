@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
+import { useTranslations } from "next-intl";
 import { ContentBlockRenderer, getPaneTarget } from "./content-block-renderer";
 import { MobileLessonTabs } from "./mobile-lesson-tabs";
 import { cn } from "@/lib/utils";
@@ -19,6 +20,7 @@ export function LessonContent({
   onChallengeComplete,
   className,
 }: LessonContentProps) {
+  const t = useTranslations("Interactive");
   const [mobileTab, setMobileTab] = useState<"content" | "code">("content");
   const [activeCodeBlockId, setActiveCodeBlockId] = useState<string | null>(
     null,
@@ -106,8 +108,8 @@ export function LessonContent({
                     style={{ fontFamily: "var(--font-body)" }}
                   >
                     {block.data.type === "code_challenge"
-                      ? `Challenge ${i + 1}`
-                      : `Example ${i + 1}`}
+                      ? t("challengeN", { n: i + 1 })
+                      : t("exampleN", { n: i + 1 })}
                   </button>
                 ))}
               </div>

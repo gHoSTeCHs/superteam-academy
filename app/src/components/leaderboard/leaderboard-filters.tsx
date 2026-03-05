@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { CalendarIcon, BookOpenIcon } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -15,12 +16,6 @@ interface LeaderboardFiltersProps {
   className?: string;
 }
 
-const TIMEFRAMES: { value: Timeframe; label: string }[] = [
-  { value: "weekly", label: "This Week" },
-  { value: "monthly", label: "This Month" },
-  { value: "all-time", label: "All Time" },
-];
-
 export function LeaderboardFilters({
   timeframe,
   onTimeframeChange,
@@ -29,6 +24,14 @@ export function LeaderboardFilters({
   courses = [],
   className,
 }: LeaderboardFiltersProps) {
+  const t = useTranslations("Leaderboard");
+
+  const TIMEFRAMES: { value: Timeframe; label: string }[] = [
+    { value: "weekly", label: t("thisWeek") },
+    { value: "monthly", label: t("thisMonth") },
+    { value: "all-time", label: t("allTime") },
+  ];
+
   return (
     <Card
       className={cn("flex flex-wrap items-center gap-4 px-5 py-3", className)}
@@ -39,7 +42,7 @@ export function LeaderboardFilters({
           className="text-[12px] font-semibold text-muted-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          Timeframe
+          {t("timeframe")}
         </span>
         <div className="flex rounded-lg border border-border bg-muted/30 p-0.5">
           {TIMEFRAMES.map((tf) => (
@@ -68,7 +71,7 @@ export function LeaderboardFilters({
             className="text-[12px] font-semibold text-muted-foreground"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            Course
+            {t("course")}
           </span>
           <select
             value={courseFilter}
@@ -76,7 +79,7 @@ export function LeaderboardFilters({
             className="rounded-lg border border-border bg-card px-3 py-1.5 text-[12px] text-foreground outline-none focus:ring-2 focus:ring-primary/30"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            <option value="all">All Courses</option>
+            <option value="all">{t("allCourses")}</option>
             {courses.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.title}

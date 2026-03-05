@@ -3,10 +3,19 @@
 import { revalidatePath } from "next/cache";
 import { writeClient } from "./server";
 import { getServerSession } from "@/lib/auth-server";
+import { db } from "@/db";
+import { user as userTable } from "@/db/schema/auth";
+import { eq } from "drizzle-orm";
 
-async function requireAuth() {
+async function requireAdminAuth() {
   const session = await getServerSession();
   if (!session) throw new Error("Unauthorized");
+  const [dbUser] = await db
+    .select({ role: userTable.role })
+    .from(userTable)
+    .where(eq(userTable.id, session.user.id))
+    .limit(1);
+  if (!dbUser || dbUser.role !== "admin") throw new Error("Forbidden");
   return session;
 }
 
@@ -19,7 +28,7 @@ export interface CreateCourseInput {
 }
 
 export async function createCourse(input: CreateCourseInput) {
-  await requireAuth();
+  await requireAdminAuth();
   const slug = input.title
     .toLowerCase()
     .replace(/\s+/g, "-")
@@ -40,14 +49,14 @@ export async function createCourse(input: CreateCourseInput) {
 }
 
 export async function updateCourse(id: string, patch: Record<string, unknown>) {
-  await requireAuth();
+  await requireAdminAuth();
   await writeClient.patch(id).set(patch).commit();
   revalidatePath("/admin/courses");
   revalidatePath(`/admin/courses/${id}/edit`);
 }
 
 export async function publishCourse(id: string) {
-  await requireAuth();
+  await requireAdminAuth();
   await writeClient
     .patch(id)
     .set({ isPublished: true, publishedAt: new Date().toISOString() })
@@ -57,14 +66,14 @@ export async function publishCourse(id: string) {
 }
 
 export async function unpublishCourse(id: string) {
-  await requireAuth();
+  await requireAdminAuth();
   await writeClient.patch(id).set({ isPublished: false }).commit();
   revalidatePath("/admin/courses");
   revalidatePath("/courses");
 }
 
 export async function deleteCourse(id: string) {
-  await requireAuth();
+  await requireAdminAuth();
   const course = await writeClient.fetch<{
     modules: { _ref: string }[] | null;
   }>(`*[_type == "course" && _id == $id][0]{ "modules": modules[]{ _ref } }`, {
@@ -98,7 +107,7 @@ export interface CreateModuleInput {
 }
 
 export async function createModule(courseId: string, input: CreateModuleInput) {
-  await requireAuth();
+  await requireAdminAuth();
   const doc = await writeClient.create({
     _type: "module",
     title: input.title,
@@ -121,13 +130,13 @@ export async function updateModule(
   patch: Record<string, unknown>,
   courseId?: string,
 ) {
-  await requireAuth();
+  await requireAdminAuth();
   await writeClient.patch(id).set(patch).commit();
   if (courseId) revalidatePath(`/admin/courses/${courseId}/edit`);
 }
 
 export async function deleteModule(courseId: string, moduleId: string) {
-  await requireAuth();
+  await requireAdminAuth();
   const moduleDoc = await writeClient.fetch<{
     lessons: { _ref: string }[] | null;
   }>(`*[_type == "module" && _id == $id][0]{ "lessons": lessons[]{ _ref } }`, {
@@ -158,7 +167,7 @@ export async function createLesson(
   input: CreateLessonInput,
   courseId?: string,
 ) {
-  await requireAuth();
+  await requireAdminAuth();
   const slug = input.title
     .toLowerCase()
     .replace(/\s+/g, "-")
@@ -186,7 +195,7 @@ export async function deleteLesson(
   lessonId: string,
   courseId?: string,
 ) {
-  await requireAuth();
+  await requireAdminAuth();
   await writeClient
     .patch(moduleId)
     .unset([`lessons[_ref == "${lessonId}"]`])
@@ -200,7 +209,7 @@ export async function updateLessonContentBlocks(
   contentBlocks: Record<string, unknown>[],
   courseId?: string,
 ) {
-  await requireAuth();
+  await requireAdminAuth();
   await writeClient.patch(lessonId).set({ contentBlocks }).commit();
   if (courseId) {
     revalidatePath(`/admin/courses/${courseId}/edit`);
@@ -210,7 +219,7 @@ export async function updateLessonContentBlocks(
 }
 
 export async function reorderModules(courseId: string, moduleIds: string[]) {
-  await requireAuth();
+  await requireAdminAuth();
   const refs = moduleIds.map((id) => ({
     _type: "reference" as const,
     _ref: id,
@@ -225,7 +234,7 @@ export async function reorderLessons(
   lessonIds: string[],
   courseId?: string,
 ) {
-  await requireAuth();
+  await requireAdminAuth();
   const refs = lessonIds.map((id) => ({
     _type: "reference" as const,
     _ref: id,
@@ -236,7 +245,7 @@ export async function reorderLessons(
 }
 
 export async function uploadAsset(formData: FormData) {
-  await requireAuth();
+  await requireAdminAuth();
   const file = formData.get("file") as File;
   if (!file) throw new Error("No file provided");
   const buffer = Buffer.from(await file.arrayBuffer());

@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { AwardIcon, ZapIcon, BookOpenIcon, TrendingUpIcon } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -29,6 +32,8 @@ export function CertificateDisplay({
   certificate,
   className,
 }: CertificateDisplayProps) {
+  const t = useTranslations("Certificates");
+
   return (
     <Card className={cn("overflow-hidden", className)}>
       <div
@@ -59,7 +64,7 @@ export function CertificateDisplay({
               color: "rgba(247, 234, 203, 0.6)",
             }}
           >
-            Certificate of Completion
+            {t("certificateOfCompletion")}
           </p>
 
           <h2
@@ -88,7 +93,7 @@ export function CertificateDisplay({
               color: "rgba(247, 234, 203, 0.5)",
             }}
           >
-            Awarded to
+            {t("awardedTo")}
           </p>
           <p
             className="mb-1 text-[18px] font-bold text-white"
@@ -118,7 +123,7 @@ export function CertificateDisplay({
               color: "rgba(247, 234, 203, 0.5)",
             }}
           >
-            Completed on {certificate.completionDate}
+            {t("completedOn", { date: certificate.completionDate })}
           </p>
 
           <div
@@ -145,7 +150,7 @@ export function CertificateDisplay({
             className="text-[10px] text-muted-foreground"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            Total XP
+            {t("totalXp")}
           </span>
         </div>
 
@@ -165,7 +170,7 @@ export function CertificateDisplay({
             className="text-[10px] text-muted-foreground"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            Level
+            {t("level")}
           </span>
         </div>
 
@@ -185,7 +190,7 @@ export function CertificateDisplay({
             className="text-[10px] text-muted-foreground"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            Lessons
+            {t("lessons")}
           </span>
         </div>
       </div>

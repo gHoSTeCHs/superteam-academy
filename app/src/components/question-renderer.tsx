@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import QuestionTypeBadge from "./question-type-badge";
 
 export interface ShowcaseQuestion {
@@ -43,6 +44,7 @@ export default function QuestionRenderer({
   q: ShowcaseQuestion;
   depth?: number;
 }) {
+  const t = useTranslations("Interactive");
   const [isOpen, setIsOpen] = useState(true);
   const hasChildren = q.children.length > 0;
   const isLeaf = !hasChildren;
@@ -170,7 +172,7 @@ export default function QuestionRenderer({
                     : " bg-bg-raised text-muted-foreground")
                 }
               >
-                TRUE
+                {t("trueLabel")}
               </span>
               <span
                 className={
@@ -180,11 +182,11 @@ export default function QuestionRenderer({
                     : " bg-bg-raised text-muted-foreground")
                 }
               >
-                FALSE
+                {t("falseLabel")}
               </span>
               {q.requiresJustification && (
                 <span className="text-[10px] italic text-muted-foreground">
-                  (justify your answer)
+                  ({t("justifyAnswer")})
                 </span>
               )}
             </div>
@@ -223,7 +225,7 @@ export default function QuestionRenderer({
                   style={{ fontFamily: "var(--font-body)" }}
                 >
                   <span className="shrink-0 font-bold text-primary">
-                    Gap {gap.position}:
+                    {t("gapN", { n: gap.position })}
                   </span>
                   <div className="flex flex-wrap gap-1">
                     {gap.options.map((opt, oi) => (
@@ -250,7 +252,7 @@ export default function QuestionRenderer({
                 className="text-[11px]"
                 style={{ fontFamily: "var(--font-body)" }}
               >
-                <span className="font-bold text-primary">Assertion:</span>{" "}
+                <span className="font-bold text-primary">{t("assertion")}</span>{" "}
                 <span>{q.assertion}</span>
               </div>
               <div
@@ -258,7 +260,7 @@ export default function QuestionRenderer({
                 style={{ fontFamily: "var(--font-body)" }}
               >
                 <span className="font-bold text-accent-foreground">
-                  Reason:
+                  {t("reason")}
                 </span>{" "}
                 <span>{q.reason}</span>
               </div>
@@ -276,7 +278,7 @@ export default function QuestionRenderer({
                   <thead>
                     <tr className="bg-bg-raised">
                       <th className="border-b border-r border-border px-2 py-1.5 text-left font-bold">
-                        Column I
+                        {t("columnI")}
                       </th>
                       {q.matrixRight.map((_, i) => (
                         <th
@@ -314,7 +316,7 @@ export default function QuestionRenderer({
                 </table>
                 <div className="border-t border-border bg-bg-raised px-2 py-1.5">
                   <span className="text-[10px] font-medium text-muted-foreground">
-                    Column II:{" "}
+                    {t("columnII")}{" "}
                   </span>
                   {q.matrixRight.map((r, i) => (
                     <span key={i} className="text-[10px] text-muted-foreground">
@@ -372,7 +374,7 @@ export default function QuestionRenderer({
             className="shrink-0 rounded-md bg-bg-raised px-2 py-0.5 text-[10px] font-bold text-muted-foreground"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            {q.marks}m
+            {t("marks", { n: q.marks })}
           </span>
         )}
       </div>

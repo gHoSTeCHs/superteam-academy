@@ -3,6 +3,7 @@
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { WalletIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { cn } from "@/lib/utils";
@@ -19,6 +20,7 @@ export function WalletButton({ className }: WalletButtonProps) {
   const { publicKey } = useWallet();
   const { setVisible } = useWalletModal();
   const { isAuthenticated, signOut } = useAuth();
+  const t = useTranslations("Auth");
 
   if (publicKey) {
     return (
@@ -46,7 +48,9 @@ export function WalletButton({ className }: WalletButtonProps) {
       onClick={() => setVisible(true)}
     >
       <WalletIcon className="size-4" />
-      <span style={{ fontFamily: "var(--font-body)" }}>Connect Wallet</span>
+      <span style={{ fontFamily: "var(--font-body)" }}>
+        {t("connectWallet")}
+      </span>
     </Button>
   );
 }

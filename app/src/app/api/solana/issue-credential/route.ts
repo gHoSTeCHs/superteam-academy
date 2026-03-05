@@ -13,6 +13,8 @@ import {
 } from "@/lib/solana/pda";
 import { MPL_CORE_PROGRAM_ID } from "@/lib/solana/constants";
 import { parseAnchorError } from "@/lib/solana/errors";
+import { db } from "@/db";
+import { credentialIssuance } from "@/db/schema/custom";
 
 interface IssueCredentialBody {
   courseId: string;
@@ -99,6 +101,15 @@ export async function POST(req: NextRequest) {
       })
       .signers([credentialAsset])
       .rpc();
+
+    await db.insert(credentialIssuance).values({
+      id: crypto.randomUUID(),
+      userId: session.userId,
+      sanityCourseId: body.courseId,
+      credentialAsset: credentialAsset.publicKey.toBase58(),
+      issuedAt: new Date(),
+      signature,
+    });
 
     return NextResponse.json({
       success: true,

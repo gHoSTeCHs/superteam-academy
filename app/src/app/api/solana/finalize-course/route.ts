@@ -18,6 +18,8 @@ import {
 } from "@/lib/solana/pda";
 import { XP_MINT, TOKEN_2022_PROGRAM_ID } from "@/lib/solana/constants";
 import { parseAnchorError } from "@/lib/solana/errors";
+import { db } from "@/db";
+import { courseCompletion } from "@/db/schema/custom";
 
 interface FinalizeBody {
   courseId: string;
@@ -104,6 +106,14 @@ export async function POST(req: NextRequest) {
       })
       .preInstructions(preInstructions)
       .rpc();
+
+    await db.insert(courseCompletion).values({
+      id: crypto.randomUUID(),
+      userId: session.userId,
+      sanityCourseId: body.courseId,
+      completedAt: new Date(),
+      signature,
+    });
 
     return NextResponse.json({ success: true, signature });
   } catch (error) {

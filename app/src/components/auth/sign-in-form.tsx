@@ -1,6 +1,7 @@
 "use client";
 
 import { GithubIcon, AwardIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { WalletSignIn } from "@/components/auth/wallet-sign-in";
@@ -22,6 +23,7 @@ export function SignInForm({
   className,
 }: SignInFormProps) {
   const { isAuthenticated } = useAuth();
+  const t = useTranslations("Auth");
 
   if (isAuthenticated) return null;
 
@@ -57,7 +59,7 @@ export function SignInForm({
             letterSpacing: "-0.02em",
           }}
         >
-          Welcome to Superteam Academy
+          {t("welcomeTitle")}
         </h2>
         <p
           className="text-[13px]"
@@ -66,7 +68,7 @@ export function SignInForm({
             color: "rgba(247, 234, 203, 0.7)",
           }}
         >
-          Sign in to start learning and earning on-chain credentials
+          {t("welcomeSubtitle")}
         </p>
       </div>
 
@@ -76,7 +78,7 @@ export function SignInForm({
             className="mb-3 text-center text-[12px] font-semibold uppercase tracking-widest text-muted-foreground"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            Connect your wallet
+            {t("connectWalletPrompt")}
           </p>
           <WalletSignIn onAuthenticated={handleWalletAuth} />
         </div>
@@ -87,7 +89,7 @@ export function SignInForm({
             className="text-[11px] font-medium text-muted-foreground"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            or continue with
+            {t("orContinueWith")}
           </span>
           <div className="h-px flex-1 bg-border" />
         </div>
@@ -118,7 +120,7 @@ export function SignInForm({
               />
             </svg>
             <span style={{ fontFamily: "var(--font-body)" }}>
-              Sign in with Google
+              {t("signInWithGoogle")}
             </span>
           </Button>
 
@@ -130,7 +132,7 @@ export function SignInForm({
           >
             <GithubIcon className="size-4" />
             <span style={{ fontFamily: "var(--font-body)" }}>
-              Sign in with GitHub
+              {t("signInWithGitHub")}
             </span>
           </Button>
         </div>
@@ -139,7 +141,7 @@ export function SignInForm({
           className="text-center text-[11px] text-muted-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          By signing in, you agree to our Terms of Service and Privacy Policy
+          {t("termsNotice")}
         </p>
       </div>
     </Card>

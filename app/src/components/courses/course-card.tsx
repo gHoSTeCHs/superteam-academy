@@ -1,6 +1,7 @@
 "use client";
 
 import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { BookOpenIcon, ClockIcon, UsersIcon, ZapIcon } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import DifficultyBadge from "@/components/difficulty-badge";
@@ -39,6 +40,7 @@ export function CourseCard({
   const href = slug ? `/courses/${slug}` : "#";
   const resolvedDifficulty =
     difficulty ?? course.modules[0]?.lessons[0]?.difficulty ?? "beginner";
+  const t = useTranslations("Courses");
 
   return (
     <Link href={href} className={cn("group block", className)}>
@@ -95,7 +97,7 @@ export function CourseCard({
                   className="font-medium text-muted-foreground"
                   style={{ fontFamily: "var(--font-body)" }}
                 >
-                  Progress
+                  {t("progress")}
                 </span>
                 <span
                   className="font-semibold text-primary"
@@ -120,15 +122,19 @@ export function CourseCard({
             <Stat
               icon={BookOpenIcon}
               value={stats.lessonCount}
-              label="Lessons"
+              label={t("lessons")}
             />
             <Stat
               icon={ClockIcon}
               value={`${stats.totalMinutes}m`}
-              label="Time"
+              label={t("time")}
             />
-            <Stat icon={ZapIcon} value={stats.totalXp} label="XP" />
-            <Stat icon={UsersIcon} value={enrollmentCount} label="Enrolled" />
+            <Stat icon={ZapIcon} value={stats.totalXp} label={t("xp")} />
+            <Stat
+              icon={UsersIcon}
+              value={enrollmentCount}
+              label={t("enrolled")}
+            />
           </div>
         </div>
       </Card>

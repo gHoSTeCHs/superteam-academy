@@ -1,17 +1,13 @@
 "use client";
 
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { Link, usePathname } from "@/i18n/navigation";
 import { useAuth } from "@/hooks/use-auth";
 import { LocaleSwitcher } from "./locale-switcher";
 import { WalletButton } from "./wallet-button";
 import { UserMenu } from "./user-menu";
-
-const navLinks = [
-  { href: "/courses", label: "Courses" },
-  { href: "/leaderboard", label: "Leaderboard" },
-];
 
 interface HeaderProps {
   className?: string;
@@ -20,6 +16,12 @@ interface HeaderProps {
 export function Header({ className }: HeaderProps) {
   const pathname = usePathname();
   const { isAuthenticated } = useAuth();
+  const t = useTranslations("Navigation");
+  const tAuth = useTranslations("Auth");
+  const navLinks = [
+    { href: "/courses", label: t("courses") },
+    { href: "/leaderboard", label: t("leaderboard") },
+  ];
 
   return (
     <header
@@ -78,7 +80,7 @@ export function Header({ className }: HeaderProps) {
             className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            Sign In
+            {tAuth("signIn")}
           </Link>
         )}
       </div>

@@ -9,6 +9,7 @@ import {
   CheckCircle2Icon,
   ShieldCheckIcon,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { cn } from "@/lib/utils";
@@ -38,6 +39,7 @@ export function WalletSignIn({
   const { setVisible } = useWalletModal();
   const { isAuthenticated } = useAuth();
   const signingRef = useRef(false);
+  const t = useTranslations("Auth");
 
   const performSign = useCallback(async () => {
     if (!publicKey || !signMessage || signingRef.current) return;
@@ -104,7 +106,7 @@ export function WalletSignIn({
           className="text-[14px] font-semibold text-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          Wallet Connected
+          {t("walletConnected")}
         </p>
         <p className="font-mono text-[12px] text-muted-foreground">
           {truncateWallet(publicKey.toBase58())}
@@ -128,7 +130,7 @@ export function WalletSignIn({
           className="text-[14px] font-semibold text-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          Wallet Connected
+          {t("walletConnected")}
         </p>
         <p className="font-mono text-[12px] text-muted-foreground">
           {truncateWallet(publicKey.toBase58())}
@@ -140,11 +142,11 @@ export function WalletSignIn({
   const isLoading = step !== "idle";
 
   const stepLabels: Record<WalletStep, string> = {
-    idle: connected ? "Sign In with Wallet" : "Connect Wallet",
-    connecting: "Connecting...",
-    signing: "Sign message in wallet...",
-    verifying: "Verifying signature...",
-    authenticated: "Authenticated",
+    idle: connected ? t("signInWithWallet") : t("connectWallet"),
+    connecting: t("connecting"),
+    signing: t("signingMessage"),
+    verifying: t("verifyingSignature"),
+    authenticated: t("authenticated"),
   };
 
   return (
@@ -215,7 +217,7 @@ export function WalletSignIn({
       <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
         <ShieldCheckIcon className="size-3" />
         <span style={{ fontFamily: "var(--font-body)" }}>
-          Sign-In with Solana (SIWS) — no transaction fees
+          {t("siwsNotice")}
         </span>
       </div>
     </div>

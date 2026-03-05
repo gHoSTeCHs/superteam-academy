@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { InfoIcon, AlertTriangleIcon, LightbulbIcon } from "lucide-react";
 import { PortableTextRenderer } from "@/components/portable-text-renderer";
 import { TiptapRenderer } from "@/components/tiptap-renderer";
@@ -54,6 +55,7 @@ export function ContentBlockRenderer({
   block,
   onChallengeComplete,
 }: ContentBlockRendererProps) {
+  const t = useTranslations("Interactive");
   const { data } = block;
 
   switch (data.type) {
@@ -112,7 +114,7 @@ export function ContentBlockRenderer({
               className="rounded-md bg-primary/10 px-2 py-0.5 text-[11px] font-semibold uppercase text-primary"
               style={{ fontFamily: "var(--font-body)" }}
             >
-              Quiz
+              {t("quiz")}
             </span>
             <span
               className="text-[11px] text-muted-foreground"

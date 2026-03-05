@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { ZapIcon, TrendingUpIcon } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -12,6 +13,7 @@ interface XpLevelCardProps {
 }
 
 export function XpLevelCard({ xp, className }: XpLevelCardProps) {
+  const t = useTranslations("Dashboard");
   const { level, nextLevelXp, progress } = getXpLevel(xp);
 
   return (
@@ -28,7 +30,7 @@ export function XpLevelCard({ xp, className }: XpLevelCardProps) {
               className="text-[11px] font-semibold uppercase tracking-widest"
               style={{ color: "rgba(247, 234, 203, 0.6)" }}
             >
-              Total XP
+              {t("totalXp")}
             </p>
             <div className="mt-1 flex items-baseline gap-2">
               <span
@@ -46,7 +48,7 @@ export function XpLevelCard({ xp, className }: XpLevelCardProps) {
               className="border-0 bg-white/15 text-[11px] text-white backdrop-blur-sm"
             >
               <TrendingUpIcon className="mr-1 size-3" />
-              Level {level}
+              {t("levelLabel", { n: level })}
             </Badge>
           </div>
         </div>
@@ -58,7 +60,7 @@ export function XpLevelCard({ xp, className }: XpLevelCardProps) {
             className="font-medium text-muted-foreground"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            Progress to Level {level + 1}
+            {t("progressToLevel", { level: level + 1 })}
           </span>
           <span
             className="font-semibold text-primary"
@@ -80,8 +82,10 @@ export function XpLevelCard({ xp, className }: XpLevelCardProps) {
           className="mt-2 text-[11px] text-muted-foreground"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          {nextLevelXp - xp} XP to next level ({nextLevelXp.toLocaleString()}{" "}
-          XP)
+          {t("xpToNextLevel", {
+            xp: nextLevelXp - xp,
+            total: nextLevelXp.toLocaleString(),
+          })}
         </p>
       </div>
     </Card>

@@ -1,4 +1,7 @@
+"use client";
+
 import { ArrowRightIcon, BookOpenIcon, ZapIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Card } from "@/components/ui/card";
 import DifficultyBadge from "@/components/difficulty-badge";
 import { Badge } from "@/components/ui/badge";
@@ -26,6 +29,8 @@ export function CoursePreview({
   onViewAll,
   className,
 }: CoursePreviewProps) {
+  const t = useTranslations("Landing");
+
   return (
     <section className={cn("px-6 py-16 md:px-12 md:py-20", className)}>
       <div className="mx-auto max-w-5xl">
@@ -35,7 +40,7 @@ export function CoursePreview({
               className="mb-2 text-[11px] font-semibold uppercase tracking-[0.15em] text-primary"
               style={{ fontFamily: "var(--font-body)" }}
             >
-              Featured Courses
+              {t("featuredCourses")}
             </p>
             <h2
               className="text-[28px] font-bold tracking-tight text-foreground md:text-[36px]"
@@ -44,7 +49,7 @@ export function CoursePreview({
                 letterSpacing: "-0.02em",
               }}
             >
-              Start your journey
+              {t("startYourJourney")}
             </h2>
           </div>
           <Button
@@ -54,7 +59,7 @@ export function CoursePreview({
             onClick={onViewAll}
           >
             <span style={{ fontFamily: "var(--font-body)" }}>
-              View all courses
+              {t("viewAllCourses")}
             </span>
             <ArrowRightIcon className="size-3.5" />
           </Button>
@@ -109,7 +114,7 @@ export function CoursePreview({
                     <span className="flex items-center gap-1 text-[12px] text-muted-foreground">
                       <BookOpenIcon className="size-3" />
                       <span style={{ fontFamily: "var(--font-body)" }}>
-                        {course.lessonCount} lessons
+                        {t("nLessons", { n: course.lessonCount })}
                       </span>
                     </span>
                     <span
@@ -139,7 +144,7 @@ export function CoursePreview({
             onClick={onViewAll}
           >
             <span style={{ fontFamily: "var(--font-body)" }}>
-              View all courses
+              {t("viewAllCourses")}
             </span>
             <ArrowRightIcon className="size-3.5" />
           </Button>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   ShieldCheckIcon,
   ExternalLinkIcon,
@@ -38,6 +39,7 @@ export function OnChainProof({
   network = "devnet",
   className,
 }: OnChainProofProps) {
+  const t = useTranslations("OnChain");
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
   function handleCopy(value: string, field: string) {
@@ -47,13 +49,19 @@ export function OnChainProof({
   }
 
   const fields = [
-    { label: "Mint Address", value: mintAddress, key: "mint" },
-    { label: "Owner", value: ownerAddress, key: "owner" },
+    { label: t("mintAddress"), value: mintAddress, key: "mint" },
+    { label: t("owner"), value: ownerAddress, key: "owner" },
     ...(collectionAddress
-      ? [{ label: "Collection", value: collectionAddress, key: "collection" }]
+      ? [
+          {
+            label: t("collection"),
+            value: collectionAddress,
+            key: "collection",
+          },
+        ]
       : []),
     ...(metadataUri
-      ? [{ label: "Metadata URI", value: metadataUri, key: "metadata" }]
+      ? [{ label: t("metadataUri"), value: metadataUri, key: "metadata" }]
       : []),
   ];
 
@@ -66,11 +74,11 @@ export function OnChainProof({
             className="text-[14px] font-semibold text-foreground"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            On-Chain Verification
+            {t("onChainVerification")}
           </h3>
         </div>
         <Badge variant="primary" className="text-[10px]">
-          {network === "devnet" ? "Devnet" : "Mainnet"}
+          {network === "devnet" ? t("devnet") : t("mainnet")}
         </Badge>
       </div>
 
@@ -129,7 +137,7 @@ export function OnChainProof({
         style={{ fontFamily: "var(--font-body)" }}
       >
         <ExternalLinkIcon className="size-3.5" />
-        View on Solana Explorer
+        {t("viewOnExplorer")}
       </a>
     </Card>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { FileTextIcon, CodeIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -16,6 +17,8 @@ export function MobileLessonTabs({
   onTabChange,
   hasCodeBlock,
 }: MobileLessonTabsProps) {
+  const t = useTranslations("Lessons");
+
   return (
     <div className="flex border-b border-border bg-card md:hidden">
       <button
@@ -29,7 +32,7 @@ export function MobileLessonTabs({
         style={{ fontFamily: "var(--font-body)" }}
       >
         <FileTextIcon className="size-4" />
-        Content
+        {t("content")}
       </button>
       <button
         onClick={() => onTabChange("code")}
@@ -44,7 +47,7 @@ export function MobileLessonTabs({
         style={{ fontFamily: "var(--font-body)" }}
       >
         <CodeIcon className="size-4" />
-        Code
+        {t("code")}
       </button>
     </div>
   );

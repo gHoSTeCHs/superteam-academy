@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { RocketIcon, CheckCircle2Icon, Loader2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProgressBar } from "./progress-bar";
@@ -29,6 +30,7 @@ export function EnrollButton({
   onViewCredential,
   className,
 }: EnrollButtonProps) {
+  const t = useTranslations("Courses");
   const [status, setStatus] = useState<EnrollmentStatus>(initialStatus);
 
   async function handleEnroll() {
@@ -47,7 +49,7 @@ export function EnrollButton({
             className="text-[14px] font-semibold text-primary"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            Course Completed
+            {t("courseCompleted")}
           </span>
         </div>
         <Button
@@ -56,7 +58,7 @@ export function EnrollButton({
           onClick={onViewCredential}
           className="w-full"
         >
-          View Credential
+          {t("viewCredential")}
         </Button>
       </div>
     );
@@ -67,7 +69,10 @@ export function EnrollButton({
       <div className={cn("space-y-3", className)}>
         <ProgressBar
           value={progress}
-          label={`${completedLessons} of ${totalLessons} lessons`}
+          label={t("lessonsProgress", {
+            completed: completedLessons,
+            total: totalLessons,
+          })}
         />
         <Button
           variant="primary"
@@ -75,7 +80,7 @@ export function EnrollButton({
           onClick={onContinue}
           className="w-full"
         >
-          Continue Learning
+          {t("continueLearning")}
         </Button>
       </div>
     );
@@ -91,7 +96,7 @@ export function EnrollButton({
       >
         <Loader2Icon className="size-4 animate-spin" />
         <span style={{ fontFamily: "var(--font-body)" }}>
-          Signing transaction...
+          {t("signingTransaction")}
         </span>
       </Button>
     );
@@ -105,7 +110,7 @@ export function EnrollButton({
       className={cn("w-full gap-2", className)}
     >
       <RocketIcon className="size-4" />
-      <span style={{ fontFamily: "var(--font-body)" }}>Enroll Now</span>
+      <span style={{ fontFamily: "var(--font-body)" }}>{t("enrollNow")}</span>
     </Button>
   );
 }

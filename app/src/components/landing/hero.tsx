@@ -1,4 +1,7 @@
+"use client";
+
 import { ArrowRightIcon, WalletIcon, ZapIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -14,6 +17,14 @@ export function Hero({
   onConnectWallet,
   className,
 }: HeroProps) {
+  const t = useTranslations("Landing");
+
+  const stats = [
+    { value: "500+", label: t("statLearners") },
+    { value: "12", label: t("statCourses") },
+    { value: "150+", label: t("statLessons") },
+  ];
+
   return (
     <section className={cn("relative overflow-hidden", className)}>
       <div
@@ -51,7 +62,7 @@ export function Hero({
             className="mb-6 border-0 bg-white/10 text-[12px] text-white backdrop-blur-sm"
           >
             <ZapIcon className="mr-1 size-3" style={{ color: "#ffd23f" }} />
-            Earn on-chain credentials as you learn
+            {t("heroBadge")}
           </Badge>
 
           <h1
@@ -61,8 +72,8 @@ export function Hero({
               letterSpacing: "-0.03em",
             }}
           >
-            Learn Solana.{" "}
-            <span style={{ color: "#ffd23f" }}>Build on-chain.</span>
+            {t("heroTitle1")}{" "}
+            <span style={{ color: "#ffd23f" }}>{t("heroTitle2")}</span>
           </h1>
 
           <p
@@ -72,9 +83,7 @@ export function Hero({
               color: "rgba(247, 234, 203, 0.7)",
             }}
           >
-            Interactive courses with real code challenges, XP rewards, and
-            verifiable NFT credentials. Master Solana development from beginner
-            to expert.
+            {t("heroDescription")}
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-3">
@@ -85,7 +94,7 @@ export function Hero({
               onClick={onBrowseCourses}
             >
               <span style={{ fontFamily: "var(--font-body)" }}>
-                Browse Courses
+                {t("browseCourses")}
               </span>
               <ArrowRightIcon className="size-4" />
             </Button>
@@ -97,17 +106,13 @@ export function Hero({
             >
               <WalletIcon className="size-4" />
               <span style={{ fontFamily: "var(--font-body)" }}>
-                Connect Wallet
+                {t("connectWallet")}
               </span>
             </Button>
           </div>
 
           <div className="mt-10 flex items-center justify-center gap-8">
-            {[
-              { value: "500+", label: "Learners" },
-              { value: "12", label: "Courses" },
-              { value: "150+", label: "Lessons" },
-            ].map((stat) => (
+            {stats.map((stat) => (
               <div key={stat.label} className="text-center">
                 <p
                   className="text-[24px] font-bold text-white md:text-[28px]"

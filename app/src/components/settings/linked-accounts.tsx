@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import {
   WalletIcon,
   GithubIcon,
@@ -43,12 +44,14 @@ export function LinkedAccounts({
   onUnlink,
   className,
 }: LinkedAccountsProps) {
+  const t = useTranslations("Settings");
+
   const accounts: LinkedAccount[] = [
     {
       id: "wallet",
       provider: "wallet",
       icon: WalletIcon,
-      label: "Solana Wallet",
+      label: t("solanaWallet"),
       value: walletAddress ? truncateWallet(walletAddress) : undefined,
       connected: !!walletAddress,
     },
@@ -78,14 +81,14 @@ export function LinkedAccounts({
           className="text-[14px] font-semibold text-foreground"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          Linked Accounts
+          {t("linkedAccounts")}
         </h3>
       </div>
       <p
         className="mb-5 text-[13px] text-muted-foreground"
         style={{ fontFamily: "var(--font-body)" }}
       >
-        Connect external accounts for sign-in and on-chain features.
+        {t("linkedAccountsDescription")}
       </p>
 
       <div className="space-y-3">
@@ -122,7 +125,7 @@ export function LinkedAccounts({
                     </p>
                     {account.connected && (
                       <Badge variant="primary" className="text-[9px]">
-                        Connected
+                        {t("connected")}
                       </Badge>
                     )}
                   </div>
@@ -145,7 +148,7 @@ export function LinkedAccounts({
                   className="gap-1.5 text-[11px]"
                 >
                   <UnlinkIcon className="size-3" />
-                  Unlink
+                  {t("unlink")}
                 </Button>
               ) : (
                 <Button
@@ -155,7 +158,7 @@ export function LinkedAccounts({
                   className="gap-1.5 text-[11px]"
                 >
                   <LinkIcon className="size-3" />
-                  Connect
+                  {t("connect")}
                 </Button>
               )}
             </div>

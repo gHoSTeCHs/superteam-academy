@@ -1,5 +1,8 @@
 import { getServerSession } from "@/lib/auth-server";
 import { redirect } from "next/navigation";
+import { db } from "@/db";
+import { user as userTable } from "@/db/schema/auth";
+import { eq } from "drizzle-orm";
 import { AdminSidebar } from "@/components/admin/admin-sidebar";
 import { AdminHeader } from "@/components/admin/admin-header";
 
@@ -12,6 +15,16 @@ export default async function AdminLayout({
 
   if (!session) {
     redirect("/sign-in");
+  }
+
+  const [dbUser] = await db
+    .select({ role: userTable.role })
+    .from(userTable)
+    .where(eq(userTable.id, session.user.id))
+    .limit(1);
+
+  if (!dbUser || dbUser.role !== "admin") {
+    redirect("/");
   }
 
   return (
