@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import { MenuIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
-import { Link, usePathname } from "@/i18n/navigation";
+import { Link } from "@/i18n/navigation";
 import { useAuth } from "@/hooks/use-auth";
 import { LocaleSwitcher } from "./locale-switcher";
 import { WalletButton } from "./wallet-button";
@@ -11,17 +12,12 @@ import { UserMenu } from "./user-menu";
 
 interface HeaderProps {
   className?: string;
+  onMenuToggle?: () => void;
 }
 
-export function Header({ className }: HeaderProps) {
-  const pathname = usePathname();
+export function Header({ className, onMenuToggle }: HeaderProps) {
   const { isAuthenticated } = useAuth();
-  const t = useTranslations("Navigation");
   const tAuth = useTranslations("Auth");
-  const navLinks = [
-    { href: "/courses", label: t("courses") },
-    { href: "/leaderboard", label: t("leaderboard") },
-  ];
 
   return (
     <header
@@ -30,7 +26,15 @@ export function Header({ className }: HeaderProps) {
         className,
       )}
     >
-      <div className="flex items-center gap-8">
+      <div className="flex items-center gap-4">
+        {onMenuToggle && (
+          <button
+            onClick={onMenuToggle}
+            className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted md:hidden"
+          >
+            <MenuIcon className="size-5" />
+          </button>
+        )}
         <Link href="/" className="shrink-0">
           <Image
             src="/images/logo/ST-DARK-GREEN-HORIZONTAL.svg"
@@ -49,24 +53,6 @@ export function Header({ className }: HeaderProps) {
             className="hidden dark:block"
           />
         </Link>
-
-        <nav className="hidden items-center gap-1 md:flex">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={cn(
-                "rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-muted",
-                pathname === link.href
-                  ? "bg-muted text-foreground"
-                  : "text-muted-foreground",
-              )}
-              style={{ fontFamily: "var(--font-body)" }}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
       </div>
 
       <div className="flex items-center gap-3">

@@ -17,40 +17,50 @@ function truncateAddress(address: string): string {
 }
 
 export function WalletButton({ className }: WalletButtonProps) {
-  const { publicKey } = useWallet();
+  const { publicKey, disconnect } = useWallet();
   const { setVisible } = useWalletModal();
   const { isAuthenticated, signOut } = useAuth();
   const t = useTranslations("Auth");
 
   if (publicKey) {
     return (
-      <Button
-        variant="outline"
-        size="sm"
-        className={cn("gap-2 font-mono text-[12px]", className)}
-        onClick={() => {
-          if (isAuthenticated) {
-            signOut();
-          }
-        }}
+      <div
+        className={cn("flex min-w-[160px] items-center justify-end", className)}
       >
-        <span className="size-2 rounded-full bg-emerald-500" />
-        {truncateAddress(publicKey.toBase58())}
-      </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          className="gap-2 font-mono text-[12px]"
+          onClick={() => {
+            if (isAuthenticated) {
+              signOut();
+            } else {
+              disconnect();
+            }
+          }}
+        >
+          <span className="size-2 rounded-full bg-emerald-500" />
+          {truncateAddress(publicKey.toBase58())}
+        </Button>
+      </div>
     );
   }
 
   return (
-    <Button
-      variant="primary"
-      size="sm"
-      className={cn("gap-2", className)}
-      onClick={() => setVisible(true)}
+    <div
+      className={cn("flex min-w-[160px] items-center justify-end", className)}
     >
-      <WalletIcon className="size-4" />
-      <span style={{ fontFamily: "var(--font-body)" }}>
-        {t("connectWallet")}
-      </span>
-    </Button>
+      <Button
+        variant="primary"
+        size="sm"
+        className="gap-2"
+        onClick={() => setVisible(true)}
+      >
+        <WalletIcon className="size-4" />
+        <span style={{ fontFamily: "var(--font-body)" }}>
+          {t("connectWallet")}
+        </span>
+      </Button>
+    </div>
   );
 }

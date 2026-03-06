@@ -1,5 +1,6 @@
 import { getServerSession } from "@/lib/auth-server";
-import { redirect } from "next/navigation";
+import { redirect } from "@/i18n/navigation";
+import { getLocale } from "next-intl/server";
 import { db } from "@/db";
 import { user as userTable } from "@/db/schema/auth";
 import { eq } from "drizzle-orm";
@@ -12,9 +13,10 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession();
+  const locale = await getLocale();
 
   if (!session) {
-    redirect("/sign-in");
+    return redirect({ href: "/sign-in", locale });
   }
 
   const [dbUser] = await db
@@ -24,7 +26,7 @@ export default async function AdminLayout({
     .limit(1);
 
   if (!dbUser || dbUser.role !== "admin") {
-    redirect("/");
+    return redirect({ href: "/", locale });
   }
 
   return (
