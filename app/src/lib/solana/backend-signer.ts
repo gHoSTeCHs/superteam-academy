@@ -1,3 +1,4 @@
+import "server-only";
 import { Keypair } from "@solana/web3.js";
 import { type Program, type Idl } from "@coral-xyz/anchor";
 import { getKeypairProgram } from "./program";

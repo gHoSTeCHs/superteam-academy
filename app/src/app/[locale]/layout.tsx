@@ -1,11 +1,9 @@
 import { notFound } from "next/navigation";
-import { NextIntlClientProvider, hasLocale } from "next-intl";
+import { hasLocale } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { routing } from "@/i18n/routing";
-import { Toaster } from "sonner";
-import { ThemeProvider } from "@/components/theme-provider";
-import { SolanaProvider } from "@/providers/solana-provider";
-import { AuthProvider } from "@/providers/auth-provider";
+import { archivo, inter } from "@/lib/fonts";
+import { AppProviders } from "@/providers/app-providers";
 
 export default async function LocaleLayout({
   children,
@@ -23,20 +21,16 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <NextIntlClientProvider locale={locale} messages={messages}>
-      <SolanaProvider>
-        <AuthProvider>
-          <ThemeProvider>
-            {children}
-            <Toaster
-              position="top-center"
-              toastOptions={{
-                style: { fontFamily: "var(--font-body)" },
-              }}
-            />
-          </ThemeProvider>
-        </AuthProvider>
-      </SolanaProvider>
-    </NextIntlClientProvider>
+    <html
+      lang={locale}
+      className={`${archivo.variable} ${inter.variable}`}
+      suppressHydrationWarning
+    >
+      <body>
+        <AppProviders locale={locale} messages={messages}>
+          {children}
+        </AppProviders>
+      </body>
+    </html>
   );
 }

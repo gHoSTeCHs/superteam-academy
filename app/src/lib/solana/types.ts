@@ -26,7 +26,7 @@ export interface OnChainEnrollment {
   course: PublicKey;
   enrolledAt: BN;
   completedAt: BN | null;
-  lessonFlags: BN[];
+  lessonFlags: [BN, BN, BN, BN];
   credentialAsset: PublicKey | null;
   bump: number;
 }

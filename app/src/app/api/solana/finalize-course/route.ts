@@ -77,6 +77,20 @@ export async function POST(req: NextRequest) {
 
     const preInstructions = [];
 
+    const learnerAtaInfo = await connection.getAccountInfo(learnerAta);
+    if (!learnerAtaInfo) {
+      preInstructions.push(
+        createAssociatedTokenAccountInstruction(
+          backendSigner.publicKey,
+          learnerAta,
+          learner,
+          XP_MINT,
+          TOKEN_2022_PROGRAM_ID,
+          ASSOCIATED_TOKEN_PROGRAM_ID,
+        ),
+      );
+    }
+
     const creatorAtaInfo = await connection.getAccountInfo(creatorAta);
     if (!creatorAtaInfo) {
       preInstructions.push(

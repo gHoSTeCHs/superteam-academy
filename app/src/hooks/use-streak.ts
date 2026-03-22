@@ -29,7 +29,6 @@ export function useStreak(walletAddress: string): UseStreakReturn {
 
   const calendarDays = useMemo(
     () => getCalendarDataFromStorage(walletAddress),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [walletAddress, streakData.lastActivityDate],
   );
 

@@ -84,6 +84,7 @@ export default async function LessonPreviewPage({
         <LessonViewClient
           lesson={lesson}
           courseSlug={course.slug ?? ""}
+          courseId={course.id}
           moduleName={currentModule?.title ?? "Module"}
           currentLesson={currentIndex + 1}
           totalLessons={allLessons.length}

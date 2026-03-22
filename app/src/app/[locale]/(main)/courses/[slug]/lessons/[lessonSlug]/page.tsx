@@ -33,6 +33,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
     <LessonViewClient
       lesson={lesson}
       courseSlug={courseSlug}
+      courseId={course.id}
       moduleName={currentModule?.title ?? "Module"}
       currentLesson={currentIndex + 1}
       totalLessons={allLessons.length}

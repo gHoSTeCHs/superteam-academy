@@ -12,22 +12,18 @@ export {
   findMinterRolePda,
   findAchievementTypePda,
   findAchievementReceiptPda,
+  getXpAta,
 } from "./pda";
 export {
   isLessonComplete,
   countCompletedLessons,
   getCompletedLessonIndices,
 } from "./bitmap";
+export type { LessonFlags } from "./bitmap";
 export { parseAnchorError } from "./errors";
 export { IDL_JSON } from "./idl";
 export type { OnchainAcademy } from "./idl";
 export { getReadOnlyProgram, getWalletProgram, getConnection } from "./program";
-export {
-  getXpAta,
-  getXpBalance,
-  getCredentialsByOwner,
-  getXpLeaderboard,
-} from "./helius";
 export type {
   OnChainCourse,
   OnChainEnrollment,

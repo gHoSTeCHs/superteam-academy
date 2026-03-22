@@ -5,8 +5,10 @@ import BN from "bn.js";
  * Anchor deserializes each u64 as a BN. These helpers operate on that array.
  */
 
+export type LessonFlags = [BN, BN, BN, BN];
+
 export function isLessonComplete(
-  lessonFlags: BN[],
+  lessonFlags: LessonFlags,
   lessonIndex: number,
 ): boolean {
   const wordIndex = Math.floor(lessonIndex / 64);
@@ -17,7 +19,7 @@ export function isLessonComplete(
 }
 
 export function countCompletedLessons(
-  lessonFlags: BN[],
+  lessonFlags: LessonFlags,
   lessonCount: number,
 ): number {
   let count = 0;
@@ -28,7 +30,7 @@ export function countCompletedLessons(
 }
 
 export function getCompletedLessonIndices(
-  lessonFlags: BN[],
+  lessonFlags: LessonFlags,
   lessonCount: number,
 ): number[] {
   const indices: number[] = [];

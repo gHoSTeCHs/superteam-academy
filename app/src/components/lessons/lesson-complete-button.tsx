@@ -50,28 +50,32 @@ export function LessonCompleteButton({
     setLoading(true);
     try {
       await onComplete?.();
-      setIsCompleted(true);
-      setShowXpBurst(true);
-
-      if (walletAddress) {
-        const { previousStreak, newStreak } = recordActivity();
-        const crossed = getNewStreakAchievements(previousStreak, newStreak);
-        crossed.forEach(showAchievementToast);
-      }
-
-      if (isFirstLesson) {
-        const firstSteps = getAchievementById("first-steps");
-        if (firstSteps) showAchievementToast(firstSteps);
-      }
-
-      if (isLastLesson) {
-        const completer = getAchievementById("course-completer");
-        if (completer) showAchievementToast(completer);
-        setShowFinalize(true);
-      }
-    } finally {
+    } catch {
       setLoading(false);
+      return;
     }
+
+    setIsCompleted(true);
+    setShowXpBurst(true);
+
+    if (walletAddress) {
+      const { previousStreak, newStreak } = recordActivity();
+      const crossed = getNewStreakAchievements(previousStreak, newStreak);
+      crossed.forEach(showAchievementToast);
+    }
+
+    if (isFirstLesson) {
+      const firstSteps = getAchievementById("first-steps");
+      if (firstSteps) showAchievementToast(firstSteps);
+    }
+
+    if (isLastLesson) {
+      const completer = getAchievementById("course-completer");
+      if (completer) showAchievementToast(completer);
+      setShowFinalize(true);
+    }
+
+    setLoading(false);
   }, [onComplete, isLastLesson, isFirstLesson, walletAddress, recordActivity]);
 
   const handleFinalize = useCallback(async () => {

@@ -1,18 +1,10 @@
+import "server-only";
 import { PublicKey } from "@solana/web3.js";
-import { getAssociatedTokenAddressSync } from "@solana/spl-token";
-import { XP_MINT, TOKEN_2022_PROGRAM_ID, HELIUS_RPC_URL } from "./constants";
+import { XP_MINT, HELIUS_RPC_URL } from "./constants";
 import { getConnection } from "./program";
+import { getXpAta } from "./pda";
 import { getXpLevel } from "@/lib/streaks";
 import type { XpBalance, DasCredential, LeaderboardEntry } from "./types";
-
-export function getXpAta(wallet: PublicKey): PublicKey {
-  return getAssociatedTokenAddressSync(
-    XP_MINT,
-    wallet,
-    true,
-    TOKEN_2022_PROGRAM_ID,
-  );
-}
 
 export async function getXpBalance(wallet: PublicKey): Promise<XpBalance> {
   const ata = getXpAta(wallet);

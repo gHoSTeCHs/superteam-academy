@@ -10,6 +10,7 @@ import {
   ShieldCheckIcon,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { cn } from "@/lib/utils";
@@ -40,6 +41,7 @@ export function WalletSignIn({
   const { isAuthenticated } = useAuth();
   const signingRef = useRef(false);
   const t = useTranslations("Auth");
+  const router = useRouter();
 
   const performSign = useCallback(async () => {
     if (!publicKey || !signMessage || signingRef.current) return;
@@ -47,24 +49,51 @@ export function WalletSignIn({
     signingRef.current = true;
     try {
       setStep("signing");
-      const message = `Sign in to Superteam Academy\nTimestamp: ${Date.now()}`;
+      const walletAddress = publicKey.toBase58();
+      const domain = window.location.host;
+
+      const nonceRes = await fetch("/api/auth/siws/nonce", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ walletAddress }),
+      });
+
+      if (!nonceRes.ok) {
+        setStep("idle");
+        return;
+      }
+
+      const { nonce } = (await nonceRes.json()) as { nonce: string };
+      const issuedAt = new Date().toISOString();
+
+      const message = [
+        `${domain} wants you to sign in with your Solana account:`,
+        walletAddress,
+        "",
+        "Sign in to Superteam Academy",
+        "",
+        `Nonce: ${nonce}`,
+        `Issued At: ${issuedAt}`,
+      ].join("\n");
+
       const encoded = new TextEncoder().encode(message);
       const signature = await signMessage(encoded);
 
       setStep("verifying");
-      const response = await fetch("/api/auth/sign-in/solana", {
+      const response = await fetch("/api/auth/siws/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          publicKey: publicKey.toBase58(),
-          signature: Buffer.from(signature).toString("base64"),
+          publicKey: walletAddress,
+          signature: btoa(String.fromCharCode(...signature)),
           message,
         }),
       });
 
       if (response.ok) {
         setStep("authenticated");
-        onAuthenticated?.(publicKey.toBase58());
+        router.refresh();
+        onAuthenticated?.(walletAddress);
       } else {
         setStep("idle");
       }
@@ -73,7 +102,7 @@ export function WalletSignIn({
     } finally {
       signingRef.current = false;
     }
-  }, [publicKey, signMessage, onAuthenticated]);
+  }, [publicKey, signMessage, onAuthenticated, router]);
 
   useEffect(() => {
     if (connected && step === "connecting") {

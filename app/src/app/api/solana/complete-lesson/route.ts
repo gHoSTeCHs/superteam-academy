@@ -39,7 +39,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  if (!body.courseId || typeof body.lessonIndex !== "number") {
+  if (
+    !body.courseId ||
+    typeof body.lessonIndex !== "number" ||
+    !Number.isInteger(body.lessonIndex) ||
+    body.lessonIndex < 0 ||
+    body.lessonIndex > 255
+  ) {
     return NextResponse.json(
       { error: "Missing courseId or lessonIndex" },
       { status: 400 },

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { archivo, inter } from "@/lib/fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -13,12 +12,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html
-      className={`${archivo.variable} ${inter.variable}`}
-      suppressHydrationWarning
-    >
-      <body>{children}</body>
-    </html>
-  );
+  return children;
 }

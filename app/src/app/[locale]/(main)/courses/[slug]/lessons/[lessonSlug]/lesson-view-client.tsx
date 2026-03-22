@@ -11,6 +11,7 @@ import type { Lesson } from "@/types/course";
 interface LessonViewClientProps {
   lesson: Lesson;
   courseSlug: string;
+  courseId: string;
   moduleName: string;
   currentLesson: number;
   totalLessons: number;
@@ -22,6 +23,7 @@ interface LessonViewClientProps {
 export function LessonViewClient({
   lesson,
   courseSlug,
+  courseId,
   moduleName,
   currentLesson,
   totalLessons,
@@ -74,6 +76,31 @@ export function LessonViewClient({
           isLastLesson={currentLesson === totalLessons}
           isFirstLesson={isFirstLesson}
           walletAddress={walletAddress ?? undefined}
+          onComplete={async () => {
+            const res = await fetch("/api/solana/complete-lesson", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                courseId,
+                lessonIndex: currentLesson - 1,
+              }),
+            });
+            if (!res.ok) {
+              const err = await res.json();
+              throw new Error(err.error ?? "Failed to complete lesson");
+            }
+          }}
+          onFinalizeCourse={async () => {
+            const res = await fetch("/api/solana/finalize-course", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ courseId }),
+            });
+            if (!res.ok) {
+              const err = await res.json();
+              throw new Error(err.error ?? "Failed to finalize course");
+            }
+          }}
         />
       </div>
     </div>

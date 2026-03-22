@@ -41,7 +41,13 @@ export async function POST(req: NextRequest) {
     !body.credentialName ||
     !body.metadataUri ||
     !body.credentialAsset ||
-    !body.trackCollection
+    !body.trackCollection ||
+    typeof body.coursesCompleted !== "number" ||
+    !Number.isInteger(body.coursesCompleted) ||
+    body.coursesCompleted < 0 ||
+    typeof body.totalXp !== "number" ||
+    !Number.isInteger(body.totalXp) ||
+    body.totalXp < 0
   ) {
     return NextResponse.json(
       { error: "Missing required fields" },

@@ -10,13 +10,26 @@ import { RecentAchievements } from "@/components/dashboard/recent-achievements";
 import { ActivityFeed } from "@/components/dashboard/activity-feed";
 import { useStreak } from "@/hooks/use-streak";
 import { ACHIEVEMENTS } from "@/lib/achievements";
+import type {
+  ActiveCourse,
+  ActivityItem,
+} from "@/lib/services/learning-progress";
 
 interface DashboardClientProps {
   userId: string;
   displayName?: string;
+  xp: number;
+  courses: ActiveCourse[];
+  activities: ActivityItem[];
 }
 
-export function DashboardClient({ userId, displayName }: DashboardClientProps) {
+export function DashboardClient({
+  userId,
+  displayName,
+  xp,
+  courses,
+  activities,
+}: DashboardClientProps) {
   const t = useTranslations("Dashboard");
   const { walletAddress } = useAuth();
   const wallet = walletAddress ?? userId;
@@ -58,7 +71,7 @@ export function DashboardClient({ userId, displayName }: DashboardClientProps) {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_1fr]">
-        <XpLevelCard xp={0} />
+        <XpLevelCard xp={xp} />
         <StreakCalendar
           days={calendarDays}
           currentStreak={currentStreak}
@@ -67,12 +80,12 @@ export function DashboardClient({ userId, displayName }: DashboardClientProps) {
       </div>
 
       <div className="mt-6">
-        <ActiveCourses courses={[]} />
+        <ActiveCourses courses={courses} />
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <RecentAchievements achievements={achievementDisplay} />
-        <ActivityFeed activities={[]} />
+        <ActivityFeed activities={activities} />
       </div>
     </div>
   );

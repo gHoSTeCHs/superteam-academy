@@ -40,6 +40,7 @@ export function CourseDetailClient({
 
         <div className="space-y-6">
           <EnrollButton
+            courseId={course.id}
             onContinue={() => {
               if (firstLesson?.slug) {
                 router.push(`${basePath}/${firstLesson.slug}`);

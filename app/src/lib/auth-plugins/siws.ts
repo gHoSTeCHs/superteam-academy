@@ -1,188 +1,230 @@
-import { NextRequest, NextResponse } from "next/server";
 import nacl from "tweetnacl";
 import bs58 from "bs58";
-import { eq, and } from "drizzle-orm";
-import { db } from "@/db";
-import { user, account, session } from "@/db/schema/auth";
-import { siwsNonce } from "@/db/schema/custom";
+import * as z from "zod";
+import { createAuthEndpoint, APIError } from "better-auth/api";
+import { setSessionCookie } from "better-auth/cookies";
+import type {
+  BetterAuthPlugin,
+  BetterAuthClientPlugin,
+} from "better-auth/types";
 
-interface SiwsPayload {
-  publicKey: string;
-  signature: string;
-  message: string;
+const nonceBodySchema = z.object({
+  walletAddress: z.string().min(32).max(44),
+});
+
+const verifyBodySchema = z.object({
+  publicKey: z.string().min(32).max(44),
+  signature: z.string().min(1),
+  message: z.string().min(1),
+});
+
+function verifySolanaSignature(
+  message: string,
+  signature: string,
+  publicKey: string,
+): boolean {
+  const messageBytes = new TextEncoder().encode(message);
+  const signatureBytes = Buffer.from(signature, "base64");
+  const publicKeyBytes = bs58.decode(publicKey);
+
+  return nacl.sign.detached.verify(
+    messageBytes,
+    signatureBytes,
+    publicKeyBytes,
+  );
 }
 
-/**
- * Verify an Ed25519 signature from a Solana wallet.
- * Returns the public key string if valid, null otherwise.
- */
-export function verifySolanaSignature(payload: SiwsPayload): string | null {
-  try {
-    const messageBytes = new TextEncoder().encode(payload.message);
-    const signatureBytes = Buffer.from(payload.signature, "base64");
-    const publicKeyBytes = bs58.decode(payload.publicKey);
-
-    const valid = nacl.sign.detached.verify(
-      messageBytes,
-      signatureBytes,
-      publicKeyBytes,
-    );
-    return valid ? payload.publicKey : null;
-  } catch {
-    return null;
-  }
-}
-
-async function findOrCreateWalletUser(publicKey: string): Promise<string> {
-  const existing = await db
-    .select({ userId: account.userId })
-    .from(account)
-    .where(
-      and(eq(account.providerId, "solana"), eq(account.accountId, publicKey)),
-    )
-    .limit(1);
-
-  if (existing.length > 0 && existing[0]) {
-    return existing[0].userId;
-  }
-
-  const userId = crypto.randomUUID();
-  const accountId = crypto.randomUUID();
-  const now = new Date();
-
-  await db.insert(user).values({
-    id: userId,
-    name: publicKey.slice(0, 8) + "..." + publicKey.slice(-4),
-    email: `${publicKey}@wallet.solana`,
-    emailVerified: false,
-    createdAt: now,
-    updatedAt: now,
-  });
-
-  await db.insert(account).values({
-    id: accountId,
-    accountId: publicKey,
-    providerId: "solana",
-    userId,
-    createdAt: now,
-    updatedAt: now,
-  });
-
-  return userId;
-}
-
-function extractMessageField(message: string, pattern: RegExp): string | null {
+function extractField(message: string, pattern: RegExp): string | null {
   const match = pattern.exec(message);
   return match?.[1] ?? null;
 }
 
-export async function handleSiwsSignIn(
-  req: NextRequest,
-): Promise<NextResponse> {
-  try {
-    const body = (await req.json()) as SiwsPayload;
+export function siwsPlugin(): BetterAuthPlugin {
+  return {
+    id: "siws",
+    endpoints: {
+      getSiwsNonce: createAuthEndpoint(
+        "/siws/nonce",
+        { method: "POST", body: nonceBodySchema },
+        async (ctx) => {
+          const { walletAddress } = ctx.body;
 
-    if (!body.publicKey || !body.signature || !body.message) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 },
-      );
-    }
+          const nonce = crypto.randomUUID();
+          await ctx.context.internalAdapter.deleteVerificationByIdentifier(
+            `siws:${walletAddress}`,
+          );
+          await ctx.context.internalAdapter.createVerificationValue({
+            identifier: `siws:${walletAddress}`,
+            value: nonce,
+            expiresAt: new Date(Date.now() + 10 * 60 * 1000),
+          });
 
-    const verified = verifySolanaSignature(body);
-    if (!verified) {
-      return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
-    }
+          return ctx.json({ nonce });
+        },
+      ),
 
-    const domain = extractMessageField(
-      body.message,
-      /^(.+) wants you to sign in/m,
-    );
-    const nonce = extractMessageField(body.message, /^Nonce: (.+)$/m);
-    const issuedAtStr = extractMessageField(body.message, /^Issued At: (.+)$/m);
+      verifySiwsMessage: createAuthEndpoint(
+        "/siws/verify",
+        { method: "POST", body: verifyBodySchema, requireRequest: true },
+        async (ctx) => {
+          const { publicKey, signature, message } = ctx.body;
 
-    const expectedHost = new URL(
-      process.env.BETTER_AUTH_URL ?? "http://localhost:3000",
-    ).host;
-    if (!domain || domain !== expectedHost) {
-      return NextResponse.json({ error: "Invalid domain" }, { status: 400 });
-    }
+          let valid: boolean;
+          try {
+            valid = verifySolanaSignature(message, signature, publicKey);
+          } catch {
+            throw new APIError("UNAUTHORIZED", {
+              message: "Invalid signature",
+              status: 401,
+            });
+          }
 
-    if (!nonce) {
-      return NextResponse.json({ error: "Missing nonce" }, { status: 400 });
-    }
+          if (!valid) {
+            throw new APIError("UNAUTHORIZED", {
+              message: "Invalid signature",
+              status: 401,
+            });
+          }
 
-    const now = new Date();
+          const domain = extractField(message, /^(.+) wants you to sign in/m);
+          const expectedHost = new URL(
+            ctx.context.baseURL || "http://localhost:3000",
+          ).host;
 
-    const [nonceRow] = await db
-      .select()
-      .from(siwsNonce)
-      .where(eq(siwsNonce.nonce, nonce))
-      .limit(1);
+          if (!domain || domain !== expectedHost) {
+            throw new APIError("BAD_REQUEST", {
+              message: "Invalid domain",
+              status: 400,
+            });
+          }
 
-    if (!nonceRow) {
-      return NextResponse.json({ error: "Invalid nonce" }, { status: 400 });
-    }
-    if (nonceRow.usedAt !== null) {
-      return NextResponse.json(
-        { error: "Nonce already used" },
-        { status: 400 },
-      );
-    }
-    if (nonceRow.expiresAt < now) {
-      return NextResponse.json({ error: "Nonce expired" }, { status: 400 });
-    }
+          const messageWallet = extractField(
+            message,
+            /wants you to sign in with your Solana account:\n(.+)/,
+          );
+          if (messageWallet !== publicKey) {
+            throw new APIError("BAD_REQUEST", {
+              message: "Wallet address mismatch",
+              status: 400,
+            });
+          }
 
-    if (issuedAtStr) {
-      const issuedAt = new Date(issuedAtStr);
-      if (now.getTime() - issuedAt.getTime() > 10 * 60 * 1000) {
-        return NextResponse.json({ error: "Message too old" }, { status: 400 });
-      }
-    }
+          const nonce = extractField(message, /^Nonce: (.+)$/m);
+          if (!nonce) {
+            throw new APIError("BAD_REQUEST", {
+              message: "Missing nonce",
+              status: 400,
+            });
+          }
 
-    await db
-      .update(siwsNonce)
-      .set({ usedAt: now })
-      .where(eq(siwsNonce.nonce, nonce));
+          const issuedAtStr = extractField(message, /^Issued At: (.+)$/m);
+          if (!issuedAtStr) {
+            throw new APIError("BAD_REQUEST", {
+              message: "Missing issuedAt",
+              status: 400,
+            });
+          }
 
-    const userId = await findOrCreateWalletUser(verified);
+          const issuedAt = new Date(issuedAtStr);
+          if (Date.now() - issuedAt.getTime() > 10 * 60 * 1000) {
+            throw new APIError("BAD_REQUEST", {
+              message: "Message too old",
+              status: 400,
+            });
+          }
 
-    const token = crypto.randomUUID();
-    const expiresAt = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+          const verification =
+            await ctx.context.internalAdapter.findVerificationValue(
+              `siws:${publicKey}`,
+            );
 
-    await db.insert(session).values({
-      id: crypto.randomUUID(),
-      token,
-      userId,
-      expiresAt,
-      ipAddress:
-        req.headers.get("x-forwarded-for") ??
-        req.headers.get("x-real-ip") ??
-        null,
-      userAgent: req.headers.get("user-agent") ?? null,
-      createdAt: now,
-      updatedAt: now,
-    });
+          if (!verification || new Date() > verification.expiresAt) {
+            throw new APIError("UNAUTHORIZED", {
+              message: "Invalid or expired nonce",
+              status: 401,
+            });
+          }
 
-    const isProduction = process.env.NODE_ENV === "production";
-    const cookieName = isProduction
-      ? "__Secure-better-auth.session_token"
-      : "better-auth.session_token";
+          if (verification.value !== nonce) {
+            throw new APIError("UNAUTHORIZED", {
+              message: "Nonce mismatch",
+              status: 401,
+            });
+          }
 
-    const response = NextResponse.json({ success: true, publicKey: verified });
-    response.cookies.set(cookieName, token, {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: "lax",
-      expires: expiresAt,
-      path: "/",
-    });
+          await ctx.context.internalAdapter.deleteVerificationValue(
+            verification.id,
+          );
 
-    return response;
-  } catch {
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 },
-    );
-  }
+          const existingAccount = (await ctx.context.adapter.findOne({
+            model: "account",
+            where: [
+              { field: "providerId", operator: "eq", value: "solana" },
+              { field: "accountId", operator: "eq", value: publicKey },
+            ],
+          })) as { userId: string } | null;
+
+          let user: {
+            id: string;
+            name: string;
+            email: string;
+            emailVerified: boolean;
+            image?: string | null;
+            createdAt: Date;
+            updatedAt: Date;
+          } | null = null;
+          if (existingAccount) {
+            user = (await ctx.context.adapter.findOne({
+              model: "user",
+              where: [
+                { field: "id", operator: "eq", value: existingAccount.userId },
+              ],
+            })) as typeof user;
+          }
+
+          if (!user) {
+            const displayName =
+              publicKey.slice(0, 8) + "..." + publicKey.slice(-4);
+            user = await ctx.context.internalAdapter.createUser({
+              name: displayName,
+              email: `${publicKey}@wallet.solana`,
+            });
+
+            await ctx.context.internalAdapter.createAccount({
+              userId: user.id,
+              providerId: "solana",
+              accountId: publicKey,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            });
+          }
+
+          const session = await ctx.context.internalAdapter.createSession(
+            user.id,
+          );
+          if (!session) {
+            throw new APIError("INTERNAL_SERVER_ERROR", {
+              message: "Failed to create session",
+              status: 500,
+            });
+          }
+
+          await setSessionCookie(ctx, { session, user });
+
+          return ctx.json({
+            token: session.token,
+            success: true,
+            user: { id: user.id, walletAddress: publicKey },
+          });
+        },
+      ),
+    },
+  };
+}
+
+export function siwsClientPlugin(): BetterAuthClientPlugin {
+  return {
+    id: "siws",
+    $InferServerPlugin: {} as ReturnType<typeof siwsPlugin>,
+  };
 }
